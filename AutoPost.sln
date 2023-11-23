@@ -5,15 +5,11 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.View", "AutoPostView\AutoPost.View.csproj", "{DB753A91-F852-4F96-96E3-DEA1D265B7BE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.ChatGPTConnector", "AutoPostChatGPTConnector\AutoPost.ChatGPTConnector.csproj", "{61FF23AE-5898-43F6-9DF5-73A9C69C107F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.BingConnector", "AutoPost.BingConnector\AutoPost.BingConnector.csproj", "{68B33ACB-BF4D-4A16-8B20-1702E74E0E9B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.TextMotion", "AutoPost.TextMotion\AutoPost.TextMotion.csproj", "{C8C2AC69-AA7D-457B-80A1-EB19E5DA37ED}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.TwitterConnector", "AutoPost.TwitterConnector\AutoPost.TwitterConnector.csproj", "{272CB307-1B49-4A63-A54D-13F713D13139}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.TikTokUploader", "AutoPost.TikTokUploader\AutoPost.TikTokUploader.csproj", "{1C32BBCC-77AA-4AB2-98A0-0F12B5C617CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.TikTokUploader", "AutoPost.TikTokUploader\AutoPost.TikTokUploader.csproj", "{1C32BBCC-77AA-4AB2-98A0-0F12B5C617CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.VideoUploader", "AutoPost.VideoUploader\AutoPost.VideoUploader.csproj", "{1F10E70C-68F4-44F8-A2E8-BAC87FA57B7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,18 +21,6 @@ Global
 		{DB753A91-F852-4F96-96E3-DEA1D265B7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB753A91-F852-4F96-96E3-DEA1D265B7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB753A91-F852-4F96-96E3-DEA1D265B7BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61FF23AE-5898-43F6-9DF5-73A9C69C107F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61FF23AE-5898-43F6-9DF5-73A9C69C107F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61FF23AE-5898-43F6-9DF5-73A9C69C107F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61FF23AE-5898-43F6-9DF5-73A9C69C107F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68B33ACB-BF4D-4A16-8B20-1702E74E0E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68B33ACB-BF4D-4A16-8B20-1702E74E0E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68B33ACB-BF4D-4A16-8B20-1702E74E0E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68B33ACB-BF4D-4A16-8B20-1702E74E0E9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8C2AC69-AA7D-457B-80A1-EB19E5DA37ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8C2AC69-AA7D-457B-80A1-EB19E5DA37ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8C2AC69-AA7D-457B-80A1-EB19E5DA37ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8C2AC69-AA7D-457B-80A1-EB19E5DA37ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{272CB307-1B49-4A63-A54D-13F713D13139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{272CB307-1B49-4A63-A54D-13F713D13139}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{272CB307-1B49-4A63-A54D-13F713D13139}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +29,10 @@ Global
 		{1C32BBCC-77AA-4AB2-98A0-0F12B5C617CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C32BBCC-77AA-4AB2-98A0-0F12B5C617CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C32BBCC-77AA-4AB2-98A0-0F12B5C617CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F10E70C-68F4-44F8-A2E8-BAC87FA57B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F10E70C-68F4-44F8-A2E8-BAC87FA57B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F10E70C-68F4-44F8-A2E8-BAC87FA57B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F10E70C-68F4-44F8-A2E8-BAC87FA57B7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

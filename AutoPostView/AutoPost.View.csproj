@@ -14,11 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoPost.BingConnector\AutoPost.BingConnector.csproj" />
-    <ProjectReference Include="..\AutoPost.TextMotion\AutoPost.TextMotion.csproj" />
     <ProjectReference Include="..\AutoPost.TikTokUploader\AutoPost.TikTokUploader.csproj" />
     <ProjectReference Include="..\AutoPost.TwitterConnector\AutoPost.TwitterConnector.csproj" />
-    <ProjectReference Include="..\AutoPostChatGPTConnector\AutoPost.ChatGPTConnector.csproj" />
+    <ProjectReference Include="..\AutoPost.VideoUploader\AutoPost.VideoUploader.csproj" />
   </ItemGroup>
 
 </Project>

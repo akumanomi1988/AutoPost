@@ -223,6 +223,11 @@
             ResumeLayout(false);
         }
 
+        private void button1_ClickAsync(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         private Button btnSend;

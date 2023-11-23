@@ -1,54 +1,8 @@
-using AutoPost.BingConnector;
-using AutoPost.ChatGPTConnector.Interfaces;
-using AutoPostChatGPTConnector.Model;
 
 namespace AutoPostView
 {
     public partial class MainForm : Form
     {
-        private const string ModeloGPT = "gpt-3.5-turbo";
-        private const string URLGPT = "https://api.openai.com/v1/chat/completions";
-
-        private readonly IApiRequestService _apiRequestService;
-        private ChatGPT? _chatGPT;
-        public MainForm(IApiRequestService apiRequestService)
-        {
-            InitializeComponent();
-            _apiRequestService = apiRequestService ?? throw new ArgumentNullException(nameof(apiRequestService));
-        }
-
-        private async void button1_ClickAsync(object sender, EventArgs e)
-        {
-            //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
-            try
-            {
-
-                if (_chatGPT == null)
-                {
-                    _chatGPT = new ChatGPT(txtApiKey.Text,
-                                    URLGPT,
-                                    ModeloGPT);
-                }
-                if (_chatGPT != null)
-                {
-                    _chatGPT.Prompt = textBox1.Text;
-                    txtResponse.Text = await Request(_chatGPT);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                txtResponse.Text = ex.Message;
-            }
-
-
-        }
-
-        private async Task<string> Request(ChatGPT gpt)
-        {
-            var response = await _apiRequestService.MakeApiRequest(gpt);
-            return response.ToString();
-        }
 
         private void btnSeeKey01_MouseDown(object sender, MouseEventArgs e)
         {
