@@ -1,12 +1,8 @@
-﻿using AutoPost.VideoUploader.DTOs;
-using AutoPost.VideoUploader.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoPost.Domain.Interfaces;
+using AutoPost.Domain.Models;
 
-namespace AutoPost.VideoUploader.Services.VideoUploading
+
+namespace AutoPost.Infraestructure.TikTok
 {
     public class TikTokUploader : IVideoUploader
     {

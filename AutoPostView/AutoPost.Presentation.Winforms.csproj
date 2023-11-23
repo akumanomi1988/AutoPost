@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AutoPost.Domain\AutoPost.Domain.csproj" />
     <ProjectReference Include="..\AutoPost.TikTokUploader\AutoPost.TikTokUploader.csproj" />
     <ProjectReference Include="..\AutoPost.TwitterConnector\AutoPost.TwitterConnector.csproj" />
-    <ProjectReference Include="..\AutoPost.VideoUploader\AutoPost.VideoUploader.csproj" />
   </ItemGroup>
 
 </Project>

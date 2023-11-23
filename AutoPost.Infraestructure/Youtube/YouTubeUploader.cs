@@ -1,14 +1,13 @@
-﻿using AutoPost.VideoUploader.DTOs;
-using AutoPost.VideoUploader.Interfaces;
+﻿using AutoPost.Domain.Interfaces;
+using AutoPost.Domain.Models;
+using AutoPost.Infraestructure.Utils;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 
-namespace AutoPost.VideoUploader.Services.VideoUploading
+namespace AutoPost.Infraestructure.Youtube
 {
-
-
-    public class YouTubeUploader : IVideoUploader
+    public class YouTubeUploader :  IVideoUploader
     {
         private readonly IAuthenticationProvider _authProvider;
         private readonly IFileProvider _fileProvider;
@@ -40,7 +39,7 @@ namespace AutoPost.VideoUploader.Services.VideoUploading
                     DefaultAudioLanguage = "es", // El idioma por defecto del audio del video (código de idioma ISO 639-1)
 
                     // Los siguientes campos son opcionales y dependen de tu caso de uso específico
-                    // PublishedAt = DateTime.Now, // La fecha y hora de publicación del video (opcional)
+                     PublishedAt = DateTime.Now, // La fecha y hora de publicación del video (opcional)
                     // ChannelId = "TU_CHANNEL_ID", // El ID del canal de YouTube donde se publicará el video (opcional)
                     // Thumbnails = new ThumbnailDetails(), // Detalles de la miniatura del video (opcional)
                     // Playlists = new List<string>() { "id_playlist1", "id_playlist2" }, // IDs de las listas de reproducción a las que se agregará el video (opcional)

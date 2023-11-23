@@ -1,17 +1,5 @@
-﻿using AutoPost.VideoUploader.DTOs;
-using AutoPost.VideoUploader.Interfaces;
-using AutoPost.VideoUploader.Services.AuthProvider;
-using AutoPost.VideoUploader.Services.VideoUploading;
-using Google.Apis.Auth.OAuth2;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using AutoPost.Domain.Interfaces;
+using AutoPost.Domain.Models;
 
 namespace AutoPost.View
 {

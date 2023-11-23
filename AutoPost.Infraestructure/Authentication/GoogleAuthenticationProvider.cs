@@ -1,23 +1,16 @@
-﻿using AutoPost.VideoUploader.DTOs;
-using AutoPost.VideoUploader.Interfaces;
+﻿
+using AutoPost.Domain.Interfaces;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Json;
-using Google.Apis.Services;
-using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AutoPost.VideoUploader.Services.AuthProvider
+namespace AutoPost.Infraestructure.Authentication
 {
-    public class GoogleAuthorizationProvider : IAuthenticationProvider
+    public class GoogleAuthenticationProvider : IAuthenticationProvider
     {
         private readonly string _credentialsFilePath;
 
-        public GoogleAuthorizationProvider(string credentialsFilePath)
+        public GoogleAuthenticationProvider(string credentialsFilePath)
         {
             _credentialsFilePath = credentialsFilePath;
         }

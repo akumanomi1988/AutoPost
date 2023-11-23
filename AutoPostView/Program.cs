@@ -1,13 +1,9 @@
-using AutoPost.VideoUploader.Interfaces;
-using AutoPost.VideoUploader.Services.AuthProvider;
-using AutoPost.VideoUploader.Services.FileProvider;
-using AutoPost.VideoUploader.Services.VideoUploading;
+using AutoPost.Domain.Interfaces;
 using AutoPost.View;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http;
-using Tweetinvi.Client;
 
-namespace AutoPostView
+
+namespace AutoPost.Presentation
 {
     static class Program
     {
@@ -19,8 +15,8 @@ namespace AutoPostView
 
             // Configuración de inyección de dependencias
             using (var serviceProvider = new ServiceCollection()
-                .AddSingleton<IAuthenticationProvider, GoogleAuthorizationProvider>(provider =>
-                    new GoogleAuthorizationProvider("C:\\Users\\dmozota\\source\\repos\\akumanomi1988\\AutoPost\\AutoPostView\\Secrets\\GoogleAuth.json"))
+                .AddSingleton<IAuthenticationProvider, GoogleAuthenticationProvider>(provider =>
+                    new GoogleAuthenticationProvider("C:\\Users\\dmozota\\source\\repos\\akumanomi1988\\AutoPost\\AutoPostView\\Secrets\\GoogleAuth.json"))
                 .AddSingleton<IFileProvider, FileProvider>()
                 .AddTransient<IVideoUploader, YouTubeUploader>()
                 .AddTransient<frmUploaderTest>()
