@@ -54,7 +54,7 @@ namespace AutoPost.Presentation.Desktop.UserControls
             {
                 string inputText = textBox.Text.Trim();
 
-                // Si hay un tag seleccionado, actualízalo
+                
                 if (flowLayoutPanel.Controls.OfType<Label>().Any(label => label.BackColor == Color.LightBlue))
                 {
                     var selectedLabel = flowLayoutPanel.Controls.OfType<Label>().FirstOrDefault(label => label.BackColor == Color.LightBlue);
@@ -65,7 +65,7 @@ namespace AutoPost.Presentation.Desktop.UserControls
                         selectedLabel.Text = inputText;
                     }
                 }
-                else // Si no hay un tag seleccionado, añade uno nuevo
+                else 
                 {
                     tagList.Add(inputText);
                     var newTagLabel = new Label
@@ -77,12 +77,18 @@ namespace AutoPost.Presentation.Desktop.UserControls
                     newTagLabel.Click += new EventHandler(TagLabel_Click);
                     flowLayoutPanel.Controls.Add(newTagLabel);
                 }
-
-                textBox.Clear(); // Limpiar el TextBox después de añadir/editar
+                DeselectAllTags();
+                textBox.Clear();
             }
         }
 
-
+        private void DeselectAllTags()
+        {
+            foreach (Label tagLabel in flowLayoutPanel.Controls)
+            {
+                tagLabel.BackColor = Control.DefaultBackColor;
+            }
+        }
         private void TagLabel_Click(object sender, EventArgs e)
         {
             var label = sender as Label;
