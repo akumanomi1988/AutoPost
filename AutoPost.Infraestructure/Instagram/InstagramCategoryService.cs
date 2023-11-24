@@ -1,9 +1,4 @@
-﻿using AutoPost.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoPost.Domain.Interfaces;
 
 namespace AutoPost.Infraestructure.Instagram
 {

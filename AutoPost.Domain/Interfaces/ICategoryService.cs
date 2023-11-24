@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoPost.Application.Interfaces
+namespace AutoPost.Domain.Interfaces
 {
     public interface ICategoryService
     {

@@ -14,10 +14,10 @@ namespace AutoPost.Application.Services
             _serviceProvider = serviceProvider;
         }
 
-        public async Task UploadVideoAsync(string platform, string videoPath, VideoMetadata metadata)
+        public async Task UploadVideoAsync(string platform, VideoMetadata metadata)
         {
             var uploader = _serviceProvider.GetRequiredService<IVideoUploaderFactory>().CreateUploader(platform);
-            await uploader.UploadVideoAsync(videoPath, metadata);
+            await uploader.UploadVideoAsync( metadata);
         }
     }
 

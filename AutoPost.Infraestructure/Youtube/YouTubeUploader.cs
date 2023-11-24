@@ -1,7 +1,9 @@
 ﻿using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
 using AutoPost.Infraestructure.Utils;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
+using Google.Apis.Upload;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 
@@ -18,56 +20,56 @@ namespace AutoPost.Infraestructure.Youtube
             _fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
         }
 
-        public async Task<bool> UploadVideoAsync(string videoPath, VideoMetadata metadata)
+        public async Task<bool> UploadVideoAsync( VideoMetadata metadata)
         {
-            var credential = await _authProvider.GetCredentialsAsync();
+            var credential = (UserCredential)await _authProvider.GetCredentialsAsync();
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
-                HttpClientInitializer = (Google.Apis.Http.IConfigurableHttpClientInitializer)credential,
-                ApplicationName = "YouTube Data API Sample"
+                HttpClientInitializer = credential,
+                ApplicationName = "YTUploader"
             });
+            var video = new Video();
+            video.Snippet = new VideoSnippet();
+            video.Snippet.Title = metadata.Title;
+            video.Snippet.Description = metadata.Description;
+            video.Snippet.Tags = metadata.Tags.Select(x => x.Text).ToArray();
+            video.Snippet.CategoryId = metadata.CategoryId; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
+            video.Status = new VideoStatus();
+            video.Status.PrivacyStatus = metadata.Privacy.ToString().ToLower(); // or "private" or "public"
+            var filePath = metadata.VideoPath; 
 
-            var video = new Video
-            {
-                Snippet = new VideoSnippet
-                {
-                    Title = "Título Descriptivo del Video", // El título del video
-                    Description = "Descripción detallada del contenido del video...", // Descripción del video
-                    Tags = new string[] { "etiqueta1", "etiqueta2", "etiqueta3" }, // Etiquetas relevantes para el video
-                    CategoryId = "27", // Elige la categoría adecuada (esto es un ejemplo; las categorías tienen sus propios ID)
-                    DefaultLanguage = "es", // El idioma por defecto del video (código de idioma ISO 639-1)
-                    DefaultAudioLanguage = "es", // El idioma por defecto del audio del video (código de idioma ISO 639-1)
-
-                    // Los siguientes campos son opcionales y dependen de tu caso de uso específico
-                     PublishedAt = DateTime.Now, // La fecha y hora de publicación del video (opcional)
-                    // ChannelId = "TU_CHANNEL_ID", // El ID del canal de YouTube donde se publicará el video (opcional)
-                    // Thumbnails = new ThumbnailDetails(), // Detalles de la miniatura del video (opcional)
-                    // Playlists = new List<string>() { "id_playlist1", "id_playlist2" }, // IDs de las listas de reproducción a las que se agregará el video (opcional)
-                },
-                Status = new VideoStatus { PrivacyStatus = metadata.Privacidad.ToString().ToLower() }
-            };
-
-            using (var fileStream = _fileProvider.GetFileStream(videoPath))
+            using (var fileStream = new FileStream(filePath, FileMode.Open))
             {
                 var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
-                //videosInsertRequest.ProgressChanged += VideosInsertRequest_ProgressChanged;
-                //videosInsertRequest.ResponseReceived += VideosInsertRequest_ResponseReceived;
+                videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
+                videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
 
-                var a = await videosInsertRequest.UploadAsync();
+                var res = await videosInsertRequest.UploadAsync();
+                return res.Status ==  UploadStatus.Completed;
+            }
 
-                return a.Status == Google.Apis.Upload.UploadStatus.Completed;
+        }
+
+
+        void videosInsertRequest_ProgressChanged(Google.Apis.Upload.IUploadProgress progress)
+        {
+            switch (progress.Status)
+            {
+                case UploadStatus.Uploading:
+                    Console.WriteLine("{0} bytes sent.", progress.BytesSent);
+                    break;
+
+                case UploadStatus.Failed:
+                    Console.WriteLine("An error prevented the upload from completing.\n{0}", progress.Exception);
+                    break;
             }
         }
 
-        //private void VideosInsertRequest_ProgressChanged(IUploadProgress progress)
-        //{
-        //    // Manejar el progreso de la subida aquí
-        //}
-
-        private void VideosInsertRequest_ResponseReceived(Video video)
+        void videosInsertRequest_ResponseReceived(Video video)
         {
-            // Manejar la respuesta aquí
+            Console.WriteLine("Video id '{0}' was successfully uploaded.", video.Id);
         }
     }
-
 }
+
+

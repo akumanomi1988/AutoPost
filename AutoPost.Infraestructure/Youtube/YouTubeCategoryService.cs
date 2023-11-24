@@ -1,7 +1,4 @@
-﻿
-
-using AutoPost.Application.Interfaces;
-using AutoPost.Domain.Interfaces;
+﻿using AutoPost.Domain.Interfaces;
 
 namespace AutoPost.Infraestructure.Youtube
 {

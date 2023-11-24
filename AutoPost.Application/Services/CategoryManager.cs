@@ -1,12 +1,9 @@
-﻿using AutoPost.Application.Interfaces;
+﻿
+
+using AutoPost.Domain.Interfaces;
 using AutoPost.Infraestructure.Instagram;
 using AutoPost.Infraestructure.Youtube;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoPost.Application.Services
 {

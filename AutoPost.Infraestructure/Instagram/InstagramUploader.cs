@@ -5,7 +5,7 @@ namespace AutoPost.Infraestructure.Instagram
 {
     public class InstagramUploader : IVideoUploader
     {
-        public async Task<bool> UploadVideoAsync(string videoPath, VideoMetadata metadata)
+        public async Task<bool> UploadVideoAsync(VideoMetadata metadata)
         {
             await Task.Delay(100);
             return true;
