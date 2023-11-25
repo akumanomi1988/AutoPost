@@ -16,8 +16,6 @@ using AutoPost.Infrastructure.Factories;
 static class Program
 {
     //Estos parametros de momento los dejo aquí, pero habrá que meterlos en configuración de la aplicación
-    const string liteDbPath = "C:\\Users\\dmozota\\source\\repos\\akumanomi1988\\AutoPost\\AutoPost.Presentation.Desktop\\Database.db";
-    const string GoogleAuthPath = "C:\\Users\\dmozota\\source\\repos\\akumanomi1988\\AutoPost\\AutoPost.Presentation.Desktop\\GoogleAuth.json";
     [STAThread]
     static void Main()
     {
@@ -33,7 +31,11 @@ static class Program
     }
     private static void ConfigureServices(IServiceCollection services)
     {
-        
+
+        string liteDbPath = $@"{Application.StartupPath}\Database.db";
+        string GoogleAuthPath = $@"{Application.StartupPath}\GoogleAuth.json";
+
+
         services.AddSingleton<IMetadataStorageService>(provider => new MetadataStorageService(liteDbPath));
         services.AddSingleton<ICategoryService, YouTubeCategoryService>();
         services.AddSingleton<ICategoryService, InstagramCategoryService>();

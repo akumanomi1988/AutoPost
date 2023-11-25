@@ -24,7 +24,8 @@ namespace AutoPost.Infraestructure.MetadataStorage
             using (var db = new LiteDatabase(_databasePath))
             {
                 var collection = db.GetCollection<VideoMetadata>("videos");
-                return collection.Insert(metadata);
+                collection.Upsert(metadata);
+                return metadata.Id;
             }
         }
 

@@ -13,6 +13,8 @@ namespace AutoPost.Domain.Models
         public string CategoryId { get; set; }
         public EPrivacidad Privacy { get; set; }
         public string VideoPath { get; set; }
+        public DateTime DateProgram { get; set; }
+        public  string DateProgramStr => DateProgram.ToString();
         public enum EPrivacidad
         {
             PRIVATE,
