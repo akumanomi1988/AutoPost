@@ -34,7 +34,9 @@ namespace AutoPost.Infraestructure.Youtube
             video.Snippet.Description = metadata.Description;
             video.Snippet.Tags = metadata.Tags.Select(x => x.Text).ToArray();
             video.Snippet.CategoryId = metadata.CategoryId; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
+            
             video.Status = new VideoStatus();
+            video.Status.PublishAtDateTimeOffset = metadata.DateProgram;
             video.Status.PrivacyStatus = metadata.Privacy.ToString().ToLower(); // or "private" or "public"
             var filePath = metadata.VideoPath; 
 
