@@ -15,39 +15,46 @@ namespace AutoPost.Presentation.Desktop
 {
     public partial class MainForm : Form
     {
-        private readonly IVideoUploadService _videoUploadService;
-        private readonly IMetadataService _metadataService;
-        //public Domain.Models.VideoMetadata currentYTVideoMetadata;
-        private VideoMetadata? currentYTVideoMetadata
+        private readonly IPublishService _PublishService;
+        private readonly IPostService _PostService;
+        //public Domain.Models.VideoPost currentYTVideoPost;
+        private Post? currentPost
         {
             get
             {
-                if (YTMetadataBS == null) { return null; }
-                if (YTMetadataBS.Current == null) { return null; }
-                return (VideoMetadata)YTMetadataBS.Current;
+                if (postBindingSource == null) { return null; }
+                if (postBindingSource.Current == null) { return null; }
+                return (Post)postBindingSource.Current;
             }
         }
 
-        public MainForm(IVideoUploadService videoUploadService, IMetadataService metadataService)
+        public MainForm(IPublishService publishService, IPostService postService)
         {
             InitializeComponent();
-            _videoUploadService = videoUploadService;
-            _metadataService = metadataService;
+            _PublishService = publishService;
+            _PostService = postService;
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            if (currentYTVideoMetadata == null) { return; }
-            await _videoUploadService.UploadVideoAsync("Youtube", currentYTVideoMetadata);
-            _metadataService.SaveMetadata(currentYTVideoMetadata);
+            if (currentPost == null) { return; }
+                currentPost.PendingNetworks.Add(new SocialNetwork() { Id = 0, Name = "youtube" });
+            await _PublishService.PublishAsync(currentPost);
+            _PostService.SavePost(currentPost);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            YTMetadataBS.DataSource = _metadataService.GetMetadata();
-            if (currentYTVideoMetadata == null) { return; }
-            tagBox1.DataBindings.Add(nameof(tagBox1.Text), string.Join(' ', currentYTVideoMetadata.Tags.Select(x => x.Text)), "", true, DataSourceUpdateMode.OnPropertyChanged);
-            tagsBox1.DataBindings.Add(nameof(tagsBox1.TagList), string.Join(' ', currentYTVideoMetadata.Tags.Select(x => x.Text)), "", true, DataSourceUpdateMode.OnPropertyChanged);
+            postBindingSource.DataSource = _PostService.GetPost();
+            if (currentPost == null) { return; }
+            tagsBox1.DataBindings.Add(nameof(tagsBox1.TagList), string.Join(' ', currentPost.Tags), "", true, DataSourceUpdateMode.OnPropertyChanged);
+
         }
+
+        private void postBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

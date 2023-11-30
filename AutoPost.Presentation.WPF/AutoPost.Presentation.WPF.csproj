@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AutoPost.Application\AutoPost.Application.csproj" />
+    <ProjectReference Include="..\AutoPost.Domain\AutoPost.Domain.csproj" />
+    <ProjectReference Include="..\AutoPost.Infraestructure\AutoPost.Infraestructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -14,9 +14,9 @@ namespace AutoPost.Presentation.Desktop.UserControls
     {
         private FlowLayoutPanel flowLayoutPanel;
         private TextBox textBox;
-        private List<string> tagList;
+        private  string[] tagList;
 
-        public List<string> TagList
+        public string[] TagList
         {
             get { return tagList; }
             set
@@ -29,7 +29,7 @@ namespace AutoPost.Presentation.Desktop.UserControls
         public TagsBox()
         {
             InitializeComponent();
-            tagList = new List<string>();
+            tagList = Array.Empty<string>();
         }
 
         private void UpdateTags()
@@ -60,14 +60,15 @@ namespace AutoPost.Presentation.Desktop.UserControls
                     var selectedLabel = flowLayoutPanel.Controls.OfType<Label>().FirstOrDefault(label => label.BackColor == Color.LightBlue);
                     if (selectedLabel != null)
                     {
-                        int index = tagList.IndexOf(selectedLabel.Text);
+                        int index = Array.IndexOf(tagList, selectedLabel.Text); //.Select( x => x == selectedLabel.Text);
                         tagList[index] = inputText;
                         selectedLabel.Text = inputText;
                     }
                 }
                 else 
                 {
-                    tagList.Add(inputText);
+
+                    tagList.Append(inputText);
                     var newTagLabel = new Label
                     {
                         Text = inputText,

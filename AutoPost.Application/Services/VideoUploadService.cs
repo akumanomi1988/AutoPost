@@ -2,10 +2,11 @@
 using AutoPost.Domain.Models;
 using AutoPost.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.InteropServices;
 
 namespace AutoPost.Application.Services
 {
-    public class VideoUploadService : IVideoUploadService
+    public class VideoUploadService : IPublishService
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -14,11 +15,25 @@ namespace AutoPost.Application.Services
             _serviceProvider = serviceProvider;
         }
 
-        public async Task UploadVideoAsync(string platform, VideoMetadata metadata)
-        {
-            var uploader = _serviceProvider.GetRequiredService<IVideoUploaderFactory>().CreateUploader(platform);
-            await uploader.UploadVideoAsync( metadata);
+       
+        public async Task<Post> PublishAsync(Post post)
+        { 
+            foreach (var platform in post.PendingNetworks)
+            {
+                var uploader = _serviceProvider.GetRequiredService<IPostPublisherFactory>().CreatePublisher(platform.Name);
+                if (await uploader.UploadVideoAsync(post))
+                {
+                    post.PendingNetworks.Remove(platform);
+                    post.PublishedNetworks.Add(platform);
+                }
+            }
+            return post;
         }
+
+        //public Task PublishAsync(Post post)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 
 }

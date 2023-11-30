@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.TwitterConnector",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.TikTokUploader", "AutoPost.TikTokUploader\AutoPost.TikTokUploader.csproj", "{1C32BBCC-77AA-4AB2-98A0-0F12B5C617CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.Domain", "AutoPost.Domain\AutoPost.Domain.csproj", "{F5BF6486-ED09-448C-8055-17ED77E57710}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.Domain", "AutoPost.Domain\AutoPost.Domain.csproj", "{F5BF6486-ED09-448C-8055-17ED77E57710}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.Infraestructure", "AutoPost.Infraestructure\AutoPost.Infraestructure.csproj", "{14D27E01-8966-472C-BE59-D52A57EA7DF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.Infraestructure", "AutoPost.Infraestructure\AutoPost.Infraestructure.csproj", "{14D27E01-8966-472C-BE59-D52A57EA7DF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.Application", "AutoPost.Application\AutoPost.Application.csproj", "{D68E904A-761A-413F-8C53-8D52A2F897B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.Application", "AutoPost.Application\AutoPost.Application.csproj", "{D68E904A-761A-413F-8C53-8D52A2F897B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.Presentation.Desktop", "AutoPost.Presentation.Desktop\AutoPost.Presentation.Desktop.csproj", "{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.Presentation.Desktop", "AutoPost.Presentation.Desktop\AutoPost.Presentation.Desktop.csproj", "{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.Presentation.WPF", "AutoPost.Presentation.WPF\AutoPost.Presentation.WPF.csproj", "{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

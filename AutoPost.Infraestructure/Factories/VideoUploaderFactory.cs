@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AutoPost.Infrastructure.Factories
 {
-    public class VideoUploaderFactory : IVideoUploaderFactory
+    public class VideoUploaderFactory : IPostPublisherFactory
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -16,7 +16,7 @@ namespace AutoPost.Infrastructure.Factories
             _serviceProvider = serviceProvider;
         }
 
-        public IVideoUploader CreateUploader(string platform)
+        public IPostPublisher CreatePublisher(string platform)
         {
             switch (platform.ToLower())
             {

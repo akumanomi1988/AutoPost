@@ -29,27 +29,21 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             button1 = new Button();
-            YTMetadataBS = new BindingSource(components);
-            dataGridView1 = new DataGridView();
-            titleDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            categoryIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            Platform = new DataGridViewTextBoxColumn();
-            Privacy = new DataGridViewTextBoxColumn();
-            VideoPath = new DataGridViewTextBoxColumn();
-            dataGridView2 = new DataGridView();
-            textDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            tagsBindingSource = new BindingSource(components);
+            postBindingSource = new BindingSource(components);
             tableLayoutPanel1 = new TableLayoutPanel();
-            tagBox1 = new UserControls.TagBox();
             tagsBox1 = new UserControls.TagsBox();
-            ((System.ComponentModel.ISupportInitialize)YTMetadataBS).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)tagsBindingSource).BeginInit();
+            contentTypeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            createdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            privacyDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            categoryDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            titleDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            dataGridView1 = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)postBindingSource).BeginInit();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -62,82 +56,10 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
-            // YTMetadataBS
+            // postBindingSource
             // 
-            YTMetadataBS.DataSource = typeof(Domain.Models.VideoMetadata);
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { titleDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, categoryIdDataGridViewTextBoxColumn, Platform, Privacy, VideoPath });
-            dataGridView1.DataSource = YTMetadataBS;
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(118, 3);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(829, 261);
-            dataGridView1.TabIndex = 1;
-            // 
-            // titleDataGridViewTextBoxColumn
-            // 
-            titleDataGridViewTextBoxColumn.DataPropertyName = "Title";
-            titleDataGridViewTextBoxColumn.HeaderText = "Title";
-            titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
-            // 
-            // descriptionDataGridViewTextBoxColumn
-            // 
-            descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-            descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
-            descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
-            // 
-            // categoryIdDataGridViewTextBoxColumn
-            // 
-            categoryIdDataGridViewTextBoxColumn.DataPropertyName = "CategoryId";
-            categoryIdDataGridViewTextBoxColumn.HeaderText = "CategoryId";
-            categoryIdDataGridViewTextBoxColumn.Name = "categoryIdDataGridViewTextBoxColumn";
-            // 
-            // Platform
-            // 
-            Platform.DataPropertyName = "Platform";
-            Platform.HeaderText = "Platform";
-            Platform.Name = "Platform";
-            // 
-            // Privacy
-            // 
-            Privacy.DataPropertyName = "Privacy";
-            Privacy.HeaderText = "Privacy";
-            Privacy.Name = "Privacy";
-            // 
-            // VideoPath
-            // 
-            VideoPath.DataPropertyName = "VideoPath";
-            VideoPath.HeaderText = "VideoPath";
-            VideoPath.Name = "VideoPath";
-            // 
-            // dataGridView2
-            // 
-            dataGridView2.AutoGenerateColumns = false;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { textDataGridViewTextBoxColumn });
-            dataGridView2.DataSource = tagsBindingSource;
-            dataGridView2.Dock = DockStyle.Fill;
-            dataGridView2.Location = new Point(118, 270);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowTemplate.Height = 25;
-            dataGridView2.Size = new Size(829, 262);
-            dataGridView2.TabIndex = 2;
-            // 
-            // textDataGridViewTextBoxColumn
-            // 
-            textDataGridViewTextBoxColumn.DataPropertyName = "Text";
-            textDataGridViewTextBoxColumn.HeaderText = "Text";
-            textDataGridViewTextBoxColumn.Name = "textDataGridViewTextBoxColumn";
-            // 
-            // tagsBindingSource
-            // 
-            tagsBindingSource.DataMember = "Tags";
-            tagsBindingSource.DataSource = YTMetadataBS;
+            postBindingSource.DataSource = typeof(Domain.Models.Post);
+            postBindingSource.CurrentChanged += postBindingSource_CurrentChanged;
             // 
             // tableLayoutPanel1
             // 
@@ -146,9 +68,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 87.83132F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 203F));
             tableLayoutPanel1.Controls.Add(button1, 0, 0);
-            tableLayoutPanel1.Controls.Add(dataGridView1, 1, 0);
-            tableLayoutPanel1.Controls.Add(dataGridView2, 1, 1);
-            tableLayoutPanel1.Controls.Add(tagBox1, 2, 1);
+            tableLayoutPanel1.Controls.Add(dataGridView1, 1, 1);
             tableLayoutPanel1.Controls.Add(tagsBox1, 2, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
@@ -159,17 +79,6 @@
             tableLayoutPanel1.Size = new Size(1154, 535);
             tableLayoutPanel1.TabIndex = 3;
             // 
-            // tagBox1
-            // 
-            tagBox1.AcceptsReturn = true;
-            tagBox1.Dock = DockStyle.Fill;
-            tagBox1.Location = new Point(953, 270);
-            tagBox1.Multiline = true;
-            tagBox1.Name = "tagBox1";
-            tagBox1.ScrollBars = ScrollBars.Vertical;
-            tagBox1.Size = new Size(198, 262);
-            tagBox1.TabIndex = 3;
-            // 
             // tagsBox1
             // 
             tagsBox1.Dock = DockStyle.Fill;
@@ -177,7 +86,61 @@
             tagsBox1.Name = "tagsBox1";
             tagsBox1.Size = new Size(198, 261);
             tagsBox1.TabIndex = 4;
-            tagsBox1.TagList = (List<string>)resources.GetObject("tagsBox1.TagList");
+            // 
+            // contentTypeDataGridViewTextBoxColumn
+            // 
+            contentTypeDataGridViewTextBoxColumn.DataPropertyName = "ContentType";
+            contentTypeDataGridViewTextBoxColumn.HeaderText = "ContentType";
+            contentTypeDataGridViewTextBoxColumn.Name = "contentTypeDataGridViewTextBoxColumn";
+            // 
+            // createdDataGridViewTextBoxColumn
+            // 
+            createdDataGridViewTextBoxColumn.DataPropertyName = "Created";
+            createdDataGridViewTextBoxColumn.HeaderText = "Created";
+            createdDataGridViewTextBoxColumn.Name = "createdDataGridViewTextBoxColumn";
+            // 
+            // privacyDataGridViewTextBoxColumn
+            // 
+            privacyDataGridViewTextBoxColumn.DataPropertyName = "Privacy";
+            privacyDataGridViewTextBoxColumn.HeaderText = "Privacy";
+            privacyDataGridViewTextBoxColumn.Name = "privacyDataGridViewTextBoxColumn";
+            // 
+            // categoryDataGridViewTextBoxColumn
+            // 
+            categoryDataGridViewTextBoxColumn.DataPropertyName = "Category";
+            categoryDataGridViewTextBoxColumn.HeaderText = "Category";
+            categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
+            // 
+            // descriptionDataGridViewTextBoxColumn
+            // 
+            descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
+            descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
+            descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+            // 
+            // titleDataGridViewTextBoxColumn
+            // 
+            titleDataGridViewTextBoxColumn.DataPropertyName = "Title";
+            titleDataGridViewTextBoxColumn.HeaderText = "Title";
+            titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, titleDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, categoryDataGridViewTextBoxColumn, privacyDataGridViewTextBoxColumn, createdDataGridViewTextBoxColumn, contentTypeDataGridViewTextBoxColumn });
+            dataGridView1.DataSource = postBindingSource;
+            dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1.Location = new Point(118, 270);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.Size = new Size(829, 262);
+            dataGridView1.TabIndex = 1;
             // 
             // MainForm
             // 
@@ -188,33 +151,30 @@
             Name = "MainForm";
             Text = "fmrMain";
             Load += MainForm_Load;
-            ((System.ComponentModel.ISupportInitialize)YTMetadataBS).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)tagsBindingSource).EndInit();
+            ((System.ComponentModel.ISupportInitialize)postBindingSource).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
         private Button button1;
-        private BindingSource YTMetadataBS;
-        private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn categoryIdDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn privacidadDataGridViewTextBoxColumn;
-        private DataGridView dataGridView2;
         private DataGridViewTextBoxColumn Platform;
-        private DataGridViewTextBoxColumn Privacy;
         private DataGridViewTextBoxColumn VideoPath;
-        private DataGridViewTextBoxColumn lengthDataGridViewTextBoxColumn;
-        private BindingSource tagsBindingSource;
         private DataGridViewTextBoxColumn textDataGridViewTextBoxColumn;
         private TableLayoutPanel tableLayoutPanel1;
-        private UserControls.TagBox tagBox1;
         private UserControls.TagsBox tagsBox1;
+        private BindingSource postBindingSource;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn privacyDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn createdDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn contentTypeDataGridViewTextBoxColumn;
     }
 }
