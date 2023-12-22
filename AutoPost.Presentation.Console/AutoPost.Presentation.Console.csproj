@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoPost.VideoGenerator\AutoPost.VideoGenerator.csproj" />
+    <ProjectReference Include="..\AutoPost.AnimationCanvas\AutoPost.AnimationCanvas.csproj" />
+    <ProjectReference Include="..\AutoPost.VideoGenerator\AutoPost.PostGenerator.csproj" />
   </ItemGroup>
 
 </Project>

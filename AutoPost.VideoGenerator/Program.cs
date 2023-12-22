@@ -1,4 +1,5 @@
-﻿using FFmpeg.AutoGen;
+﻿using AutoPost.VideoGenerator;
+using FFmpeg.AutoGen;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -11,14 +12,17 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoPost.VideoGenerator
+namespace AutoPost.PostGenerator
 {
     public class Program
     {
-        public static void Execute(string OutPath)
+        public static string Execute(string OutPath)
         {
 
-            Screen scrn = new(new Vector2u(400,700),new SFML.Graphics.Color(218, 220, 220),"");
+
+
+
+            Screen scrn = new(new Vector2u(400,700),new SFML.Graphics.Color(218, 220, 220),"","");
             scrn.Random();
             scrn.Run();
 

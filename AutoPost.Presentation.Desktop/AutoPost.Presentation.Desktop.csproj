@@ -18,6 +18,7 @@
     <ProjectReference Include="..\AutoPost.Application\AutoPost.Application.csproj" />
     <ProjectReference Include="..\AutoPost.Domain\AutoPost.Domain.csproj" />
     <ProjectReference Include="..\AutoPost.Infraestructure\AutoPost.Infraestructure.csproj" />
+    <ProjectReference Include="..\AutoPost.VideoGenerator\AutoPost.PostGenerator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

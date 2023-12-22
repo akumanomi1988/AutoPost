@@ -7,29 +7,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoPost.VideoGenerator
+namespace AutoPost.PostGenerator.Models
 {
-   public class Ball
+    public class Ball
     {
         public Color Color { get; set; }
         public CircleShape Shape;
         public Vector2f Velocity;
         public bool IsCrazyBall { get; set; }
         public Sound Sound { get; set; }
-        public Ball(float radius, Vector2f position, Color color, int velocity, Sound sound ,bool isCrazyBall = false)
+        public Ball(float radius, Vector2f position, Color color, int velocity, Sound sound, bool isCrazyBall = false)
         {
             Shape = new CircleShape(radius)
             {
                 Position = position,
                 FillColor = color
             };
-            Velocity =  new Vector2f( velocity, velocity); // Velocidad inicial
+            Velocity = new Vector2f(velocity, velocity); // Velocidad inicial
             Color = color;
             IsCrazyBall = isCrazyBall;
             Sound = sound;
         }
 
-        public void Update(float deltaTime,int x, int y)
+        public void Update(float deltaTime, int x, int y)
         {
             if (IsCrazyBall)
             {
@@ -37,8 +37,8 @@ namespace AutoPost.VideoGenerator
                 byte red = (byte)random.Next(256);
                 byte green = (byte)random.Next(256);
                 byte blue = (byte)random.Next(256);
-                SFML.Graphics.Color color = new SFML.Graphics.Color(red, green, blue);
-                this.Shape.FillColor = Color;
+                Color color = new Color(red, green, blue);
+                Shape.FillColor = Color;
             }
             Shape.Position += Velocity * deltaTime;
 
@@ -51,8 +51,8 @@ namespace AutoPost.VideoGenerator
         public void HandleCollision(Ball other)
         {
             // Intercambiar las velocidades para una respuesta simple de colisión
-            Vector2f tempVelocity = this.Velocity;
-            this.Velocity = other.Velocity;
+            Vector2f tempVelocity = Velocity;
+            Velocity = other.Velocity;
             other.Velocity = tempVelocity;
 
             if (Sound.Status != SoundStatus.Playing)
@@ -63,8 +63,8 @@ namespace AutoPost.VideoGenerator
         }
         public bool IsCollidingWith(Ball other)
         {
-            float distance = Distance(this.Shape.Position , other.Shape.Position); 
-            return distance < this.Shape.Radius + other.Shape.Radius;
+            float distance = Distance(Shape.Position, other.Shape.Position);
+            return distance < Shape.Radius + other.Shape.Radius;
         }
         public static float Distance(Vector2f point1, Vector2f point2)
         {

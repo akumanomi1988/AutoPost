@@ -38,7 +38,7 @@ namespace AutoPost.Presentation.Desktop
         private async void button1_Click(object sender, EventArgs e)
         {
             if (currentPost == null) { return; }
-                currentPost.PendingNetworks.Add(new SocialNetwork() { Id = 0, Name = "youtube" });
+            currentPost.PendingNetworks.Add(new SocialNetwork() { Id = 0, Name = "youtube" });
             await _PublishService.PublishAsync(currentPost);
             _PostService.SavePost(currentPost);
         }
@@ -56,5 +56,11 @@ namespace AutoPost.Presentation.Desktop
 
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //Generate post
+            //VideoGenerator.Program.Execute("C:\\Users\\dmozota\\Downloads\\ExitPath");
+
+        }
     }
 }

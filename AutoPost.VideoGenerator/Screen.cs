@@ -1,4 +1,6 @@
-﻿using AutoPost.VideoGenerator.Properties;
+﻿using AutoPost.PostGenerator.Controllers;
+using AutoPost.PostGenerator.Models;
+using AutoPost.PostGenerator.Properties;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -28,43 +30,47 @@ namespace AutoPost.VideoGenerator
         }
         public void Random()
         {
-            Random random = new Random();
-            var soundFiles = Directory.GetFiles("C:\\\\Users\\\\dmozota\\\\source\\\\repos\\\\akumanomi1988\\\\AutoPost\\\\AutoPost.VideoGenerator\\\\Resources\\\\Sounds\\\\");
-            List<SoundBuffer> SoundBuffers = new List<SoundBuffer>();
+             Balls = new BallsController(Size, "C:\\\\Users\\\\dmozota\\\\source\\\\repos\\\\akumanomi1988\\\\AutoPost\\\\AutoPost.VideoGenerator\\\\Resources\\\\Sounds\\\\").GetRandomBalls();
+            //Random random = new Random();
+            //var soundFiles = Directory.GetFiles("C:\\\\Users\\\\dmozota\\\\source\\\\repos\\\\akumanomi1988\\\\AutoPost\\\\AutoPost.VideoGenerator\\\\Resources\\\\Sounds\\\\");
+            //List<SoundBuffer> SoundBuffers = new List<SoundBuffer>();
 
-            foreach (var file in soundFiles)
-            {
-                SoundBuffer buffer = new SoundBuffer(file);
-                SoundBuffers.Add(buffer);
-            }
-            for (int i = 0; i < random.Next(10, 20); i++)
-            {
-                float radius = random.Next(5, 30);
-                float x = random.Next((int)radius * 2, (int)Size.X - ((int)radius * 2));
-                float y = random.Next((int)radius * 2, (int)Size.Y - ((int)radius * 2));
-                byte red = (byte)random.Next(256);
-                byte green = (byte)random.Next(256);
-                byte blue = (byte)random.Next(256);
-                int velocity = random.Next(500, 10000);
-                SFML.Graphics.Color color = new SFML.Graphics.Color(red, green, blue);
-                bool crazyBall = random.Next(1,10) == 5;
+            //foreach (var file in soundFiles)
+            //{
+            //    SoundBuffer buffer = new SoundBuffer(file);
+            //    SoundBuffers.Add(buffer);
+            //}
+            //for (int i = 0; i < random.Next(10, 20); i++)
+            //{
+            //    float radius = random.Next(5, 30);
+            //    float x = random.Next((int)radius * 2, (int)Size.X - ((int)radius * 2));
+            //    float y = random.Next((int)radius * 2, (int)Size.Y - ((int)radius * 2));
+            //    byte red = (byte)random.Next(256);
+            //    byte green = (byte)random.Next(256);
+            //    byte blue = (byte)random.Next(256);
+            //    int velocity = random.Next(500, 10000);
+            //    SFML.Graphics.Color color = new SFML.Graphics.Color(red, green, blue);
+            //    bool crazyBall = random.Next(1,10) == 5;
 
 
-                int bufferIndex = random.Next(SoundBuffers.Count);
-                Sound sound = new Sound(SoundBuffers[bufferIndex]);
+            //    int bufferIndex = random.Next(SoundBuffers.Count);
+            //    Sound sound = new Sound(SoundBuffers[bufferIndex]);
 
-                Balls.Add(new Ball( radius,new Vector2f(x,y), color, velocity, sound, crazyBall));
-            }
+            //    Balls.Add(new Ball( radius,new Vector2f(x,y), color, velocity, sound, crazyBall));
+            //}
         }
         public void Run()
         {
-            RenderWindow window = new RenderWindow(new VideoMode(Size.X, Size.Y), "Bouncing balls",Styles.Close);
+
+            RenderWindow window = new RenderWindow(new VideoMode(Size.X, Size.Y), "Bouncing balls", Styles.Close);
+            //recorder = new VideoRecorder($@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\output.avi", (int)Size.X, (int)Size.Y);
+            //recorder.StartRecording();
             window.SetActive();
             window.SetFramerateLimit(120);
             Clock clock = new Clock();
             float deltaTime = clock.Restart().AsSeconds();
 
-            while (window.IsOpen && clock.ElapsedTime.AsSeconds() < 120)
+            while (window.IsOpen && clock.ElapsedTime.AsSeconds() < 10)
             {
                 window.DispatchEvents();
                 window.Clear(BackgroundColor);
@@ -85,13 +91,8 @@ namespace AutoPost.VideoGenerator
                 }
                 window.Display();
             }
+            //recorder.StopRecording();
 
-        }
-        public void ExportToVideo(string videoPath)
-        {
-            // Aquí implementarías la lógica para exportar la animación a video.
-            // Esta función puede ser bastante compleja ya que implica capturar cada frame de la animación
-            // y luego usar una biblioteca como SharpAvi para escribir esos frames en un archivo de video.
         }
     }
 }

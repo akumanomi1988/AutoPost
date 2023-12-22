@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AutoPost.PostGenerator.Properties {
+namespace AutoPost.AnimationCanvas.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AutoPost.PostGenerator.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AutoPost.PostGenerator.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AutoPost.AnimationCanvas.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,24 @@ namespace AutoPost.PostGenerator.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a AutoPost\Music.
+        /// </summary>
+        internal static string MusicFolderPath {
+            get {
+                return ResourceManager.GetString("MusicFolderPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a AutoPost\Sounds.
+        /// </summary>
+        internal static string SoundsFolderPath {
+            get {
+                return ResourceManager.GetString("SoundsFolderPath", resourceCulture);
             }
         }
     }
