@@ -24,6 +24,11 @@ namespace AutoPost.AnimationCanvas.Classes
         {
             _music.Play();
         }
+        public void Stop()
+        {
+            if (_music.Status == SoundStatus.Playing)
+            _music.Stop();
+        }
     }
 
 }

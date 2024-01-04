@@ -28,23 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Animation = new PictureBox();
+            components = new System.ComponentModel.Container();
             btnStart = new Button();
             btnStop = new Button();
-            ((System.ComponentModel.ISupportInitialize)Animation).BeginInit();
+            timer1 = new System.Windows.Forms.Timer(components);
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
-            // 
-            // Animation
-            // 
-            Animation.Location = new Point(55, 57);
-            Animation.Name = "Animation";
-            Animation.Size = new Size(195, 227);
-            Animation.TabIndex = 0;
-            Animation.TabStop = false;
             // 
             // btnStart
             // 
-            btnStart.Location = new Point(299, 36);
+            btnStart.Location = new Point(12, 12);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(186, 73);
             btnStart.TabIndex = 1;
@@ -54,31 +48,45 @@
             // 
             // btnStop
             // 
-            btnStop.Location = new Point(307, 189);
+            btnStop.Location = new Point(12, 91);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(186, 73);
             btnStop.TabIndex = 2;
             btnStop.Text = "Stop";
             btnStop.UseVisualStyleBackColor = true;
+            btnStop.Click += btnStop_Click;
+            // 
+            // timer1
+            // 
+            //timer1.Tick += timer1_Tick;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(240, 25);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(32, 27);
+            pictureBox1.TabIndex = 3;
+            pictureBox1.TabStop = false;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(pictureBox1);
             Controls.Add(btnStop);
             Controls.Add(btnStart);
-            Controls.Add(Animation);
             Name = "Form1";
             Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)Animation).EndInit();
+            Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private PictureBox Animation;
         private Button btnStart;
         private Button btnStop;
+        private System.Windows.Forms.Timer timer1;
+        private PictureBox pictureBox1;
     }
 }

@@ -10,7 +10,7 @@ namespace AutoPost.Infraestructure.MetadataStorage
     using AutoPost.Domain.Models;
     using System.Threading.Tasks;
 
-    public class MetadataStorageService : IMetadataStorageService
+    public class MetadataStorageService 
     {
         private readonly string _databasePath;
 

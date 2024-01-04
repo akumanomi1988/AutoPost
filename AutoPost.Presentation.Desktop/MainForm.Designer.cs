@@ -28,156 +28,169 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            button1 = new Button();
-            postBindingSource = new BindingSource(components);
-            tableLayoutPanel1 = new TableLayoutPanel();
-            dataGridView1 = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            titleDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            categoryDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            privacyDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            createdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            contentTypeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            button2 = new Button();
-            ((System.ComponentModel.ISupportInitialize)postBindingSource).BeginInit();
-            tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            toolStripContainer1 = new ToolStripContainer();
+            statusStrip1 = new StatusStrip();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            toolStrip1 = new ToolStrip();
+            toolStripButton1 = new ToolStripButton();
+            toolStripButton2 = new ToolStripButton();
+            toolStripButton3 = new ToolStripButton();
+            toolStripButton4 = new ToolStripButton();
+            toolStripButton5 = new ToolStripButton();
+            toolStripButton6 = new ToolStripButton();
+            toolStripButton7 = new ToolStripButton();
+            toolStripContainer1.BottomToolStripPanel.SuspendLayout();
+            toolStripContainer1.TopToolStripPanel.SuspendLayout();
+            toolStripContainer1.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // button1
+            // toolStripContainer1
             // 
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(109, 83);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
-            // postBindingSource
+            // toolStripContainer1.BottomToolStripPanel
             // 
-            postBindingSource.DataSource = typeof(Domain.Models.Post);
-            postBindingSource.CurrentChanged += postBindingSource_CurrentChanged;
+            toolStripContainer1.BottomToolStripPanel.Controls.Add(statusStrip1);
             // 
-            // tableLayoutPanel1
+            // toolStripContainer1.ContentPanel
             // 
-            tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.1686745F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 87.83132F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 203F));
-            tableLayoutPanel1.Controls.Add(button1, 0, 0);
-            tableLayoutPanel1.Controls.Add(dataGridView1, 1, 1);
-            tableLayoutPanel1.Controls.Add(button2, 2, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(1154, 535);
-            tableLayoutPanel1.TabIndex = 3;
+            toolStripContainer1.ContentPanel.Size = new Size(800, 403);
+            toolStripContainer1.Dock = DockStyle.Fill;
+            toolStripContainer1.Location = new Point(0, 0);
+            toolStripContainer1.Name = "toolStripContainer1";
+            toolStripContainer1.Size = new Size(800, 450);
+            toolStripContainer1.TabIndex = 0;
+            toolStripContainer1.Text = "toolStripContainer1";
             // 
-            // dataGridView1
+            // toolStripContainer1.TopToolStripPanel
             // 
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, titleDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, categoryDataGridViewTextBoxColumn, privacyDataGridViewTextBoxColumn, createdDataGridViewTextBoxColumn, contentTypeDataGridViewTextBoxColumn });
-            dataGridView1.DataSource = postBindingSource;
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(118, 270);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(829, 262);
-            dataGridView1.TabIndex = 1;
+            toolStripContainer1.TopToolStripPanel.Controls.Add(toolStrip1);
             // 
-            // idDataGridViewTextBoxColumn
+            // statusStrip1
             // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            statusStrip1.Dock = DockStyle.None;
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
+            statusStrip1.Location = new Point(0, 0);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(800, 22);
+            statusStrip1.TabIndex = 0;
             // 
-            // titleDataGridViewTextBoxColumn
+            // toolStripStatusLabel1
             // 
-            titleDataGridViewTextBoxColumn.DataPropertyName = "Title";
-            titleDataGridViewTextBoxColumn.HeaderText = "Title";
-            titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new Size(88, 17);
+            toolStripStatusLabel1.Text = "Recorder status";
             // 
-            // descriptionDataGridViewTextBoxColumn
+            // toolStrip1
             // 
-            descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-            descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
-            descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+            toolStrip1.Dock = DockStyle.None;
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5, toolStripButton6, toolStripButton7 });
+            toolStrip1.Location = new Point(3, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(641, 25);
+            toolStrip1.TabIndex = 0;
             // 
-            // categoryDataGridViewTextBoxColumn
+            // toolStripButton1
             // 
-            categoryDataGridViewTextBoxColumn.DataPropertyName = "Category";
-            categoryDataGridViewTextBoxColumn.HeaderText = "Category";
-            categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton1.ImageTransparentColor = Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(81, 22);
+            toolStripButton1.Text = "OBS Connect";
+            toolStripButton1.Click += toolStripButton1_Click;
             // 
-            // privacyDataGridViewTextBoxColumn
+            // toolStripButton2
             // 
-            privacyDataGridViewTextBoxColumn.DataPropertyName = "Privacy";
-            privacyDataGridViewTextBoxColumn.HeaderText = "Privacy";
-            privacyDataGridViewTextBoxColumn.Name = "privacyDataGridViewTextBoxColumn";
+            toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton2.ImageTransparentColor = Color.Magenta;
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new Size(92, 22);
+            toolStripButton2.Text = "Start animation";
+            toolStripButton2.Click += toolStripButton2_Click;
             // 
-            // createdDataGridViewTextBoxColumn
+            // toolStripButton3
             // 
-            createdDataGridViewTextBoxColumn.DataPropertyName = "Created";
-            createdDataGridViewTextBoxColumn.HeaderText = "Created";
-            createdDataGridViewTextBoxColumn.Name = "createdDataGridViewTextBoxColumn";
+            toolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton3.ImageTransparentColor = Color.Magenta;
+            toolStripButton3.Name = "toolStripButton3";
+            toolStripButton3.Size = new Size(92, 22);
+            toolStripButton3.Text = "Start Recording";
+            toolStripButton3.Click += toolStripButton3_Click;
             // 
-            // contentTypeDataGridViewTextBoxColumn
+            // toolStripButton4
             // 
-            contentTypeDataGridViewTextBoxColumn.DataPropertyName = "ContentType";
-            contentTypeDataGridViewTextBoxColumn.HeaderText = "ContentType";
-            contentTypeDataGridViewTextBoxColumn.Name = "contentTypeDataGridViewTextBoxColumn";
+            toolStripButton4.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton4.Image = (Image)resources.GetObject("toolStripButton4.Image");
+            toolStripButton4.ImageTransparentColor = Color.Magenta;
+            toolStripButton4.Name = "toolStripButton4";
+            toolStripButton4.Size = new Size(94, 22);
+            toolStripButton4.Text = "Stop Animation";
+            toolStripButton4.Click += toolStripButton4_Click;
             // 
-            // button2
+            // toolStripButton5
             // 
-            button2.Location = new Point(953, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(198, 261);
-            button2.TabIndex = 2;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            toolStripButton5.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton5.Image = (Image)resources.GetObject("toolStripButton5.Image");
+            toolStripButton5.ImageTransparentColor = Color.Magenta;
+            toolStripButton5.Name = "toolStripButton5";
+            toolStripButton5.Size = new Size(92, 22);
+            toolStripButton5.Text = "Stop Recording";
+            toolStripButton5.Click += toolStripButton5_Click;
+            // 
+            // toolStripButton6
+            // 
+            toolStripButton6.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton6.Image = (Image)resources.GetObject("toolStripButton6.Image");
+            toolStripButton6.ImageTransparentColor = Color.Magenta;
+            toolStripButton6.Name = "toolStripButton6";
+            toolStripButton6.Size = new Size(62, 22);
+            toolStripButton6.Text = "YTUpload";
+            toolStripButton6.Click += toolStripButton6_Click;
+            // 
+            // toolStripButton7
+            // 
+            toolStripButton7.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton7.Image = (Image)resources.GetObject("toolStripButton7.Image");
+            toolStripButton7.ImageTransparentColor = Color.Magenta;
+            toolStripButton7.Name = "toolStripButton7";
+            toolStripButton7.Size = new Size(85, 22);
+            toolStripButton7.Text = "TikTok Upload";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1154, 535);
-            Controls.Add(tableLayoutPanel1);
+            ClientSize = new Size(800, 450);
+            Controls.Add(toolStripContainer1);
             Name = "MainForm";
-            Text = "fmrMain";
-            Load += MainForm_Load;
-            ((System.ComponentModel.ISupportInitialize)postBindingSource).EndInit();
-            tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            Text = "MainForm";
+            toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
+            toolStripContainer1.BottomToolStripPanel.PerformLayout();
+            toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
+            toolStripContainer1.TopToolStripPanel.PerformLayout();
+            toolStripContainer1.ResumeLayout(false);
+            toolStripContainer1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Button button1;
-        private DataGridViewTextBoxColumn categoryIdDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn privacidadDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn Platform;
-        private DataGridViewTextBoxColumn VideoPath;
-        private DataGridViewTextBoxColumn textDataGridViewTextBoxColumn;
-        private TableLayoutPanel tableLayoutPanel1;
-        private UserControls.TagsBox tagsBox1;
-        private BindingSource postBindingSource;
-        private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn privacyDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn createdDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn contentTypeDataGridViewTextBoxColumn;
-        private Button button2;
+        private ToolStripContainer toolStripContainer1;
+        private StatusStrip statusStrip1;
+        private ToolStrip toolStrip1;
+        private ToolStripButton toolStripButton1;
+        private ToolStripButton toolStripButton2;
+        private ToolStripButton toolStripButton3;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripButton toolStripButton4;
+        private ToolStripButton toolStripButton5;
+        private ToolStripButton toolStripButton6;
+        private ToolStripButton toolStripButton7;
     }
 }

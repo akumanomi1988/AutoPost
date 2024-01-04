@@ -36,11 +36,11 @@ static class Program
         string GoogleAuthPath = $@"{Application.StartupPath}\GoogleAuth.json";
 
 
-        services.AddSingleton<IMetadataStorageService>(provider => new MetadataStorageService(liteDbPath));
+        //services.AddSingleton<IMetadataStorageService>(provider => new MetadataStorageService(liteDbPath));
         services.AddSingleton<ICategoryService, YouTubeCategoryService>();
         services.AddSingleton<ICategoryService, InstagramCategoryService>();
-        services.AddTransient<IMetadataService,MetadataService>();
-        services.AddTransient<IVideoUploaderFactory, VideoUploaderFactory>();
+        //services.AddTransient<IMetadataService,MetadataService>();
+        services.AddTransient<IPostPublisherFactory,VideoUploaderFactory>();
         services.AddTransient<CategoryManager>();
         services.AddTransient<YouTubeUploader>();
         services.AddTransient<InstagramUploader>();
@@ -48,7 +48,7 @@ static class Program
         services.AddSingleton<IAuthenticationProvider, GoogleAuthenticationProvider>(provider =>
                     new GoogleAuthenticationProvider(GoogleAuthPath));
         services.AddSingleton<IFileProvider, FileProvider>();
-        services.AddTransient<IVideoUploadService, VideoUploadService>();
+        services.AddTransient<IPublishService, VideoUploadService>();
         services.AddTransient<MainForm>();
     }
 }

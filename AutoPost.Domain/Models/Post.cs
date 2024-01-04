@@ -10,14 +10,15 @@ namespace AutoPost.Domain.Models
     {
         public Guid Id { get; set; }
         public required string Title { get; set; }
-        public required List<string> ContentPath { get; set; }
+        // public required List<string> ContentPath { get; set; }
+        public required string ContentPath { get; set; }
         public required string Description { get; set; }
         public required string Category { get; set; }
         public required string Privacy { get; set; } // public, private, unlisted
         public DateTime Created { get; set; }
-        public required ContentType ContentType { get; set; }
-        public required List<SocialNetwork> PublishedNetworks { get; set; } = new List<SocialNetwork>();
-        public required List<SocialNetwork> PendingNetworks { get; set; }= new List<SocialNetwork>();
+        public  ContentType? ContentType { get; set; }
+        public  List<SocialNetwork> PublishedNetworks { get; set; } = new List<SocialNetwork>();
+        public  List<SocialNetwork> PendingNetworks { get; set; }= new List<SocialNetwork>();
         public required String[] Tags { get; set; }
         public PublishStatus Status()
         {

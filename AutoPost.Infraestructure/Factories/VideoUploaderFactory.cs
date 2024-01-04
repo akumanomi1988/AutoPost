@@ -23,7 +23,7 @@ namespace AutoPost.Infrastructure.Factories
                 case "youtube":
                     var authProvider = _serviceProvider.GetRequiredService<IAuthenticationProvider>();
                     var fileProvider = _serviceProvider.GetRequiredService<IFileProvider>();
-                    return new YouTubeUploader(authProvider, fileProvider);
+                    return (IPostPublisher) new YouTubeUploader(authProvider, fileProvider);
                 case "instagram":
                     return new InstagramUploader();
                 // otros casos...

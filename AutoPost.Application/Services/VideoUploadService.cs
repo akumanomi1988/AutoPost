@@ -21,7 +21,7 @@ namespace AutoPost.Application.Services
             foreach (var platform in post.PendingNetworks)
             {
                 var uploader = _serviceProvider.GetRequiredService<IPostPublisherFactory>().CreatePublisher(platform.Name);
-                if (await uploader.UploadVideoAsync(post))
+                if (await uploader.UploadVideoAsync(post) == 3)
                 {
                     post.PendingNetworks.Remove(platform);
                     post.PublishedNetworks.Add(platform);

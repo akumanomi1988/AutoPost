@@ -6,10 +6,10 @@ namespace AutoPost.Infraestructure.TikTok
 {
     public class TikTokUploader : IPostPublisher
     {
-        public async Task<bool> UploadVideoAsync( Post Post)
+        public async Task<int> UploadVideoAsync( Post Post)
         {
             await Task.Delay(100);
-            return true;
+            return 0;
             // Implementación específica para TikTok
         }
     }

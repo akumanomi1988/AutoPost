@@ -1,7 +1,9 @@
 ﻿using AutoPost.AnimationCanvas.Elements;
 using AutoPost.AnimationCanvas.Interfaces;
+using AutoPost.AnimationCanvas.Recorders;
 using AutoPost.AnimationCanvas.Utils;
 using Microsoft.VisualBasic;
+using Newtonsoft.Json.Linq;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -19,14 +21,16 @@ namespace AutoPost.AnimationCanvas.Classes
 {
     public class AnimationCanvas
     {
+        public event EventHandler<OBS.OBSState> OBSStateChanged = null!;
         private Canvas _Canvas;
         private List<ICanvasElement> _CanvasElements;
         private readonly IVideoRecorder _VideoRecorder;
         private readonly IAudioRecorder _AudioRecorder;
         private Music _BackgroundMusic;
         private RenderWindow? _Window;
-        private volatile  bool _isAnimating = false;
+        private static  bool _isAnimating = false;
         private ICanvasElementFactory _Factory;
+        private OBS _obsController = new();
         public static string MusicPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.MusicFolderPath}"; }}
         public static string SoundsPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.SoundsFolderPath}"; } }
         
@@ -46,16 +50,25 @@ namespace AutoPost.AnimationCanvas.Classes
             _AudioRecorder = audioRecorder;
             _BackgroundMusic = new Music(MusicPath  );
             _Factory = factory;
+            _obsController.OBSStatusChanged += ObsController_OBSStatusChanged;
         }
+        private void ObsController_OBSStatusChanged(object? sender, OBS.OBSState e)
+        {
+            // Retransmitir el evento
+            OBSStateChanged?.Invoke(this, e);
+        }
+        #region Animation
 
-        public  void StartAnimation(bool recording = false)
+        public void StartAnimation(bool recording = false)
         {
             if (_isAnimating) { return; }
 
 
-            _Window = new RenderWindow(new VideoMode((uint)_Canvas.Width, (uint)_Canvas.Height), "AnimationBalls", Styles.Close);
+            _Window = new RenderWindow(new VideoMode((uint)_Canvas.Width, (uint)_Canvas.Height), "AnimationBalls", Styles.None);
             _Window.SetFramerateLimit(120);
+            _Window.Position = new Vector2i(0, 0);
             _isAnimating = true;
+
             for (int i = 0; i < 5; i++)
             {
                 _CanvasElements.Add(_Factory.CreateRandomElement());
@@ -63,8 +76,11 @@ namespace AutoPost.AnimationCanvas.Classes
            
             _BackgroundMusic.Play();
             Clock clock = new Clock();
+            if (recording) { _obsController.StartRecording(); }
+            _Window.Display();
 
-            while (_Window.IsOpen)
+
+            while (_Window.IsOpen && _isAnimating)
             {
                 _Window.DispatchEvents();
                 _Window.Clear(_Canvas.BackgroundColor);
@@ -79,13 +95,25 @@ namespace AutoPost.AnimationCanvas.Classes
                 }
                 _Window.Display();
             }
+
         }
+        public void StopAnimation()
+        {
+            if (!_isAnimating) { return; }
+            if (_Window == null) { return; }
+            _isAnimating = false;
+            _BackgroundMusic.Stop();
+            _CanvasElements.Clear();
+            _Window.Close();
+
+        }
+
         private void UpdateElementPosition(ICanvasElement element, float deltaTime)
         {
             // Primero, actualiza la posición del elemento
             element.Update(deltaTime);
 
-            BallElement ball = element as BallElement;
+            BallElement? ball = element as BallElement;
             if (ball != null)
             {
                 // Colisión con los bordes horizontales del canvas
@@ -162,24 +190,26 @@ namespace AutoPost.AnimationCanvas.Classes
         {
             return (float)Math.Sqrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y));
         }
-        public void StopAnimation()
+
+        #endregion
+
+
+        public void StartRecording()
         {
-            if (!_isAnimating) { return; }
-            _isAnimating = false;
-            _CanvasElements.Clear();
+            _obsController.StartRecording();
         }
 
-        private void StartRecording()
+        public void StopRecording()
         {
-            _VideoRecorder.StartRecording();
-            _AudioRecorder.StartRecording();
+            _obsController.StopRecording();
         }
-
-        private void StopRecording()
+        public void ConnectRecorder()
         {
-            _VideoRecorder.StopRecording();
-            _AudioRecorder.StopRecording();
+            _obsController.Connect("ws://localhost:4455", "fXWCrilEsLXOmnFQ");
         }
-
+        public string GetLastFileGenerated()
+        {
+            return _obsController.GetLastSavedFile();
+        }
     }
    }
