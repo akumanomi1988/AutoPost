@@ -13,20 +13,20 @@ namespace AutoPost.Application.Services
             _PostStorageService = PostStorageService;
         }
 
-        public Guid SavePost(Post Post)
+        public Guid SavePost(PostData Post)
         {
             return _PostStorageService.SavePost(Post);
         }
 
-        public Post GetPost(Guid PostId)
+        public PostData GetPost(Guid PostId)
         {
             return  _PostStorageService.GetPost(PostId);
         }
-        public IEnumerable<Post> GetPost()
+        public IEnumerable<PostData> GetPost()
         {
             return _PostStorageService.GetPost();
         }
-        public bool UpdatePost(Guid PostId, Post post)
+        public bool UpdatePost(Guid PostId, PostData post)
         {
             return _PostStorageService.UpdatePost(PostId, post);
         }

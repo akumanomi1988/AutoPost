@@ -2,6 +2,7 @@
 using AutoPost.AnimationCanvas.Recorders;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
+using AutoPost.Infraestructure.TikTok;
 using AutoPost.Infraestructure.Youtube;
 using AutoPost.Infrastructure.Factories;
 using Google.Apis.YouTube.v3;
@@ -21,6 +22,7 @@ namespace AutoPost.Presentation.Desktop
 {
     public partial class MainForm : Form
     {
+        public bool Auto { get; set; } = false;
         private AnimationCanvas.Classes.AnimationCanvas _AnimationCanvas;
 
         private void OnOBSStatusChanged(object? sender, OBS.OBSState e)
@@ -70,7 +72,7 @@ namespace AutoPost.Presentation.Desktop
         public MainForm(IPostPublisherFactory postPublisherFactory)
         {
             InitializeComponent();
-            _AnimationCanvas = new(720, 1280, SFML.Graphics.Color.White, new VideoRecorder(), new AudioRecorder(), new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
+            _AnimationCanvas = new(360, 640, SFML.Graphics.Color.White, new VideoRecorder(), new AudioRecorder(), new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
             _AnimationCanvas.OBSStateChanged += OnOBSStatusChanged;
             _postPublisherFactory = postPublisherFactory;
         }
@@ -100,28 +102,89 @@ namespace AutoPost.Presentation.Desktop
             _AnimationCanvas.StopRecording();
         }
 
-        private void toolStripButton6_Click(object sender, EventArgs e)
+        private async void toolStripButton6_Click(object sender, EventArgs e)
         {
-            
-            
             var LastFile = _AnimationCanvas.GetLastFileGenerated();
             if (LastFile == "") { return; }
-                var publisher = _postPublisherFactory.CreatePublisher("Youtube");
-            Post youtubeVideoPost = new Post
+            await uploadVideoYT(LastFile);
+        }
+        private async Task<int> uploadVideoTT(string File)
+        {
+            var publisher = _postPublisherFactory.CreatePublisher("tiktok");
+            var tikTokPostData = new TikTokPostData(
+                title: "Bolitas Rebotando - Relajación y Satisfacción",
+                description: "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
+                tags: new List<string> { "relajante", "satisfying", "bolitas", "música" },
+                contentPath: $@"{File}", // Asegúrate de que 'LastFile' sea la ruta correcta al archivo
+                category: "Entretenimiento", // Categoría específica de TikTok (si es aplicable)
+                privacy: "public", // Ajustar según sea necesario
+                allowDuet: true // Permitir duetos, ajustar según la necesidad
+            );
+
+            return await publisher.UploadPostAsync(tikTokPostData);
+        }
+        private async Task<int> uploadVideoYT(string File)
+        {
+
+            //var LastFile = _AnimationCanvas.GetLastFileGenerated();
+            //if (LastFile == "") { return -1; }
+            var publisher = _postPublisherFactory.CreatePublisher("Youtube");
+            var youtubePostData = new YoutubePostData(
+                title: "Bolitas Rebotando - Relajación y Satisfacción",
+                description: "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
+                tags: new List<string> { "relajante", "satisfying", "bolitas", "música" },
+                contentPath: $@"{File}",
+                category: "22",
+                privacy: "public",
+                playlistId: "123",
+                enableComments: true
+            );
+            return await publisher.UploadPostAsync(youtubePostData);
+        }
+        private async Task RunRecordingAndUploadingLoop()
+        {
+
+            for (int i = 0; i < 30; i++)
             {
-                Id = Guid.NewGuid(),
-                Title = "Mi Viaje Increíble a las Montañas",
-                ContentPath =  $@"{LastFile}" ,
-                Description = "Un video detallado de mi reciente viaje a las montañas, incluyendo increíbles paisajes y consejos de viaje.",
-                Category = "22",
-                Privacy = "public",
-                Created = DateTime.Now,
-                //PublishedNetworks = new List<SocialNetwork> { /* Agrega aquí las redes sociales donde ya se publicó */ },
-                //PendingNetworks = new List<SocialNetwork> { SocialNetwork.Youtube }, // Suponiendo que SocialNetwork es una enumeración
-                Tags = new string[] { "viaje", "montañas", "naturaleza", "turismo" }
-            };
-            publisher.UploadVideoAsync(youtubeVideoPost);
+                // Iniciar la grabación
+                _AnimationCanvas.StartRecording();
+
+                // Esperar un minuto (60 segundos)
+                await Task.Delay(TimeSpan.FromMinutes(1));
+
+                // Detener la grabación
+                _AnimationCanvas.StopRecording();
+
+                // Esperar 10 segundos
+                await Task.Delay(TimeSpan.FromSeconds(10));
+
+                // Subir el video
+                await uploadLastVideo();
+
+                // Esperar 10 segundos antes de empezar de nuevo
+                await Task.Delay(TimeSpan.FromSeconds(10));
+            }
         }
 
+        private async Task uploadLastVideo()
+        {
+            var LastFile = _AnimationCanvas.GetLastFileGenerated();
+            if (LastFile == "") { return; }
+            await uploadVideoTT(LastFile);
+            await uploadVideoYT(LastFile);
+        }
+
+        private async void toolStripButton8_Click(object sender, EventArgs e)
+        {
+            Auto = !Auto;
+            await RunRecordingAndUploadingLoop();
+        }
+
+        private async void toolStripButton7_Click(object sender, EventArgs e)
+        {
+            var LastFile = _AnimationCanvas.GetLastFileGenerated();
+            if (LastFile == "") { return; }
+            await uploadVideoTT(LastFile);
+        }
     }
 }

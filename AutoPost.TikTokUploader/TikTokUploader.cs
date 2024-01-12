@@ -11,13 +11,13 @@ namespace AutoPost.TikTokUploader
 {
     public static class TikTokUploader
     {
-        public static void Upload(TikTokParams _Params)
+        public static async Task UploadAsync(TikTokParams _Params)
         {
             foreach (var fullFileName in Directory.EnumerateFiles(_Params.FilePath))
             {
                 _Params.ScheduleTime = _Params.ScheduleTime.AddHours(1);
                 var startInfo = CreateProcessStartInfo(_Params, fullFileName);
-                ExecuteAndWaitForProcess(startInfo);
+                await ExecuteAndWaitForProcessAsync(startInfo);
             }
         }
 
@@ -28,27 +28,29 @@ namespace AutoPost.TikTokUploader
                 FileName = "tiktok-uploader", // Asegúrate de que python esté en el PATH o especifica la ruta completa
                 Arguments = BuildCommandArguments(_Params, fullFileName),
                 UseShellExecute = false,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = true,
+                RedirectStandardError = true // Redirigir la salida de error
             };
 
             return startInfo;
         }
-        private static void ExecuteAndWaitForProcess(ProcessStartInfo startInfo)
+
+        private static async Task ExecuteAndWaitForProcessAsync(ProcessStartInfo startInfo)
         {
-            startInfo.RedirectStandardError = true; // Redirigir la salida de error
-
-            using (Process process = Process.Start(startInfo))
+            using (Process process = new Process { StartInfo = startInfo })
             {
-                // Espera a que el proceso externo finalice
-                process.WaitForExit();
+                process.Start();
+                
+                // Espera a que el proceso externo finalice de forma asíncrona
+                await process.WaitForExitAsync();
 
-                // Leer la salida estándar
-                string output = process.StandardOutput.ReadToEnd();
+                // Leer la salida estándar de forma asíncrona
+                string output = await process.StandardOutput.ReadToEndAsync();
                 Console.WriteLine("Salida Estándar:");
                 Console.WriteLine(output);
 
-                // Leer la salida de error
-                string error = process.StandardError.ReadToEnd();
+                // Leer la salida de error de forma asíncrona
+                string error = await process.StandardError.ReadToEndAsync();
                 if (!string.IsNullOrEmpty(error))
                 {
                     Console.WriteLine("Salida de Error:");
@@ -56,6 +58,7 @@ namespace AutoPost.TikTokUploader
                 }
             }
         }
+
         private static string BuildCommandArguments(TikTokParams _Params, string fullFileName)
         {
             string tagsAsString = _Params.Tags != null && _Params.Tags.Any()
@@ -84,21 +87,5 @@ namespace AutoPost.TikTokUploader
 
             return commandArguments;
         }
-
-        private static void ExecuteProcess(ProcessStartInfo startInfo)
-        {
-            using (Process process = Process.Start(startInfo))
-            {
-                using (StreamReader reader = process.StandardOutput)
-                {
-                    string result = reader.ReadToEnd();
-                    Console.Write(result);
-                }
-            }
-        }
-
-
-
-
     }
 }

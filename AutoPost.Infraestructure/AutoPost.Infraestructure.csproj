@@ -17,4 +17,10 @@
     <ProjectReference Include="..\AutoPost.Domain\AutoPost.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TikTok\Tiktok_uploader.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

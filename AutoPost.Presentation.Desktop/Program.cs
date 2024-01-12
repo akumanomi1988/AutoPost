@@ -12,6 +12,7 @@ using AutoPost.Domain.Interfaces;
 using AutoPost.Infraestructure.MetadataStorage;
 using Microsoft.Extensions.Configuration;
 using AutoPost.Infrastructure.Factories;
+using AutoPost.Infrastructure.TikTok;
 
 static class Program
 {
@@ -42,13 +43,13 @@ static class Program
         //services.AddTransient<IMetadataService,MetadataService>();
         services.AddTransient<IPostPublisherFactory,VideoUploaderFactory>();
         services.AddTransient<CategoryManager>();
-        services.AddTransient<YouTubeUploader>();
+        services.AddTransient<YouTubePublisher>();
         services.AddTransient<InstagramUploader>();
         services.AddTransient<TikTokUploader>();
         services.AddSingleton<IAuthenticationProvider, GoogleAuthenticationProvider>(provider =>
                     new GoogleAuthenticationProvider(GoogleAuthPath));
         services.AddSingleton<IFileProvider, FileProvider>();
-        services.AddTransient<IPublishService, VideoUploadService>();
+        //services.AddTransient<IPublishService, VideoUploadService>();
         services.AddTransient<MainForm>();
     }
 }

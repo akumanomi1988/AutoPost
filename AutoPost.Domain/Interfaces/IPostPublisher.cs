@@ -4,6 +4,6 @@ namespace AutoPost.Domain.Interfaces
 {
     public interface IPostPublisher
     {
-        Task<int> UploadVideoAsync(Post post);
+        Task<int> UploadPostAsync(PostData post);
     }
 }

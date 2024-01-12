@@ -21,36 +21,36 @@ namespace AutoPost.Infraestructure.PostStorage
             _databasePath = databasePath;
         }
 
-        public Guid SavePost(Post post)
+        public Guid SavePost(PostData post)
         {
             using (var db = new LiteDatabase(_databasePath))
             {
-                var collection = db.GetCollection<Post>(Table);
+                var collection = db.GetCollection<PostData>(Table);
                 return collection.Insert(post);
             }
         }
 
-        public Post GetPost(Guid postId)
+        public PostData GetPost(Guid postId)
         {
             using (var db = new LiteDatabase(_databasePath))
             {
-                var collection = db.GetCollection<Post>(Table);
+                var collection = db.GetCollection<PostData>(Table);
                 return  collection.FindOne(m => m.Id == postId);
             }
         }
-        public IEnumerable<Post> GetPost()
+        public IEnumerable<PostData> GetPost()
         {
             using (var db = new LiteDatabase(_databasePath))
             {
-                var collection = db.GetCollection<Post>(Table);
+                var collection = db.GetCollection<PostData>(Table);
                 return collection.FindAll().ToList();
             }
         }
-        public  bool UpdatePost(Guid postId, Post updatedPost)
+        public  bool UpdatePost(Guid postId, PostData updatedPost)
         {
             using (var db = new LiteDatabase(_databasePath))
             {
-                var collection = db.GetCollection<Post>(Table);
+                var collection = db.GetCollection<PostData>(Table);
                 var existingPost = collection.FindOne(m => m.Id == postId);
                 if (existingPost != null)
                 {
@@ -65,7 +65,7 @@ namespace AutoPost.Infraestructure.PostStorage
         {
             using (var db = new LiteDatabase(_databasePath))
             {
-                var collection = db.GetCollection<Post>(Table);
+                var collection = db.GetCollection<PostData>(Table);
                return  collection.Delete(videoId);
             }
         }

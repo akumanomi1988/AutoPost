@@ -6,34 +6,34 @@ using System.Runtime.InteropServices;
 
 namespace AutoPost.Application.Services
 {
-    public class VideoUploadService : IPublishService
-    {
-        private readonly IServiceProvider _serviceProvider;
+    //public class VideoUploadService : IPublishService
+    //{
+    //    private readonly IServiceProvider _serviceProvider;
 
-        public VideoUploadService(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+    //    public VideoUploadService(IServiceProvider serviceProvider)
+    //    {
+    //        _serviceProvider = serviceProvider;
+    //    }
 
        
-        public async Task<Post> PublishAsync(Post post)
-        { 
-            foreach (var platform in post.PendingNetworks)
-            {
-                var uploader = _serviceProvider.GetRequiredService<IPostPublisherFactory>().CreatePublisher(platform.Name);
-                if (await uploader.UploadVideoAsync(post) == 3)
-                {
-                    post.PendingNetworks.Remove(platform);
-                    post.PublishedNetworks.Add(platform);
-                }
-            }
-            return post;
-        }
+    //    public async Task<PostData> PublishAsync(PostData post)
+    //    { 
+    //        foreach (var platform in post.PendingNetworks)
+    //        {
+    //            var uploader = _serviceProvider.GetRequiredService<IPostPublisherFactory>().CreatePublisher(platform.Name);
+    //            if (await uploader.UploadPostAsync(post) == 3)
+    //            {
+    //                post.PendingNetworks.Remove(platform);
+    //                post.PublishedNetworks.Add(platform);
+    //            }
+    //        }
+    //        return post;
+    //    }
 
         //public Task PublishAsync(Post post)
         //{
         //    throw new NotImplementedException();
         //}
-    }
+    //}
 
 }

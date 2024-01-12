@@ -9,10 +9,10 @@ namespace AutoPost.Application.Interfaces
 {
     public interface IPostService
     {
-        Guid SavePost(Post post);
-        IEnumerable<Post> GetPost();
-        Post GetPost(Guid postId);
-        bool UpdatePost(Guid postId, Post post);
+        Guid SavePost(PostData post);
+        IEnumerable<PostData> GetPost();
+        PostData GetPost(Guid postId);
+        bool UpdatePost(Guid postId, PostData post);
         bool DeletePost(Guid postId);
     }
 

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ContentType.cs" />
+    <Compile Remove="Models\Post.cs" />
+    <Compile Remove="Models\SocialNetwork.cs" />
+    <Compile Remove="Models\VideoMetadata.cs" />
     <Compile Remove="Models\VideoUploaderFactory.cs" />
   </ItemGroup>
 

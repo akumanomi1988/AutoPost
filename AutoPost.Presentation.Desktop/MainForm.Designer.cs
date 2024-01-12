@@ -40,6 +40,7 @@
             toolStripButton5 = new ToolStripButton();
             toolStripButton6 = new ToolStripButton();
             toolStripButton7 = new ToolStripButton();
+            toolStripButton8 = new ToolStripButton();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
@@ -86,10 +87,10 @@
             // toolStrip1
             // 
             toolStrip1.Dock = DockStyle.None;
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5, toolStripButton6, toolStripButton7 });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5, toolStripButton6, toolStripButton7, toolStripButton8 });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(641, 25);
+            toolStrip1.Size = new Size(678, 25);
             toolStrip1.TabIndex = 0;
             // 
             // toolStripButton1
@@ -157,6 +158,17 @@
             toolStripButton7.Name = "toolStripButton7";
             toolStripButton7.Size = new Size(85, 22);
             toolStripButton7.Text = "TikTok Upload";
+            toolStripButton7.Click += toolStripButton7_Click;
+            // 
+            // toolStripButton8
+            // 
+            toolStripButton8.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton8.Image = (Image)resources.GetObject("toolStripButton8.Image");
+            toolStripButton8.ImageTransparentColor = Color.Magenta;
+            toolStripButton8.Name = "toolStripButton8";
+            toolStripButton8.Size = new Size(37, 22);
+            toolStripButton8.Text = "Auto";
+            toolStripButton8.Click += toolStripButton8_Click;
             // 
             // MainForm
             // 
@@ -192,5 +204,6 @@
         private ToolStripButton toolStripButton5;
         private ToolStripButton toolStripButton6;
         private ToolStripButton toolStripButton7;
+        private ToolStripButton toolStripButton8;
     }
 }
