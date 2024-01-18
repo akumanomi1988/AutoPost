@@ -32,11 +32,11 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            numericUpDown1 = new NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            txtIP = new TextBox();
+            txtPort = new TextBox();
+            txtPassword = new TextBox();
+            numDuration = new NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)numDuration).BeginInit();
             SuspendLayout();
             // 
             // lblIpRecorder
@@ -75,52 +75,51 @@
             label3.TabIndex = 3;
             label3.Text = "VideoDuration:";
             // 
-            // textBox1
+            // txtIP
             // 
-            textBox1.Location = new Point(107, 6);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(144, 23);
-            textBox1.TabIndex = 4;
+            txtIP.Location = new Point(107, 6);
+            txtIP.Name = "txtIP";
+            txtIP.Size = new Size(144, 23);
+            txtIP.TabIndex = 4;
             // 
-            // textBox2
+            // txtPort
             // 
-            textBox2.Location = new Point(107, 31);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(144, 23);
-            textBox2.TabIndex = 5;
+            txtPort.Location = new Point(107, 31);
+            txtPort.Name = "txtPort";
+            txtPort.Size = new Size(144, 23);
+            txtPort.TabIndex = 5;
             // 
-            // textBox3
+            // txtPassword
             // 
-            textBox3.Location = new Point(107, 56);
-            textBox3.Name = "textBox3";
-            textBox3.PasswordChar = '*';
-            textBox3.Size = new Size(144, 23);
-            textBox3.TabIndex = 6;
+            txtPassword.Location = new Point(107, 56);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Size = new Size(144, 23);
+            txtPassword.TabIndex = 6;
             // 
-            // numericUpDown1
+            // numDuration
             // 
-            numericUpDown1.Location = new Point(109, 82);
-            numericUpDown1.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
-            numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(142, 23);
-            numericUpDown1.TabIndex = 7;
+            numDuration.Location = new Point(109, 82);
+            numDuration.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
+            numDuration.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
+            numDuration.Name = "numDuration";
+            numDuration.Size = new Size(142, 23);
+            numDuration.TabIndex = 7;
             // 
-            // ucVideoRecordingSettings
+            // ucVideoRecorderSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(numericUpDown1);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(numDuration);
+            Controls.Add(txtPassword);
+            Controls.Add(txtPort);
+            Controls.Add(txtIP);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(lblIpRecorder);
-            Name = "ucVideoRecordingSettings";
+            Name = "ucVideoRecorderSettings";
             Size = new Size(341, 107);
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numDuration).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -131,9 +130,9 @@
         private Label label1;
         private Label label2;
         private Label label3;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private NumericUpDown numericUpDown1;
+        private TextBox txtIP;
+        private TextBox txtPort;
+        private TextBox txtPassword;
+        private NumericUpDown numDuration;
     }
 }

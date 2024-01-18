@@ -12,20 +12,33 @@ namespace AutoPost.Presentation.Desktop.Controllers
     public class PostController
     {
         private const string FileName = "PostSettings.json";
-        public PostController() { }
-        public void SavePost(Post Post)
+        public PostController() {
+            if (!File.Exists(FileName))
+            {
+                try
+                {
+                    Save(new());
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+        }
+        public void Save(PostSettings Post)
         {
             if (Post == null) { return; }
             string jsonString = JsonSerializer.Serialize(Post);
             File.WriteAllText(FileName, jsonString);
         }
 
-        public Post? LoadPost() 
+        public PostSettings? Load() 
         {
             try
             {
                 string jsonString = File.ReadAllText(FileName);
-                return JsonSerializer.Deserialize<Post>(jsonString);
+                return JsonSerializer.Deserialize<PostSettings>(jsonString);
             }
             catch (Exception ex)
             {

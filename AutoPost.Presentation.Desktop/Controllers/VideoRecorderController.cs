@@ -18,7 +18,7 @@ namespace AutoPost.Presentation.Desktop.Controllers
             {
                 try
                 {
-                    SaveVideoRecorderSettings(new VideoRecorderSettings());
+                    Save(new VideoRecorderSettings());
                 }
                 catch (Exception)
                 {
@@ -28,7 +28,7 @@ namespace AutoPost.Presentation.Desktop.Controllers
             }
             
         }
-        public VideoRecorderSettings? LoadVideoRecorderSettings()
+        public VideoRecorderSettings? Load()
         {
             try
             {
@@ -41,7 +41,7 @@ namespace AutoPost.Presentation.Desktop.Controllers
                 return null;
             }
         } 
-        public void SaveVideoRecorderSettings(VideoRecorderSettings videoRecorderSettings) 
+        public void Save(VideoRecorderSettings videoRecorderSettings) 
         {
             if (videoRecorderSettings == null) { return; }
             string jsonString = JsonSerializer.Serialize(videoRecorderSettings);

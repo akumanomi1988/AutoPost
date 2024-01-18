@@ -22,19 +22,23 @@ namespace AutoPost.AnimationCanvas.Classes
 {
     public class AnimationCanvas
     {
-        //public event EventHandler<OBS.OBSState> OBSStateChanged = null!;
         private Canvas _Canvas;
         private List<ICanvasElement> _CanvasElements;
         private Music _BackgroundMusic;
         private RenderWindow? _Window;
         private static  bool _isAnimating = false;
+        public  bool IsAnimating { get { return _isAnimating; } }
         private ICanvasElementFactory _Factory;
-        // Delegado y evento para cuando la música se detiene
-        public delegate void MusicStoppedHandler();
-        public event MusicStoppedHandler? MusicStopped;
         public static string MusicPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.MusicFolderPath}"; }}
         public static string SoundsPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.SoundsFolderPath}"; } }
-        
+        private readonly object _lock = new object();
+        //Events
+        public delegate void AnimationEventHandler(object source, EventArgs args);
+        public event AnimationEventHandler AnimationStarted;
+        public event AnimationEventHandler AnimationStopped;
+        public delegate void MusicStoppedHandler();
+        public event MusicStoppedHandler? MusicStopped;
+
         public AnimationCanvas(int width, int height, SFML.Graphics.Color backgroundColor,  ICanvasElementFactory factory)
         {
             if (width <= 0 || height <= 0) throw new ArgumentException("Las dimensiones del canvas deben ser mayores que cero.");
@@ -48,6 +52,46 @@ namespace AutoPost.AnimationCanvas.Classes
             _BackgroundMusic.StateChanged += BackgroundMusic_StateChanged;
             _Factory = factory;
 
+        }
+        protected virtual void OnAnimationStopped()
+        {
+            if (AnimationStopped != null)
+            {
+                // Invocar el evento, pasando this como fuente y EventArgs vacío
+                AnimationStopped(this, EventArgs.Empty);
+            }
+        }
+        protected virtual void OnAnimationStarted()
+        {
+            // Verificar si hay suscriptores al evento
+            if (AnimationStarted != null)
+            {
+                // Invocar el evento, pasando this como fuente y EventArgs vacío, o tus propios argumentos si necesitas pasar información
+                AnimationStarted(this, EventArgs.Empty);
+            }
+        }
+        public int CanvasElementCount()
+        {
+            return _CanvasElements.Count;
+        }
+        public void AddBall()
+        {
+            lock (_lock)
+            {
+                var newElement = _Factory.CreateRandomElement();
+                _CanvasElements.Add(newElement);
+            }
+        }
+
+        public void RemoveBall()
+        {
+            lock (_lock)
+            {
+                if (_CanvasElements.Count > 0)
+                {
+                    _CanvasElements.RemoveAt(_CanvasElements.Count - 1);
+                }
+            }
         }
 
         private void BackgroundMusic_StateChanged(SFML.Audio.SoundStatus newStatus)
@@ -84,6 +128,7 @@ namespace AutoPost.AnimationCanvas.Classes
             Clock clock = new Clock();
 
             _Window.Display();
+            OnAnimationStarted();
             while (_Window.IsOpen && _isAnimating && timeEndAnimation > DateTime.Now)
             {
                 _Window.DispatchEvents();
@@ -91,16 +136,17 @@ namespace AutoPost.AnimationCanvas.Classes
 
                 float deltaTime = clock.Restart().AsSeconds();
 
-                foreach (var element in _CanvasElements)
+                lock (_lock)
                 {
-                    UpdateElementPosition(element, deltaTime);
-                    _Window.Draw(element);
-
+                    foreach (var element in _CanvasElements)
+                    {
+                        UpdateElementPosition(element, deltaTime);
+                        _Window.Draw(element);
+                    }
                 }
                 _Window.Display();
-
             }
-
+            StopAnimation();
         }
         public void StopAnimation()
         {
@@ -110,6 +156,7 @@ namespace AutoPost.AnimationCanvas.Classes
             _BackgroundMusic.Stop();
             _CanvasElements.Clear();
             _Window.Close();
+            OnAnimationStopped();
 
         }
 

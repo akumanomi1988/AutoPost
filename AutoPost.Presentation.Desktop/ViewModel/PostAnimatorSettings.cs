@@ -13,40 +13,40 @@ namespace AutoPost.Presentation.Desktop.ViewModel
 {
   
     [Serializable]
-    public class PostGeneratorSettings:INotifyPropertyChanged
+    public class PostAnimatorSettings:INotifyPropertyChanged
     {
-        public PostGeneratorSettings()
+        public PostAnimatorSettings()
         {
 
-            DuracionVideo = 60; // Podrías usar 0 como valor predeterminado o cualquier otro valor que tenga sentido en tu contexto
+            Duration = 60; // Podrías usar 0 como valor predeterminado o cualquier otro valor que tenga sentido en tu contexto
             MusicPath = string.Empty;
             SoundsPath = string.Empty;
             BallsNumber = 10;
             WindowWidth = 720; // Valor predeterminado para el ancho de la ventana
             WindowHeight = 1080; // Valor predeterminado para la altura de la ventana
-            PostData = null; // Asegúrate de que la clase PostData pueda manejar nulos correctamente
+            BackGroundColor = Color.White;
         }
-        public PostGeneratorSettings( int duracionVideo, string musicPath, string soundsPath, int ballsNumber, int windowWidth, int windowHeight, PostData postData)
+        public PostAnimatorSettings( int duracionVideo, string musicPath, string soundsPath, int ballsNumber, int windowWidth, int windowHeight)
         {
 
-            DuracionVideo = duracionVideo;
+            Duration = duracionVideo;
             MusicPath = musicPath;
             SoundsPath = soundsPath;
             BallsNumber = ballsNumber;
             WindowWidth = windowWidth;
             WindowHeight = windowHeight;
-            PostData = postData;
+
         }
 
-        public int DuracionVideo { get; set; }
+        public int Duration { get; set; }
         public string MusicPath { get; set; }
+        public Color BackGroundColor { get; set; }
         public string SoundsPath { get; set; }
         [Range(1, 100, ErrorMessage = "El valor para BallsNumber debe estar entre 1 y 100.")]
         private int ballsNumber;
         public int BallsNumber { get { return ballsNumber; } set { if (ballsNumber != value) { ballsNumber = value; OnPropertyChanged(nameof(BallsNumber)); } } }
         public int WindowWidth { get; set; }
         public int WindowHeight { get; set; }
-        public AutoPost.Domain.Models.PostData? PostData { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

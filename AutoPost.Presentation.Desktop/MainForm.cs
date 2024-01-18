@@ -6,6 +6,7 @@ using AutoPost.Domain.Models;
 using AutoPost.Infraestructure.TikTok;
 using AutoPost.Infraestructure.Youtube;
 using AutoPost.Infrastructure.Factories;
+using AutoPost.Presentation.Desktop.Controllers;
 using Google.Apis.YouTube.v3;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace AutoPost.Presentation.Desktop
         private OBSController _obsController;
         
         public bool Auto { get; set; } = false;
-        private AnimationCanvas.Classes.AnimationCanvas _AnimationCanvas;
+        private AnimationCanvas.Classes.AnimationCanvas? _AnimationCanvas;
         private void OnOBSStatusChanged(object? sender, OBSController.OBSState e)
         {
             if (this.InvokeRequired)
@@ -78,51 +79,92 @@ namespace AutoPost.Presentation.Desktop
             _postPublisherFactory = postPublisherFactory;
             _obsController = new();
             _obsController.OBSStatusChanged += OnOBSStatusChanged;
-            _AnimationCanvas = new(720, 720, SFML.Graphics.Color.White, new VideoRecorder(), new AudioRecorder(), new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
+            //_AnimationCanvas = new(720, 720, SFML.Graphics.Color.White, new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
+            ucPostAnimatorSettings.BallNumberChangedInUCPost += UcPostAnimatorSettings_BallNumberChangedInUCPost;
+
+        }
+
+        private async void _AnimationCanvas_AnimationStarted(object source, EventArgs args)
+        {
+           await AddBallsEvery(3, 20, 10);
+        }
+
+        private void UcPostAnimatorSettings_BallNumberChangedInUCPost(object? sender, EventArgs e)
+        {
+            var settings = ucPostAnimatorSettings.GetSettingsViewModel();
+
+            // Determinar si necesitamos agregar o quitar elementos.
+            int step = settings.BallsNumber > _AnimationCanvas.CanvasElementCount() ? 1 : -1;
+
+            while (_AnimationCanvas.CanvasElementCount() != settings.BallsNumber)
+            {
+                if (step > 0)
+                {
+                    _AnimationCanvas.AddBall(); 
+                }
+                else
+                {
+                    _AnimationCanvas.RemoveBall(); 
+                }
+            }
+
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            _obsController.Connect("http://localhost:4455","");
+            var obs = ucVideoRecorderSettings1.GetVideoRecorderSettings();
+            _obsController.Connect($"{obs.RecorderIP}:{obs.Port}",obs.Password);
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            _AnimationCanvas = new(720, 720, SFML.Graphics.Color.White, new VideoRecorder(), new AudioRecorder(), new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
-            _AnimationCanvas.StartAnimation();
+            var settings = ucPostAnimatorSettings.GetSettingsViewModel();
+
+            _AnimationCanvas = new( settings.WindowHeight,
+                                    settings.WindowWidth, 
+                                    new SFML.Graphics.Color( settings.BackGroundColor.R, settings.BackGroundColor.G, settings.BackGroundColor.B),
+                                    new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
+            _AnimationCanvas.AnimationStarted += _AnimationCanvas_AnimationStarted;
+            _AnimationCanvas.StartAnimation(settings.BallsNumber,settings.Duration);
+
         }
 
         private  void toolStripButton3_Click(object sender, EventArgs e)
         {
-            _obsController.StartRecording();
+            if(_obsController.IsConnected) 
+                _obsController.StartRecording();
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
+            if (_AnimationCanvas == null) { return; }
             _AnimationCanvas.StopAnimation();
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            _obsController.StopRecording();
+            if (_obsController.IsConnected && _obsController.IsRecording)
+                _obsController.StopRecording();
         }
 
         private async void toolStripButton6_Click(object sender, EventArgs e)
         {
-            var LastFile = _obsController.GetLastSavedFile();
+            if (!_obsController.IsConnected) return;
+                var LastFile = _obsController.GetLastSavedFile();
             if (LastFile == "") { return; }
             await uploadVideoYT(LastFile);
         }
         private async Task<int> uploadVideoTT(string File)
         {
             var publisher = _postPublisherFactory.CreatePublisher("tiktok");
+            var Post = ucPostData1.GetPost();
             var tikTokPostData = new TikTokPostData(
-                title: "Bolitas Rebotando - Relajación y Satisfacción",
-                description: "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
-                tags: new List<string> { "relajante", "satisfying", "bolitas", "música" },
+                title: Post.Title, // "Bolitas Rebotando - Relajación y Satisfacción",
+                description: Post.Description, // "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
+                tags: Post.Tags, //new List<string> { "relajante", "satisfying", "bolitas", "música" },
                 contentPath: $@"{File}", // Asegúrate de que 'LastFile' sea la ruta correcta al archivo
-                category: "Entretenimiento", // Categoría específica de TikTok (si es aplicable)
-                privacy: "public", // Ajustar según sea necesario
+                category: Post.Category,// "Entretenimiento", // Categoría específica de TikTok (si es aplicable)
+                privacy: Post.Privacy,//"public", // Ajustar según sea necesario
                 allowDuet: true // Permitir duetos, ajustar según la necesidad
             );
 
@@ -134,13 +176,14 @@ namespace AutoPost.Presentation.Desktop
             //var LastFile = _AnimationCanvas.GetLastFileGenerated();
             //if (LastFile == "") { return -1; }
             var publisher = _postPublisherFactory.CreatePublisher("Youtube");
+            var Post = ucPostData1.GetPost();
             var youtubePostData = new YoutubePostData(
-                title: "Bolitas Rebotando - Relajación y Satisfacción",
-                description: "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
-                tags: new List<string> { "relajante", "satisfying", "bolitas", "música" },
-                contentPath: $@"{File}",
-                category: "22",
-                privacy: "public",
+                title: Post.Title, // "Bolitas Rebotando - Relajación y Satisfacción",
+                description: Post.Description, // "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
+                tags: Post.Tags, //new List<string> { "relajante", "satisfying", "bolitas", "música" },
+                contentPath: $@"{File}", // Asegúrate de que 'LastFile' sea la ruta correcta al archivo
+                category: YTCategories.GetID( Post.Category),// "Entretenimiento", // Categoría específica de TikTok (si es aplicable)
+                privacy: Post.Privacy,//"public", // Ajustar según sea necesario
                 playlistId: "123",
                 enableComments: true
             );
@@ -149,25 +192,23 @@ namespace AutoPost.Presentation.Desktop
         private int cuentaVideos = 0;
         private async Task RunRecordingAndUploadingLoop()
         {
-
-            while (Auto && cuentaVideos < 1)
+            if (_AnimationCanvas == null) { return; }
+            while (Auto && cuentaVideos < 10)
             {
                 cuentaVideos += 1;
                 _obsController.StartRecording();
-                //_AnimationCanvas.StartAnimation(10, _AnimationCanvas.MusicDuration());
-                _AnimationCanvas.StartAnimation(10, 120);
-                // Detener la grabación
+                var settings = ucPostAnimatorSettings.GetSettingsViewModel();
+
+                _AnimationCanvas = new(settings.WindowHeight,
+                                        settings.WindowWidth,
+                                        new SFML.Graphics.Color(settings.BackGroundColor.R, settings.BackGroundColor.G, settings.BackGroundColor.B),
+                                        new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
+                _AnimationCanvas.AnimationStarted += _AnimationCanvas_AnimationStarted;
+                _AnimationCanvas.StartAnimation(settings.BallsNumber, settings.Duration);
+
                 _obsController.StopRecording();
                 _AnimationCanvas.StopAnimation();
-                // Esperar 10 segundos
-                await Task.Delay(TimeSpan.FromSeconds(5));
-
-                // Subir el video
                 await uploadLastVideo();
-
-                // Esperar 10 segundos antes de empezar de nuevo
-                await Task.Delay(TimeSpan.FromSeconds(5));
-
             }
         }
 
@@ -194,7 +235,46 @@ namespace AutoPost.Presentation.Desktop
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ucSettings1.SaveState();
+            ucPostAnimatorSettings.SaveState();
+            ucPostData1.SaveState();
+            ucPostUploaderSettings1.SaveState();
+            ucVideoRecorderSettings1.SaveState();
+            if (_obsController.IsConnected && _obsController.IsRecording) _obsController.StopRecording();
+            if (_AnimationCanvas == null) { return; }
+            if (_AnimationCanvas.IsAnimating) _AnimationCanvas.StopAnimation();
         }
+        private bool IsIncreasingNumber = true;  // Iniciar aumentando
+
+        private async Task AddBallsEvery(int sec, int MaxBalls, int MinBalls)
+        {
+            if(_AnimationCanvas == null) { return; }
+
+            while (_AnimationCanvas.IsAnimating)
+            {
+                await Task.Delay(sec * 1000);
+                var numBall = _AnimationCanvas.CanvasElementCount();
+                // Si estamos aumentando y aún no hemos alcanzado el máximo
+                if (IsIncreasingNumber && numBall < MaxBalls)
+                {
+                    _AnimationCanvas.AddBall();
+                }
+                // Si estamos disminuyendo y aún no hemos alcanzado el mínimo
+                else if (!IsIncreasingNumber && numBall > MinBalls)
+                {
+                    _AnimationCanvas.RemoveBall();
+                }
+
+                // Verificar si necesitamos cambiar de aumentar a disminuir o viceversa
+                if (numBall >= MaxBalls)
+                {
+                    IsIncreasingNumber = false;  // Cambiar a disminuir
+                }
+                else if (numBall <= MinBalls)
+                {
+                    IsIncreasingNumber = true;  // Cambiar a aumentar
+                }
+            }
+        }
+
     }
 }

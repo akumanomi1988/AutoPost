@@ -34,7 +34,11 @@ namespace AutoPost.Presentation.Desktop
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             splitContainer1 = new SplitContainer();
-            ucSettings1 = new ucPostGeneratorSettings();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            ucPostUploaderSettings1 = new ucPostUploaderSettings();
+            ucPostAnimatorSettings = new ucPostAnimatorSettings();
+            ucVideoRecorderSettings1 = new ucVideoRecorderSettings();
+            ucPostData1 = new ucPost();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
             toolStripButton2 = new ToolStripButton();
@@ -44,9 +48,6 @@ namespace AutoPost.Presentation.Desktop
             toolStripButton6 = new ToolStripButton();
             toolStripButton7 = new ToolStripButton();
             toolStripButton8 = new ToolStripButton();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            ucPostUploaderSettings1 = new ucPostUploaderSettings();
-            ucPostData1 = new ucPost();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -56,8 +57,8 @@ namespace AutoPost.Presentation.Desktop
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
-            toolStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // toolStripContainer1
@@ -70,11 +71,11 @@ namespace AutoPost.Presentation.Desktop
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(splitContainer1);
-            toolStripContainer1.ContentPanel.Size = new Size(800, 403);
+            toolStripContainer1.ContentPanel.Size = new Size(897, 634);
             toolStripContainer1.Dock = DockStyle.Fill;
             toolStripContainer1.Location = new Point(0, 0);
             toolStripContainer1.Name = "toolStripContainer1";
-            toolStripContainer1.Size = new Size(800, 450);
+            toolStripContainer1.Size = new Size(897, 681);
             toolStripContainer1.TabIndex = 0;
             toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -88,7 +89,7 @@ namespace AutoPost.Presentation.Desktop
             statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
             statusStrip1.Location = new Point(0, 0);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(800, 22);
+            statusStrip1.Size = new Size(897, 22);
             statusStrip1.TabIndex = 0;
             // 
             // toolStripStatusLabel1
@@ -110,17 +111,60 @@ namespace AutoPost.Presentation.Desktop
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(ucPostData1);
-            splitContainer1.Size = new Size(800, 403);
-            splitContainer1.SplitterDistance = 406;
+            splitContainer1.Size = new Size(897, 634);
+            splitContainer1.SplitterDistance = 455;
             splitContainer1.TabIndex = 0;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.AutoScroll = true;
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Controls.Add(ucPostUploaderSettings1, 0, 0);
+            tableLayoutPanel1.Controls.Add(ucPostAnimatorSettings, 0, 2);
+            tableLayoutPanel1.Controls.Add(ucVideoRecorderSettings1, 0, 1);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 3;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 22.2222214F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 44.4444427F));
+            tableLayoutPanel1.Size = new Size(455, 634);
+            tableLayoutPanel1.TabIndex = 0;
+            // 
+            // ucPostUploaderSettings1
+            // 
+            ucPostUploaderSettings1.BackColor = Color.White;
+            ucPostUploaderSettings1.Dock = DockStyle.Fill;
+            ucPostUploaderSettings1.Location = new Point(3, 3);
+            ucPostUploaderSettings1.Name = "ucPostUploaderSettings1";
+            ucPostUploaderSettings1.Size = new Size(449, 134);
+            ucPostUploaderSettings1.TabIndex = 1;
             // 
             // ucSettings1
             // 
-            ucSettings1.Dock = DockStyle.Fill;
-            ucSettings1.Location = new Point(3, 204);
-            ucSettings1.Name = "ucSettings1";
-            ucSettings1.Size = new Size(400, 196);
-            ucSettings1.TabIndex = 0;
+            ucPostAnimatorSettings.Dock = DockStyle.Fill;
+            ucPostAnimatorSettings.Location = new Point(3, 354);
+            ucPostAnimatorSettings.Name = "ucSettings1";
+            ucPostAnimatorSettings.Size = new Size(449, 277);
+            ucPostAnimatorSettings.TabIndex = 0;
+            // 
+            // ucVideoRecorderSettings1
+            // 
+            ucVideoRecorderSettings1.Dock = DockStyle.Fill;
+            ucVideoRecorderSettings1.Location = new Point(3, 143);
+            ucVideoRecorderSettings1.Name = "ucVideoRecorderSettings1";
+            ucVideoRecorderSettings1.Size = new Size(449, 205);
+            ucVideoRecorderSettings1.TabIndex = 2;
+            // 
+            // ucPostData1
+            // 
+            ucPostData1.Dock = DockStyle.Fill;
+            ucPostData1.Location = new Point(0, 0);
+            ucPostData1.Name = "ucPostData1";
+            ucPostData1.Size = new Size(438, 634);
+            ucPostData1.TabIndex = 0;
             // 
             // toolStrip1
             // 
@@ -208,44 +252,13 @@ namespace AutoPost.Presentation.Desktop
             toolStripButton8.Text = "Auto";
             toolStripButton8.Click += toolStripButton8_Click;
             // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(ucSettings1, 0, 1);
-            tableLayoutPanel1.Controls.Add(ucPostUploaderSettings1, 0, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(406, 403);
-            tableLayoutPanel1.TabIndex = 0;
-            // 
-            // ucPostUploaderSettings1
-            // 
-            ucPostUploaderSettings1.BackColor = Color.White;
-            ucPostUploaderSettings1.Dock = DockStyle.Fill;
-            ucPostUploaderSettings1.Location = new Point(3, 3);
-            ucPostUploaderSettings1.Name = "ucPostUploaderSettings1";
-            ucPostUploaderSettings1.Size = new Size(400, 195);
-            ucPostUploaderSettings1.TabIndex = 1;
-            // 
-            // ucPostData1
-            // 
-            ucPostData1.Dock = DockStyle.Fill;
-            ucPostData1.Location = new Point(0, 0);
-            ucPostData1.Name = "ucPostData1";
-            ucPostData1.Size = new Size(390, 403);
-            ucPostData1.TabIndex = 0;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(897, 681);
             Controls.Add(toolStripContainer1);
+            MinimumSize = new Size(720, 720);
             Name = "MainForm";
             Text = "MainForm";
             FormClosed += MainForm_FormClosed;
@@ -262,9 +275,9 @@ namespace AutoPost.Presentation.Desktop
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
-            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -283,9 +296,10 @@ namespace AutoPost.Presentation.Desktop
         private ToolStripButton toolStripButton7;
         private ToolStripButton toolStripButton8;
         private SplitContainer splitContainer1;
-        private ucPostGeneratorSettings ucSettings1;
+        private ucPostAnimatorSettings ucPostAnimatorSettings;
         private TableLayoutPanel tableLayoutPanel1;
         private ucPostUploaderSettings ucPostUploaderSettings1;
         private ucPost ucPostData1;
+        private ucVideoRecorderSettings ucVideoRecorderSettings1;
     }
 }

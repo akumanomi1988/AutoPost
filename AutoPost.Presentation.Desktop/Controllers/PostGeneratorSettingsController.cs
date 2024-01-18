@@ -10,21 +10,38 @@ namespace AutoPost.Presentation.Desktop.Controllers
 {
 
 
-    public class PostGeneratorSettingsController
+    public  class PostGeneratorSettingsController
     {
         private const string FileName = "PostGeneratorSettings.json";
-        public void SavePostGeneratorSettings(PostGeneratorSettings postGeneratorSettings)
+
+        public PostGeneratorSettingsController()
+        {
+            if (!File.Exists(FileName))
+            {
+                try
+                {
+                    Save(new());
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+        }
+
+        public  void Save(PostAnimatorSettings postGeneratorSettings)
         {
             if (postGeneratorSettings == null) { return; }
             string jsonString = JsonSerializer.Serialize(postGeneratorSettings);
             File.WriteAllText(FileName, jsonString);
         }
-        public PostGeneratorSettings? LoadPostGeneratorSettings()
+        public  PostAnimatorSettings? Load()
         {
             try
             {
                 string jsonString = File.ReadAllText(FileName);
-                return JsonSerializer.Deserialize<PostGeneratorSettings>(jsonString);
+                return JsonSerializer.Deserialize<PostAnimatorSettings>(jsonString);
             }
             catch (Exception ex)
             {

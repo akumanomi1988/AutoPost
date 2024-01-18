@@ -158,7 +158,7 @@
             Controls.Add(descriptionLabel);
             Controls.Add(titleLabel);
             Name = "ucPost";
-            Size = new Size(284, 264);
+            Size = new Size(284, 235);
             ResumeLayout(false);
             PerformLayout();
         }

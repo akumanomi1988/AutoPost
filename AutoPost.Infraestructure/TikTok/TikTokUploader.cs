@@ -66,7 +66,7 @@ namespace AutoPost.Infrastructure.TikTok
             string descriptionWithTags = tikTokData.Title;
             if (tikTokData.Tags != null && tikTokData.Tags.Any())
             {
-                string tagsAsString = string.Join(" ", tikTokData.Tags.Select(tag => $"#{tag}"));
+                string tagsAsString = string.Join(" ", tikTokData.Tags.Select(tag => $"#{tag.Trim()}"));
                 descriptionWithTags += " " + tagsAsString;
             }
 

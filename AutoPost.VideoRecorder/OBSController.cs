@@ -36,7 +36,7 @@ public class OBSController
         NotifyStatusChanged(IsOBSRunning() ? OBSState.Running  :OBSState.NotRunning) ;
         try
         {
-            _obsWebSocket.ConnectAsync(address, password);
+            _obsWebSocket.ConnectAsync($"ws://{address}", password);
             // El cambio de estado se maneja en el evento Connected
         }
         catch (Exception ex)
@@ -54,7 +54,7 @@ public class OBSController
 
     public void StartRecording()
     {
-        if (!_obsWebSocket.IsConnected) { return; }
+        if (!_obsWebSocket.IsConnected || IsRecording) { return; }
         _obsWebSocket.StartRecord();
         NotifyStatusChanged(OBSState.Recording);
     }

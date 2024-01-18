@@ -11,8 +11,22 @@ namespace AutoPost.Presentation.Desktop.Controllers
     public class PostUploaderSettingsController
     {
         private const string FileName = "PostUploaderSetting.json";
-        public PostUploaderSettingsController() { }
-        public PostUploaderSettings? GetPostUploaderSettings()
+        public PostUploaderSettingsController()
+        {
+            if (!File.Exists(FileName))
+            {
+                try
+                {
+                    Save(new PostUploaderSettings());
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+        }
+        public PostUploaderSettings? Load()
         {
             try
             {
@@ -25,7 +39,7 @@ namespace AutoPost.Presentation.Desktop.Controllers
                 return null;
             }
         }
-        public void SavePostUploaderSettings(PostUploaderSettings postUploaderSettings)
+        public void Save(PostUploaderSettings postUploaderSettings)
         {
             if (postUploaderSettings == null) { return; }
             string jsonString = JsonSerializer.Serialize(postUploaderSettings);

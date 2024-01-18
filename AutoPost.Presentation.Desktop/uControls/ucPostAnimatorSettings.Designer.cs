@@ -2,7 +2,7 @@
 
 namespace AutoPost.Presentation.Desktop.uControls
 {
-    partial class ucPostGeneratorSettings
+    partial class ucPostAnimatorSettings
     {
         /// <summary> 
         /// Variable del diseñador necesaria.
@@ -125,7 +125,6 @@ namespace AutoPost.Presentation.Desktop.uControls
             numBallsNumber.Name = "numBallsNumber";
             numBallsNumber.Size = new Size(120, 23);
             numBallsNumber.TabIndex = 30;
-
             // 
             // lblBallsNumber
             // 
@@ -174,7 +173,7 @@ namespace AutoPost.Presentation.Desktop.uControls
             numWindowWidth.Size = new Size(120, 23);
             numWindowWidth.TabIndex = 32;
             // 
-            // ucPostGeneratorSettings
+            // ucPostAnimatorSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -192,7 +191,7 @@ namespace AutoPost.Presentation.Desktop.uControls
             Controls.Add(lblWindowWidth);
             Controls.Add(numWindowHeight);
             Controls.Add(lblWindowHeight);
-            Name = "ucPostGeneratorSettings";
+            Name = "ucPostAnimatorSettings";
             Size = new Size(339, 197);
             ((System.ComponentModel.ISupportInitialize)numDuracionVideo).EndInit();
             ((System.ComponentModel.ISupportInitialize)numBallsNumber).EndInit();

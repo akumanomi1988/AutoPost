@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 namespace AutoPost.Presentation.Desktop.ViewModel
 {
 
-    public class Post
+    public class PostSettings
     {
         public string Title { get; set; }
         public string Description { get; set; }
         public List<string> Tags { get; set; }
+        public string TagsText { get { return $"#{string.Join(";#", Tags)}"; } set { Tags = value.Replace("#","").Split(";").ToList(); } }
         public string ContentPath { get; set; }
         public string Category { get; set; }
         public string Privacy { get; set; } // Ejemplo: public, private, unlisted
 
-        public Post(string title, string description, List<string> tags, string contentPath, string category, string privacy)
+        public PostSettings(string title, string description, List<string> tags, string contentPath, string category, string privacy)
         {
             Title = title;
             Description = description;
@@ -25,7 +26,7 @@ namespace AutoPost.Presentation.Desktop.ViewModel
             Category = category;
             Privacy = privacy;
         }
-        public Post()
+        public PostSettings()
         {
             Title = "";
             Description = "";
@@ -34,5 +35,6 @@ namespace AutoPost.Presentation.Desktop.ViewModel
             Category = "";
             Privacy = ""; // Opciones podrían ser: public, private, unlisted
         }
+
     }
 }
