@@ -4,20 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoPost.Domain.Models
+namespace AutoPost.Presentation.Desktop.ViewModel
 {
-    [Serializable]
-    public class PostData
+
+    public class Post
     {
-        public Guid Id{ get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<string> Tags { get; set; }
-        public string ContentPath { get; set; } 
+        public string ContentPath { get; set; }
         public string Category { get; set; }
         public string Privacy { get; set; } // Ejemplo: public, private, unlisted
 
-        public PostData(string title, string description, List<string> tags, string contentPath, string category, string privacy)
+        public Post(string title, string description, List<string> tags, string contentPath, string category, string privacy)
         {
             Title = title;
             Description = description;
@@ -26,9 +25,8 @@ namespace AutoPost.Domain.Models
             Category = category;
             Privacy = privacy;
         }
-        public PostData()
+        public Post()
         {
-            Id = Guid.NewGuid(); // Genera un nuevo GUID único
             Title = "";
             Description = "";
             Tags = new List<string>(); // Inicializa con una lista vacía
@@ -37,5 +35,4 @@ namespace AutoPost.Domain.Models
             Privacy = ""; // Opciones podrían ser: public, private, unlisted
         }
     }
-
 }

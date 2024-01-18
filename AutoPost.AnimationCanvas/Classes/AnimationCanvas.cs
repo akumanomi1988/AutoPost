@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -21,66 +22,69 @@ namespace AutoPost.AnimationCanvas.Classes
 {
     public class AnimationCanvas
     {
-        public event EventHandler<OBS.OBSState> OBSStateChanged = null!;
+        //public event EventHandler<OBS.OBSState> OBSStateChanged = null!;
         private Canvas _Canvas;
         private List<ICanvasElement> _CanvasElements;
-        private readonly IVideoRecorder _VideoRecorder;
-        private readonly IAudioRecorder _AudioRecorder;
         private Music _BackgroundMusic;
         private RenderWindow? _Window;
         private static  bool _isAnimating = false;
         private ICanvasElementFactory _Factory;
-        private OBS _obsController = new();
+        // Delegado y evento para cuando la música se detiene
+        public delegate void MusicStoppedHandler();
+        public event MusicStoppedHandler? MusicStopped;
         public static string MusicPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.MusicFolderPath}"; }}
         public static string SoundsPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.SoundsFolderPath}"; } }
         
-        public AnimationCanvas(int width, int height, SFML.Graphics.Color backgroundColor, IVideoRecorder videoRecorder, IAudioRecorder audioRecorder, ICanvasElementFactory factory)
+        public AnimationCanvas(int width, int height, SFML.Graphics.Color backgroundColor,  ICanvasElementFactory factory)
         {
             if (width <= 0 || height <= 0) throw new ArgumentException("Las dimensiones del canvas deben ser mayores que cero.");
 
-            if (videoRecorder == null) throw new ArgumentNullException(nameof(videoRecorder), "El grabador de video no puede ser nulo.");
-
-            if (audioRecorder == null) throw new ArgumentNullException(nameof(audioRecorder), "El grabador de audio no puede ser nulo.");
-
             Initializer.CreateDirectoryIfNotExist(MusicPath);
             Initializer.CreateDirectoryIfNotExist(SoundsPath);
+
             _Canvas = new Canvas(width, height, backgroundColor);
             _CanvasElements = new List<ICanvasElement>();
-            _VideoRecorder = videoRecorder;
-            _AudioRecorder = audioRecorder;
             _BackgroundMusic = new Music(MusicPath  );
+            _BackgroundMusic.StateChanged += BackgroundMusic_StateChanged;
             _Factory = factory;
-            _obsController.OBSStatusChanged += ObsController_OBSStatusChanged;
+
         }
-        private void ObsController_OBSStatusChanged(object? sender, OBS.OBSState e)
+
+        private void BackgroundMusic_StateChanged(SFML.Audio.SoundStatus newStatus)
         {
-            // Retransmitir el evento
-            OBSStateChanged?.Invoke(this, e);
+            Console.WriteLine("Estado de la música cambiado: " + newStatus);
+            if (newStatus == SFML.Audio.SoundStatus.Stopped)
+            {
+                OnMusicStopped();
+            }
         }
+        protected virtual void OnMusicStopped()
+        {
+            MusicStopped?.Invoke();
+        }
+
         #region Animation
 
-        public void StartAnimation(bool recording = false)
+        public void StartAnimation(int BallsNumber = 5,int SecDuration = 60)
         {
             if (_isAnimating) { return; }
-
-
+            _BackgroundMusic = new Music(MusicPath);
+            var timeEndAnimation = DateTime.Now.AddSeconds(SecDuration);
             _Window = new RenderWindow(new VideoMode((uint)_Canvas.Width, (uint)_Canvas.Height), "AnimationBalls", Styles.None);
             _Window.SetFramerateLimit(120);
             _Window.Position = new Vector2i(0, 0);
             _isAnimating = true;
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < BallsNumber; i++)
             {
                 _CanvasElements.Add(_Factory.CreateRandomElement());
             }
            
             _BackgroundMusic.Play();
             Clock clock = new Clock();
-            if (recording) { _obsController.StartRecording(); }
+
             _Window.Display();
-
-
-            while (_Window.IsOpen && _isAnimating)
+            while (_Window.IsOpen && _isAnimating && timeEndAnimation > DateTime.Now)
             {
                 _Window.DispatchEvents();
                 _Window.Clear(_Canvas.BackgroundColor);
@@ -94,6 +98,7 @@ namespace AutoPost.AnimationCanvas.Classes
 
                 }
                 _Window.Display();
+
             }
 
         }
@@ -192,24 +197,9 @@ namespace AutoPost.AnimationCanvas.Classes
         }
 
         #endregion
-
-
-        public void StartRecording()
+        public int MusicDuration()
         {
-            _obsController.StartRecording();
-        }
-
-        public void StopRecording()
-        {
-            _obsController.StopRecording();
-        }
-        public void ConnectRecorder()
-        {
-            _obsController.Connect("ws://localhost:4455", "fXWCrilEsLXOmnFQ");
-        }
-        public string GetLastFileGenerated()
-        {
-            return _obsController.GetLastSavedFile();
+            return _BackgroundMusic.MusicDuration();
         }
     }
    }

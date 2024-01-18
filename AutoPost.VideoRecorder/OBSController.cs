@@ -1,7 +1,7 @@
 ﻿using OBSWebsocketDotNet;
 using System.Diagnostics;
 
-public class OBS
+public class OBSController
 {
     private OBSWebsocket _obsWebSocket;
 
@@ -16,9 +16,9 @@ public class OBS
     }
 
     // Evento para notificar cambios de estado
-    public event EventHandler<OBSState> OBSStatusChanged;
+    public event EventHandler<OBSState>? OBSStatusChanged;
 
-    public OBS()
+    public OBSController()
     {
         _obsWebSocket = new OBSWebsocket();
         _obsWebSocket.Connected += (s, e) => NotifyStatusChanged(OBSState.Connected);
@@ -61,7 +61,7 @@ public class OBS
 
     public void StopRecording()
     {
-        if (_obsWebSocket.IsConnected)
+        if (_obsWebSocket.IsConnected && IsRecording)
         {
             _obsWebSocket.StopRecord();
             // Cambiar a estado Connected o Disconnected según corresponda

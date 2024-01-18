@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibVLCSharp" Version="3.8.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
     <PackageReference Include="SFML.Net" Version="2.5.1" />
   </ItemGroup>
 

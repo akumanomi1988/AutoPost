@@ -1,4 +1,5 @@
-﻿namespace AutoPost.Presentation.Desktop
+﻿using AutoPost.Presentation.Desktop.uControls;
+namespace AutoPost.Presentation.Desktop
 {
     partial class MainForm
     {
@@ -32,6 +33,8 @@
             toolStripContainer1 = new ToolStripContainer();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
+            splitContainer1 = new SplitContainer();
+            ucSettings1 = new ucPostGeneratorSettings();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
             toolStripButton2 = new ToolStripButton();
@@ -41,11 +44,20 @@
             toolStripButton6 = new ToolStripButton();
             toolStripButton7 = new ToolStripButton();
             toolStripButton8 = new ToolStripButton();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            ucPostUploaderSettings1 = new ucPostUploaderSettings();
+            ucPostData1 = new ucPost();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
+            toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
             statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             toolStrip1.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // toolStripContainer1
@@ -57,6 +69,7 @@
             // 
             // toolStripContainer1.ContentPanel
             // 
+            toolStripContainer1.ContentPanel.Controls.Add(splitContainer1);
             toolStripContainer1.ContentPanel.Size = new Size(800, 403);
             toolStripContainer1.Dock = DockStyle.Fill;
             toolStripContainer1.Location = new Point(0, 0);
@@ -84,13 +97,38 @@
             toolStripStatusLabel1.Size = new Size(88, 17);
             toolStripStatusLabel1.Text = "Recorder status";
             // 
+            // splitContainer1
+            // 
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(tableLayoutPanel1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(ucPostData1);
+            splitContainer1.Size = new Size(800, 403);
+            splitContainer1.SplitterDistance = 406;
+            splitContainer1.TabIndex = 0;
+            // 
+            // ucSettings1
+            // 
+            ucSettings1.Dock = DockStyle.Fill;
+            ucSettings1.Location = new Point(3, 204);
+            ucSettings1.Name = "ucSettings1";
+            ucSettings1.Size = new Size(400, 196);
+            ucSettings1.TabIndex = 0;
+            // 
             // toolStrip1
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5, toolStripButton6, toolStripButton7, toolStripButton8 });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(678, 25);
+            toolStrip1.Size = new Size(647, 25);
             toolStrip1.TabIndex = 0;
             // 
             // toolStripButton1
@@ -170,6 +208,38 @@
             toolStripButton8.Text = "Auto";
             toolStripButton8.Click += toolStripButton8_Click;
             // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(ucSettings1, 0, 1);
+            tableLayoutPanel1.Controls.Add(ucPostUploaderSettings1, 0, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(406, 403);
+            tableLayoutPanel1.TabIndex = 0;
+            // 
+            // ucPostUploaderSettings1
+            // 
+            ucPostUploaderSettings1.BackColor = Color.White;
+            ucPostUploaderSettings1.Dock = DockStyle.Fill;
+            ucPostUploaderSettings1.Location = new Point(3, 3);
+            ucPostUploaderSettings1.Name = "ucPostUploaderSettings1";
+            ucPostUploaderSettings1.Size = new Size(400, 195);
+            ucPostUploaderSettings1.TabIndex = 1;
+            // 
+            // ucPostData1
+            // 
+            ucPostData1.Dock = DockStyle.Fill;
+            ucPostData1.Location = new Point(0, 0);
+            ucPostData1.Name = "ucPostData1";
+            ucPostData1.Size = new Size(390, 403);
+            ucPostData1.TabIndex = 0;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -178,16 +248,23 @@
             Controls.Add(toolStripContainer1);
             Name = "MainForm";
             Text = "MainForm";
+            FormClosed += MainForm_FormClosed;
             toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
             toolStripContainer1.BottomToolStripPanel.PerformLayout();
+            toolStripContainer1.ContentPanel.ResumeLayout(false);
             toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             toolStripContainer1.TopToolStripPanel.PerformLayout();
             toolStripContainer1.ResumeLayout(false);
             toolStripContainer1.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -205,5 +282,10 @@
         private ToolStripButton toolStripButton6;
         private ToolStripButton toolStripButton7;
         private ToolStripButton toolStripButton8;
+        private SplitContainer splitContainer1;
+        private ucPostGeneratorSettings ucSettings1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private ucPostUploaderSettings ucPostUploaderSettings1;
+        private ucPost ucPostData1;
     }
 }

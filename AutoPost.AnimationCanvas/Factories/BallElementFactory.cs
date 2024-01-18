@@ -49,7 +49,7 @@ public class BallElementFactory : ICanvasElementFactory
         float radius = _random.Next(10, 30);
         Vector2f position = new Vector2f(_random.Next((int)radius, _canvasWidth - (int)radius), _random.Next((int)radius, _canvasHeight - (int)radius));
         Color color = new Color((byte)_random.Next(256), (byte)_random.Next(256), (byte)_random.Next(256));
-        int velocity = _random.Next(100, 300);
+        int velocity = _random.Next(100, 400);
         Sound sound = _sounds[_random.Next(_sounds.Count)];
 
         return new BallElement(radius, position, color, velocity, sound);

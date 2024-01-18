@@ -1,4 +1,5 @@
-﻿using AutoPost.AnimationCanvas.Factories;
+﻿using AutoPost.AnimationCanvas.Classes;
+using AutoPost.AnimationCanvas.Factories;
 using AutoPost.AnimationCanvas.Recorders;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
@@ -22,10 +23,11 @@ namespace AutoPost.Presentation.Desktop
 {
     public partial class MainForm : Form
     {
+        private OBSController _obsController;
+        
         public bool Auto { get; set; } = false;
         private AnimationCanvas.Classes.AnimationCanvas _AnimationCanvas;
-
-        private void OnOBSStatusChanged(object? sender, OBS.OBSState e)
+        private void OnOBSStatusChanged(object? sender, OBSController.OBSState e)
         {
             if (this.InvokeRequired)
             {
@@ -34,23 +36,23 @@ namespace AutoPost.Presentation.Desktop
             }
             switch (e)
             {
-                case OBS.OBSState.NotRunning:
+                case OBSController.OBSState.NotRunning:
                     toolStripStatusLabel1.BackColor = Color.Black;
                     toolStripStatusLabel1.ForeColor = Color.White;
                     break;
-                case OBS.OBSState.Running:
+                case OBSController.OBSState.Running:
                     toolStripStatusLabel1.BackColor = Color.DarkBlue;
                     toolStripStatusLabel1.ForeColor = Color.White;
                     break;
-                case OBS.OBSState.Disconnected:
+                case OBSController.OBSState.Disconnected:
                     toolStripStatusLabel1.BackColor = Color.Red;
                     toolStripStatusLabel1.ForeColor = Color.Black;
                     break;
-                case OBS.OBSState.Connected:
+                case OBSController.OBSState.Connected:
                     toolStripStatusLabel1.BackColor = Color.Green;
                     toolStripStatusLabel1.ForeColor = Color.Black;
                     break;
-                case OBS.OBSState.Recording:
+                case OBSController.OBSState.Recording:
                     toolStripStatusLabel1.BackColor = Color.Blue;
                     toolStripStatusLabel1.ForeColor = Color.Black;
                     break;
@@ -68,28 +70,31 @@ namespace AutoPost.Presentation.Desktop
             }
 
         }
+
         private readonly IPostPublisherFactory _postPublisherFactory;
         public MainForm(IPostPublisherFactory postPublisherFactory)
         {
             InitializeComponent();
-            _AnimationCanvas = new(360, 640, SFML.Graphics.Color.White, new VideoRecorder(), new AudioRecorder(), new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
-            _AnimationCanvas.OBSStateChanged += OnOBSStatusChanged;
             _postPublisherFactory = postPublisherFactory;
+            _obsController = new();
+            _obsController.OBSStatusChanged += OnOBSStatusChanged;
+            _AnimationCanvas = new(720, 720, SFML.Graphics.Color.White, new VideoRecorder(), new AudioRecorder(), new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            _AnimationCanvas.ConnectRecorder();
+            _obsController.Connect("http://localhost:4455","");
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
+            _AnimationCanvas = new(720, 720, SFML.Graphics.Color.White, new VideoRecorder(), new AudioRecorder(), new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
             _AnimationCanvas.StartAnimation();
         }
 
-        private void toolStripButton3_Click(object sender, EventArgs e)
+        private  void toolStripButton3_Click(object sender, EventArgs e)
         {
-            _AnimationCanvas.StartRecording();
+            _obsController.StartRecording();
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e)
@@ -99,12 +104,12 @@ namespace AutoPost.Presentation.Desktop
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            _AnimationCanvas.StopRecording();
+            _obsController.StopRecording();
         }
 
         private async void toolStripButton6_Click(object sender, EventArgs e)
         {
-            var LastFile = _AnimationCanvas.GetLastFileGenerated();
+            var LastFile = _obsController.GetLastSavedFile();
             if (LastFile == "") { return; }
             await uploadVideoYT(LastFile);
         }
@@ -141,34 +146,34 @@ namespace AutoPost.Presentation.Desktop
             );
             return await publisher.UploadPostAsync(youtubePostData);
         }
+        private int cuentaVideos = 0;
         private async Task RunRecordingAndUploadingLoop()
         {
 
-            for (int i = 0; i < 30; i++)
+            while (Auto && cuentaVideos < 1)
             {
-                // Iniciar la grabación
-                _AnimationCanvas.StartRecording();
-
-                // Esperar un minuto (60 segundos)
-                await Task.Delay(TimeSpan.FromMinutes(1));
-
+                cuentaVideos += 1;
+                _obsController.StartRecording();
+                //_AnimationCanvas.StartAnimation(10, _AnimationCanvas.MusicDuration());
+                _AnimationCanvas.StartAnimation(10, 120);
                 // Detener la grabación
-                _AnimationCanvas.StopRecording();
-
+                _obsController.StopRecording();
+                _AnimationCanvas.StopAnimation();
                 // Esperar 10 segundos
-                await Task.Delay(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(5));
 
                 // Subir el video
                 await uploadLastVideo();
 
                 // Esperar 10 segundos antes de empezar de nuevo
-                await Task.Delay(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(5));
+
             }
         }
 
         private async Task uploadLastVideo()
         {
-            var LastFile = _AnimationCanvas.GetLastFileGenerated();
+            var LastFile = _obsController.GetLastSavedFile();
             if (LastFile == "") { return; }
             await uploadVideoTT(LastFile);
             await uploadVideoYT(LastFile);
@@ -177,14 +182,19 @@ namespace AutoPost.Presentation.Desktop
         private async void toolStripButton8_Click(object sender, EventArgs e)
         {
             Auto = !Auto;
-            await RunRecordingAndUploadingLoop();
+            if (Auto) await RunRecordingAndUploadingLoop();
         }
 
         private async void toolStripButton7_Click(object sender, EventArgs e)
         {
-            var LastFile = _AnimationCanvas.GetLastFileGenerated();
+            var LastFile = _obsController.GetLastSavedFile();
             if (LastFile == "") { return; }
             await uploadVideoTT(LastFile);
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ucSettings1.SaveState();
         }
     }
 }
