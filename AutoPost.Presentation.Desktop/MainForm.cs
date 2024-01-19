@@ -193,7 +193,7 @@ namespace AutoPost.Presentation.Desktop
             return await publisher.UploadPostAsync(youtubePostData);
         }
 
-        private async Task RunRecordingAndUploadingLoop(int Times = 1)
+        private async Task RunRecordingAndUploadingLoop(int Times = 24,int minutesWait = 90)
         {
             int cuentaVideos = 0;
             while (Auto && cuentaVideos < Times)
@@ -213,8 +213,10 @@ namespace AutoPost.Presentation.Desktop
                 _obsController.StopRecording();
                 _AnimationCanvas.StopAnimation();
                 await uploadLastVideo();
+                await Task.Delay(minutesWait * 60 * 1000);
             }
             pbAuto.Value = Times;
+
         }
 
         private async Task uploadLastVideo()

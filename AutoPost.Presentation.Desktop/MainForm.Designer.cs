@@ -33,6 +33,11 @@ namespace AutoPost.Presentation.Desktop
             toolStripContainer1 = new ToolStripContainer();
             statusStrip1 = new StatusStrip();
             lblSocketStatus = new ToolStripStatusLabel();
+            lblRecorderStatus = new ToolStripStatusLabel();
+            lblAnimationStatus = new ToolStripStatusLabel();
+            pbAuto = new ToolStripProgressBar();
+            pbYTUploading = new ToolStripProgressBar();
+            pbTikTokUploading = new ToolStripProgressBar();
             splitContainer1 = new SplitContainer();
             tableLayoutPanel1 = new TableLayoutPanel();
             ucPostUploaderSettings1 = new ucPostUploaderSettings();
@@ -48,11 +53,7 @@ namespace AutoPost.Presentation.Desktop
             toolStripButton6 = new ToolStripButton();
             toolStripButton7 = new ToolStripButton();
             toolStripButton8 = new ToolStripButton();
-            lblRecorderStatus = new ToolStripStatusLabel();
-            lblAnimationStatus = new ToolStripStatusLabel();
-            pbAuto = new ToolStripProgressBar();
-            pbYTUploading = new ToolStripProgressBar();
-            pbTikTokUploading = new ToolStripProgressBar();
+            tableLayoutPanel2 = new TableLayoutPanel();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -64,6 +65,7 @@ namespace AutoPost.Presentation.Desktop
             splitContainer1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             toolStrip1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // toolStripContainer1
@@ -103,6 +105,37 @@ namespace AutoPost.Presentation.Desktop
             lblSocketStatus.Size = new Size(77, 17);
             lblSocketStatus.Text = "Socket Status";
             // 
+            // lblRecorderStatus
+            // 
+            lblRecorderStatus.Name = "lblRecorderStatus";
+            lblRecorderStatus.Size = new Size(89, 17);
+            lblRecorderStatus.Text = "Recorder Status";
+            // 
+            // lblAnimationStatus
+            // 
+            lblAnimationStatus.Name = "lblAnimationStatus";
+            lblAnimationStatus.Size = new Size(98, 17);
+            lblAnimationStatus.Text = "Animation Status";
+            // 
+            // pbAuto
+            // 
+            pbAuto.Name = "pbAuto";
+            pbAuto.Size = new Size(100, 16);
+            pbAuto.Tag = "";
+            pbAuto.ToolTipText = "Auto";
+            // 
+            // pbYTUploading
+            // 
+            pbYTUploading.Name = "pbYTUploading";
+            pbYTUploading.Size = new Size(100, 16);
+            pbYTUploading.ToolTipText = "YT Uploading";
+            // 
+            // pbTikTokUploading
+            // 
+            pbTikTokUploading.Name = "pbTikTokUploading";
+            pbTikTokUploading.Size = new Size(100, 16);
+            pbTikTokUploading.ToolTipText = "TikTok Uploading";
+            // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
@@ -115,7 +148,7 @@ namespace AutoPost.Presentation.Desktop
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(ucPostData1);
+            splitContainer1.Panel2.Controls.Add(tableLayoutPanel2);
             splitContainer1.Size = new Size(897, 634);
             splitContainer1.SplitterDistance = 455;
             splitContainer1.TabIndex = 0;
@@ -132,9 +165,9 @@ namespace AutoPost.Presentation.Desktop
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 22.2222214F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 44.4444427F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.Size = new Size(455, 634);
             tableLayoutPanel1.TabIndex = 0;
             // 
@@ -144,31 +177,31 @@ namespace AutoPost.Presentation.Desktop
             ucPostUploaderSettings1.Dock = DockStyle.Fill;
             ucPostUploaderSettings1.Location = new Point(3, 3);
             ucPostUploaderSettings1.Name = "ucPostUploaderSettings1";
-            ucPostUploaderSettings1.Size = new Size(449, 134);
+            ucPostUploaderSettings1.Size = new Size(449, 66);
             ucPostUploaderSettings1.TabIndex = 1;
             // 
             // ucPostAnimatorSettings
             // 
             ucPostAnimatorSettings.Dock = DockStyle.Fill;
-            ucPostAnimatorSettings.Location = new Point(3, 354);
+            ucPostAnimatorSettings.Location = new Point(3, 194);
             ucPostAnimatorSettings.Name = "ucPostAnimatorSettings";
-            ucPostAnimatorSettings.Size = new Size(449, 277);
+            ucPostAnimatorSettings.Size = new Size(449, 437);
             ucPostAnimatorSettings.TabIndex = 0;
             // 
             // ucVideoRecorderSettings1
             // 
             ucVideoRecorderSettings1.Dock = DockStyle.Fill;
-            ucVideoRecorderSettings1.Location = new Point(3, 143);
+            ucVideoRecorderSettings1.Location = new Point(3, 75);
             ucVideoRecorderSettings1.Name = "ucVideoRecorderSettings1";
-            ucVideoRecorderSettings1.Size = new Size(449, 205);
+            ucVideoRecorderSettings1.Size = new Size(449, 113);
             ucVideoRecorderSettings1.TabIndex = 2;
             // 
             // ucPostData1
             // 
             ucPostData1.Dock = DockStyle.Fill;
-            ucPostData1.Location = new Point(0, 0);
+            ucPostData1.Location = new Point(3, 3);
             ucPostData1.Name = "ucPostData1";
-            ucPostData1.Size = new Size(438, 634);
+            ucPostData1.Size = new Size(438, 263);
             ucPostData1.TabIndex = 0;
             // 
             // toolStrip1
@@ -177,7 +210,7 @@ namespace AutoPost.Presentation.Desktop
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5, toolStripButton6, toolStripButton7, toolStripButton8 });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(678, 25);
+            toolStrip1.Size = new Size(647, 25);
             toolStrip1.TabIndex = 0;
             // 
             // toolStripButton1
@@ -257,36 +290,19 @@ namespace AutoPost.Presentation.Desktop
             toolStripButton8.Text = "Auto";
             toolStripButton8.Click += toolStripButton8_Click;
             // 
-            // lblRecorderStatus
+            // tableLayoutPanel2
             // 
-            lblRecorderStatus.Name = "lblRecorderStatus";
-            lblRecorderStatus.Size = new Size(89, 17);
-            lblRecorderStatus.Text = "Recorder Status";
-            // 
-            // lblAnimationStatus
-            // 
-            lblAnimationStatus.Name = "lblAnimationStatus";
-            lblAnimationStatus.Size = new Size(98, 17);
-            lblAnimationStatus.Text = "Animation Status";
-            // 
-            // pbAuto
-            // 
-            pbAuto.Name = "pbAuto";
-            pbAuto.Size = new Size(100, 16);
-            pbAuto.Tag = "";
-            pbAuto.ToolTipText = "Auto";
-            // 
-            // pbYTUploading
-            // 
-            pbYTUploading.Name = "pbYTUploading";
-            pbYTUploading.Size = new Size(100, 16);
-            pbYTUploading.ToolTipText = "YT Uploading";
-            // 
-            // pbTikTokUploading
-            // 
-            pbTikTokUploading.Name = "pbTikTokUploading";
-            pbTikTokUploading.Size = new Size(100, 16);
-            pbTikTokUploading.ToolTipText = "TikTok Uploading";
+            tableLayoutPanel2.ColumnCount = 1;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel2.Controls.Add(ucPostData1, 0, 0);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
+            tableLayoutPanel2.Location = new Point(0, 0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 2;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle());
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.Size = new Size(438, 634);
+            tableLayoutPanel2.TabIndex = 1;
             // 
             // MainForm
             // 
@@ -314,6 +330,7 @@ namespace AutoPost.Presentation.Desktop
             tableLayoutPanel1.ResumeLayout(false);
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -342,5 +359,6 @@ namespace AutoPost.Presentation.Desktop
         private ToolStripProgressBar pbAuto;
         private ToolStripProgressBar pbYTUploading;
         private ToolStripProgressBar pbTikTokUploading;
+        private TableLayoutPanel tableLayoutPanel2;
     }
 }
