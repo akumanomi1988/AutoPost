@@ -1,24 +1,7 @@
-﻿using AutoPost.AnimationCanvas.Classes;
-using AutoPost.AnimationCanvas.Factories;
-using AutoPost.AnimationCanvas.Recorders;
+﻿using AutoPost.AnimationCanvas.Factories;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
-using AutoPost.Infraestructure.TikTok;
-using AutoPost.Infraestructure.Youtube;
-using AutoPost.Infrastructure.Factories;
 using AutoPost.Presentation.Desktop.Controllers;
-using Google.Apis.YouTube.v3;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Media.Animation;
 
 namespace AutoPost.Presentation.Desktop
 {
@@ -27,7 +10,7 @@ namespace AutoPost.Presentation.Desktop
         private OBSController _obsController;
         public bool Auto { get; set; } = false;
         private AnimationCanvas.Classes.AnimationCanvas? _AnimationCanvas;
-      
+
 
         private readonly IPostPublisherFactory _postPublisherFactory;
         public MainForm(IPostPublisherFactory postPublisherFactory)
@@ -85,7 +68,7 @@ namespace AutoPost.Presentation.Desktop
             }
             switch (e)
             {
-             
+
                 case VideoRecorder.Interfaces.Models.SocketStatus.Status.Disconnected:
                     lblSocketStatus.BackColor = Color.Red;
                     lblSocketStatus.ForeColor = Color.Black;
@@ -111,7 +94,7 @@ namespace AutoPost.Presentation.Desktop
 
         private async void _AnimationCanvas_AnimationStarted(object source, EventArgs args)
         {
-           await AddBallsEvery(3, 20, 10);
+            await AddBallsEvery(3, 20, 10);
         }
 
         private void UcPostAnimatorSettings_BallNumberChangedInUCPost(object? sender, EventArgs e)
@@ -123,11 +106,11 @@ namespace AutoPost.Presentation.Desktop
             {
                 if (step > 0)
                 {
-                    _AnimationCanvas.AddBall(); 
+                    _AnimationCanvas.AddBall();
                 }
                 else
                 {
-                    _AnimationCanvas.RemoveBall(); 
+                    _AnimationCanvas.RemoveBall();
                 }
             }
 
@@ -136,25 +119,25 @@ namespace AutoPost.Presentation.Desktop
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             var obs = ucVideoRecorderSettings1.GetVideoRecorderSettings();
-            _obsController.Connect($"{obs.RecorderIP}:{obs.Port}",obs.Password);
+            _obsController.Connect($"{obs.RecorderIP}:{obs.Port}", obs.Password);
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             var settings = ucPostAnimatorSettings.GetSettingsViewModel();
 
-            _AnimationCanvas = new( settings.WindowHeight,
-                                    settings.WindowWidth, 
-                                    new SFML.Graphics.Color( settings.BackGroundColor.R, settings.BackGroundColor.G, settings.BackGroundColor.B),
+            _AnimationCanvas = new(settings.WindowHeight,
+                                    settings.WindowWidth,
+                                    new SFML.Graphics.Color(settings.BackGroundColor.R, settings.BackGroundColor.G, settings.BackGroundColor.B),
                                     new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
             _AnimationCanvas.AnimationStarted += _AnimationCanvas_AnimationStarted;
-            _AnimationCanvas.StartAnimation(settings.BallsNumber,settings.Duration);
+            _AnimationCanvas.StartAnimation(settings.BallsNumber, settings.Duration);
 
         }
 
-        private  void toolStripButton3_Click(object sender, EventArgs e)
+        private void toolStripButton3_Click(object sender, EventArgs e)
         {
-            if(_obsController.IsConnected) 
+            if (_obsController.IsConnected)
                 _obsController.StartRecording();
         }
 
@@ -173,7 +156,7 @@ namespace AutoPost.Presentation.Desktop
         private async void toolStripButton6_Click(object sender, EventArgs e)
         {
             if (!_obsController.IsConnected) return;
-                var LastFile = _obsController.GetLastSavedFile();
+            var LastFile = _obsController.GetLastSavedFile();
             if (LastFile == "") { return; }
             await uploadVideoYT(LastFile);
         }
@@ -202,14 +185,14 @@ namespace AutoPost.Presentation.Desktop
                 description: Post.Description, // "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
                 tags: Post.Tags, //new List<string> { "relajante", "satisfying", "bolitas", "música" },
                 contentPath: $@"{File}", // Asegúrate de que 'LastFile' sea la ruta correcta al archivo
-                category: YTCategories.GetID( Post.Category),// "Entretenimiento", // Categoría específica de TikTok (si es aplicable)
+                category: YTCategories.GetID(Post.Category),// "Entretenimiento", // Categoría específica de TikTok (si es aplicable)
                 privacy: Post.Privacy,//"public", // Ajustar según sea necesario
                 playlistId: "123",
                 enableComments: true
             );
             return await publisher.UploadPostAsync(youtubePostData);
         }
-       
+
         private async Task RunRecordingAndUploadingLoop(int Times = 1)
         {
             int cuentaVideos = 0;
@@ -278,7 +261,7 @@ namespace AutoPost.Presentation.Desktop
 
         private async Task AddBallsEvery(int sec, int MaxBalls, int MinBalls)
         {
-            if(_AnimationCanvas == null) { return; }
+            if (_AnimationCanvas == null) { return; }
 
             while (_AnimationCanvas.IsAnimating)
             {

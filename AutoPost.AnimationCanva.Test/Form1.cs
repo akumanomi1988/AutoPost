@@ -1,7 +1,4 @@
 using AutoPost.AnimationCanvas.Factories;
-using AutoPost.AnimationCanvas.Recorders;
-using SFML.Graphics;
-using SFML.System;
 
 namespace AutoPost.AnimationCanva.Test
 {
@@ -13,10 +10,10 @@ namespace AutoPost.AnimationCanva.Test
         public Form1()
         {
             InitializeComponent();
-            _animation = new(720, 1280, SFML.Graphics.Color.White, new VideoRecorder(), new AudioRecorder(), new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
+            _animation = new(720, 1280, SFML.Graphics.Color.White, new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
             timer1.Interval = 10000;
             //_animation.ConnectRecorder();
-            
+
         }
 
 

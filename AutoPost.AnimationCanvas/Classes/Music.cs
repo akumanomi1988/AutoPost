@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using SFML.Audio;
+﻿using SFML.Audio;
 
 namespace AutoPost.AnimationCanvas.Classes
 {
@@ -10,7 +6,7 @@ namespace AutoPost.AnimationCanvas.Classes
     {
         private SFML.Audio.Music _music;
         private SFML.Audio.SoundStatus _lastStatus;
-        
+
         // Delegado y evento para el cambio de estado
         public delegate void StateChangedHandler(SFML.Audio.SoundStatus newStatus);
         public event StateChangedHandler? StateChanged;
@@ -24,7 +20,7 @@ namespace AutoPost.AnimationCanvas.Classes
             }
             var rnd = new Random();
             _music = new SFML.Audio.Music(files.ElementAt(rnd.Next(files.Count())));
-            _lastStatus = SFML.Audio.SoundStatus.Stopped;            
+            _lastStatus = SFML.Audio.SoundStatus.Stopped;
         }
 
         public void Play()

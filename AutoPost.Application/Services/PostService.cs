@@ -20,7 +20,7 @@ namespace AutoPost.Application.Services
 
         public PostData GetPost(Guid PostId)
         {
-            return  _PostStorageService.GetPost(PostId);
+            return _PostStorageService.GetPost(PostId);
         }
         public IEnumerable<PostData> GetPost()
         {

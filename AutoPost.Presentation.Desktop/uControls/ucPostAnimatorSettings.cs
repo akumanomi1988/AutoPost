@@ -1,14 +1,6 @@
 ﻿using AutoPost.Presentation.Desktop.Controllers;
 using AutoPost.Presentation.Desktop.ViewModel;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AutoPost.Presentation.Desktop.uControls
 {
@@ -20,13 +12,13 @@ namespace AutoPost.Presentation.Desktop.uControls
         public ucPostAnimatorSettings()
         {
             InitializeComponent();
-            _Controller = new(); 
+            _Controller = new();
             _ViewModel = _Controller.Load() ?? new PostAnimatorSettings();
-            numDuracionVideo.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.Duration) , false, DataSourceUpdateMode.OnPropertyChanged);
+            numDuracionVideo.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.Duration), false, DataSourceUpdateMode.OnPropertyChanged);
             txtMusicPath.DataBindings.Add("Text", _ViewModel, "MusicPath");
             txtSoundsPath.DataBindings.Add("Text", _ViewModel, "SoundsPath");
             numBallsNumber.DataBindings.Add("Value", _ViewModel, "BallsNumber", false, DataSourceUpdateMode.OnPropertyChanged);
-            numWindowWidth.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.WindowWidth ), false, DataSourceUpdateMode.OnPropertyChanged);
+            numWindowWidth.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.WindowWidth), false, DataSourceUpdateMode.OnPropertyChanged);
             numWindowHeight.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.WindowHeight), false, DataSourceUpdateMode.OnPropertyChanged);
             _ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
@@ -63,7 +55,7 @@ namespace AutoPost.Presentation.Desktop.uControls
         }
         public void SaveState()
         {
-            if(_ViewModel == null) { return; }
+            if (_ViewModel == null) { return; }
             _Controller.Save(_ViewModel);
         }
     }

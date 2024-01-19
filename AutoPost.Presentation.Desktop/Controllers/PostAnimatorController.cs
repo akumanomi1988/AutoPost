@@ -1,16 +1,11 @@
 ﻿using AutoPost.Presentation.Desktop.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AutoPost.Presentation.Desktop.Controllers
 {
 
 
-    public  class PostAnimatorController
+    public class PostAnimatorController
     {
         private const string FileName = "PostGeneratorSettings.json";
 
@@ -30,13 +25,13 @@ namespace AutoPost.Presentation.Desktop.Controllers
             }
         }
 
-        public  void Save(PostAnimatorSettings postGeneratorSettings)
+        public void Save(PostAnimatorSettings postGeneratorSettings)
         {
             if (postGeneratorSettings == null) { return; }
             string jsonString = JsonSerializer.Serialize(postGeneratorSettings);
             File.WriteAllText(FileName, jsonString);
         }
-        public  PostAnimatorSettings? Load()
+        public PostAnimatorSettings? Load()
         {
             try
             {

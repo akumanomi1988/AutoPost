@@ -1,18 +1,14 @@
 
-using Microsoft.Extensions.DependencyInjection;
 using AutoPost.Application.Services;
-using AutoPost.Application.Interfaces;
+using AutoPost.Domain.Interfaces;
+using AutoPost.Infraestructure.Authentication;
 using AutoPost.Infraestructure.Instagram;
-using AutoPost.Infraestructure.TikTok;
 using AutoPost.Infraestructure.Utils;
 using AutoPost.Infraestructure.Youtube;
-using AutoPost.Infraestructure.Authentication;
-using AutoPost.Presentation.Desktop;
-using AutoPost.Domain.Interfaces;
-using AutoPost.Infraestructure.MetadataStorage;
-using Microsoft.Extensions.Configuration;
 using AutoPost.Infrastructure.Factories;
 using AutoPost.Infrastructure.TikTok;
+using AutoPost.Presentation.Desktop;
+using Microsoft.Extensions.DependencyInjection;
 
 static class Program
 {
@@ -41,7 +37,7 @@ static class Program
         services.AddSingleton<ICategoryService, YouTubeCategoryService>();
         services.AddSingleton<ICategoryService, InstagramCategoryService>();
         //services.AddTransient<IMetadataService,MetadataService>();
-        services.AddTransient<IPostPublisherFactory,VideoUploaderFactory>();
+        services.AddTransient<IPostPublisherFactory, VideoUploaderFactory>();
         services.AddTransient<CategoryManager>();
         services.AddTransient<YouTubePublisher>();
         services.AddTransient<InstagramUploader>();

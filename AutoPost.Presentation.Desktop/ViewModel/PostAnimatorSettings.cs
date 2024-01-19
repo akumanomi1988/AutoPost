@@ -1,19 +1,11 @@
-﻿using AutoPost.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AutoPost.Presentation.Desktop.ViewModel
 {
-  
+
     [Serializable]
-    public class PostAnimatorSettings:INotifyPropertyChanged
+    public class PostAnimatorSettings : INotifyPropertyChanged
     {
         public PostAnimatorSettings()
         {
@@ -26,7 +18,7 @@ namespace AutoPost.Presentation.Desktop.ViewModel
             WindowHeight = 720; // Valor predeterminado para la altura de la ventana
             BackGroundColor = Color.White;
         }
-        public PostAnimatorSettings( int duracionVideo, string musicPath, string soundsPath, int ballsNumber, int windowWidth, int windowHeight)
+        public PostAnimatorSettings(int duracionVideo, string musicPath, string soundsPath, int ballsNumber, int windowWidth, int windowHeight)
         {
 
             Duration = duracionVideo;

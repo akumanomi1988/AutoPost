@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoPost.Domain.Models
+﻿namespace AutoPost.Domain.Models
 {
     [Serializable]
     public class PostData
     {
-        public Guid Id{ get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<string> Tags { get; set; }
-        public string ContentPath { get; set; } 
+        public string ContentPath { get; set; }
         public string Category { get; set; }
         public string Privacy { get; set; } // Ejemplo: public, private, unlisted
 

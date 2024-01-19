@@ -1,15 +1,4 @@
-﻿using AutoPost.AnimationCanvas.Interfaces;
-using SFML.Graphics;
-using SFML.System;
-using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoPost.AnimationCanvas.Classes
+﻿namespace AutoPost.AnimationCanvas.Classes
 {
     internal class Canvas
     {
@@ -30,6 +19,6 @@ namespace AutoPost.AnimationCanvas.Classes
         }
     }
 
-   
+
 
 }

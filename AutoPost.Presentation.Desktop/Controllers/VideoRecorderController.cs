@@ -1,18 +1,12 @@
-﻿using AutoPost.Presentation.Desktop.uControls;
-using AutoPost.Presentation.Desktop.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using AutoPost.Presentation.Desktop.ViewModel;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AutoPost.Presentation.Desktop.Controllers
 {
     public class VideoRecorderController
     {
         private const string FileName = "VideoRecorder.json";
-        public VideoRecorderController() 
+        public VideoRecorderController()
         {
             if (!File.Exists(FileName))
             {
@@ -26,7 +20,7 @@ namespace AutoPost.Presentation.Desktop.Controllers
                     throw;
                 }
             }
-            
+
         }
         public VideoRecorderSettings? Load()
         {
@@ -40,8 +34,8 @@ namespace AutoPost.Presentation.Desktop.Controllers
                 Console.WriteLine(ex.Message);
                 return null;
             }
-        } 
-        public void Save(VideoRecorderSettings videoRecorderSettings) 
+        }
+        public void Save(VideoRecorderSettings videoRecorderSettings)
         {
             if (videoRecorderSettings == null) { return; }
             string jsonString = JsonSerializer.Serialize(videoRecorderSettings);

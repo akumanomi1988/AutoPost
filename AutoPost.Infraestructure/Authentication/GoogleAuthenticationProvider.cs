@@ -39,7 +39,7 @@ namespace AutoPost.Infraestructure.Authentication
                 return await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     clientSecrets,
                     new[] { YouTubeService.Scope.YoutubeUpload },
-                    "user", 
+                    "user",
                     CancellationToken.None);
             }
 

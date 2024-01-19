@@ -1,22 +1,9 @@
 ﻿using AutoPost.AnimationCanvas.Elements;
 using AutoPost.AnimationCanvas.Interfaces;
-using AutoPost.AnimationCanvas.Recorders;
 using AutoPost.AnimationCanvas.Utils;
-using Microsoft.VisualBasic;
-using Newtonsoft.Json.Linq;
-using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using static SFML.Graphics.BlendMode;
 
 namespace AutoPost.AnimationCanvas.Classes
 {
@@ -26,20 +13,20 @@ namespace AutoPost.AnimationCanvas.Classes
         private List<ICanvasElement> _CanvasElements;
         private Music _BackgroundMusic;
         private RenderWindow? _Window;
-        private static  bool _isAnimating = false;
-        public  bool IsAnimating { get { return _isAnimating; } }
+        private static bool _isAnimating = false;
+        public bool IsAnimating { get { return _isAnimating; } }
         private ICanvasElementFactory _Factory;
-        public static string MusicPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.MusicFolderPath}"; }}
+        public static string MusicPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.MusicFolderPath}"; } }
         public static string SoundsPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.SoundsFolderPath}"; } }
         private readonly object _lock = new object();
         //Events
         public delegate void AnimationEventHandler(object source, EventArgs args);
-        public event AnimationEventHandler AnimationStarted;
-        public event AnimationEventHandler AnimationStopped;
         public delegate void MusicStoppedHandler();
+        public event AnimationEventHandler? AnimationStarted;
+        public event AnimationEventHandler? AnimationStopped;
         public event MusicStoppedHandler? MusicStopped;
 
-        public AnimationCanvas(int width, int height, SFML.Graphics.Color backgroundColor,  ICanvasElementFactory factory)
+        public AnimationCanvas(int width, int height, SFML.Graphics.Color backgroundColor, ICanvasElementFactory factory)
         {
             if (width <= 0 || height <= 0) throw new ArgumentException("Las dimensiones del canvas deben ser mayores que cero.");
 
@@ -48,7 +35,7 @@ namespace AutoPost.AnimationCanvas.Classes
 
             _Canvas = new Canvas(width, height, backgroundColor);
             _CanvasElements = new List<ICanvasElement>();
-            _BackgroundMusic = new Music(MusicPath  );
+            _BackgroundMusic = new Music(MusicPath);
             _BackgroundMusic.StateChanged += BackgroundMusic_StateChanged;
             _Factory = factory;
 
@@ -109,7 +96,7 @@ namespace AutoPost.AnimationCanvas.Classes
 
         #region Animation
 
-        public void StartAnimation(int BallsNumber = 5,int SecDuration = 60)
+        public void StartAnimation(int BallsNumber = 5, int SecDuration = 60)
         {
             if (_isAnimating) { return; }
             _BackgroundMusic = new Music(MusicPath);
@@ -123,7 +110,7 @@ namespace AutoPost.AnimationCanvas.Classes
             {
                 _CanvasElements.Add(_Factory.CreateRandomElement());
             }
-           
+
             _BackgroundMusic.Play();
             Clock clock = new Clock();
 
@@ -249,4 +236,4 @@ namespace AutoPost.AnimationCanvas.Classes
             return _BackgroundMusic.MusicDuration();
         }
     }
-   }
+}

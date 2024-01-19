@@ -39,7 +39,7 @@ public class OBSController : ISocketConnector, IVideoRecorder
 
     public void Connect(string address, string password = "")
     {
-        
+
         NotifySocketStatusChanged(IsOBSRunning() ? SocketStatus.Status.Disconnected : SocketStatus.Status.ProcessNotFound);
         try
         {
@@ -69,7 +69,7 @@ public class OBSController : ISocketConnector, IVideoRecorder
         if (_obsWebSocket.IsConnected && IsRecording)
         {
             _obsWebSocket.StopRecord();
-            NotifyRecorderStatusChanged(_obsWebSocket.IsConnected ? VideoRecorderStatus.Status.Running: VideoRecorderStatus.Status.NotRunning);
+            NotifyRecorderStatusChanged(_obsWebSocket.IsConnected ? VideoRecorderStatus.Status.Running : VideoRecorderStatus.Status.NotRunning);
         }
     }
     private bool IsOBSRunning()

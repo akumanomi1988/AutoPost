@@ -1,16 +1,12 @@
-﻿using AutoPost.Domain.Interfaces;
-using AutoPost.Domain.Models;
-using LiteDB;
+﻿using LiteDB;
 
 namespace AutoPost.Infraestructure.MetadataStorage
 {
 
-    using LiteDB;
-    using AutoPost.Domain.Interfaces;
     using AutoPost.Domain.Models;
-    using System.Threading.Tasks;
+    using LiteDB;
 
-    public class MetadataStorageService 
+    public class MetadataStorageService
     {
         private readonly string _databasePath;
 
@@ -34,7 +30,7 @@ namespace AutoPost.Infraestructure.MetadataStorage
             using (var db = new LiteDatabase(_databasePath))
             {
                 var collection = db.GetCollection<PostData>("videos");
-                return  collection.FindOne(m => m.Id == videoId);
+                return collection.FindOne(m => m.Id == videoId);
             }
         }
         public IEnumerable<PostData> GetMetadata()
@@ -45,7 +41,7 @@ namespace AutoPost.Infraestructure.MetadataStorage
                 return collection.FindAll().ToList();
             }
         }
-        public  bool UpdateMetadata(Guid videoId, PostData updatedMetadata)
+        public bool UpdateMetadata(Guid videoId, PostData updatedMetadata)
         {
             using (var db = new LiteDatabase(_databasePath))
             {
@@ -65,7 +61,7 @@ namespace AutoPost.Infraestructure.MetadataStorage
             using (var db = new LiteDatabase(_databasePath))
             {
                 var collection = db.GetCollection<PostData>("videos");
-               return  collection.Delete(videoId);
+                return collection.Delete(videoId);
             }
         }
     }

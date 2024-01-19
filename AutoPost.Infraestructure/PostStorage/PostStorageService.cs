@@ -1,20 +1,17 @@
-﻿using AutoPost.Domain.Interfaces;
-using AutoPost.Domain.Models;
-using LiteDB;
+﻿using LiteDB;
 
 namespace AutoPost.Infraestructure.PostStorage
 {
 
-    using LiteDB;
     using AutoPost.Domain.Interfaces;
     using AutoPost.Domain.Models;
-    using System.Threading.Tasks;
+    using LiteDB;
 
     public class PostStorageService : IPostStorageService
     {
         const string Table = "Posts";
         private readonly string _databasePath;
-        
+
 
         public PostStorageService(string databasePath)
         {
@@ -35,7 +32,7 @@ namespace AutoPost.Infraestructure.PostStorage
             using (var db = new LiteDatabase(_databasePath))
             {
                 var collection = db.GetCollection<PostData>(Table);
-                return  collection.FindOne(m => m.Id == postId);
+                return collection.FindOne(m => m.Id == postId);
             }
         }
         public IEnumerable<PostData> GetPost()
@@ -46,7 +43,7 @@ namespace AutoPost.Infraestructure.PostStorage
                 return collection.FindAll().ToList();
             }
         }
-        public  bool UpdatePost(Guid postId, PostData updatedPost)
+        public bool UpdatePost(Guid postId, PostData updatedPost)
         {
             using (var db = new LiteDatabase(_databasePath))
             {
@@ -55,7 +52,7 @@ namespace AutoPost.Infraestructure.PostStorage
                 if (existingPost != null)
                 {
                     updatedPost.Id = existingPost.Id; // Asegurarse de mantener el mismo Id
-                   return collection.Update(updatedPost);
+                    return collection.Update(updatedPost);
                 }
                 return false;
             }
@@ -66,7 +63,7 @@ namespace AutoPost.Infraestructure.PostStorage
             using (var db = new LiteDatabase(_databasePath))
             {
                 var collection = db.GetCollection<PostData>(Table);
-               return  collection.Delete(videoId);
+                return collection.Delete(videoId);
             }
         }
     }

@@ -1,10 +1,6 @@
 ﻿using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
-using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AutoPost.Infrastructure.TikTok
 {

@@ -1,18 +1,13 @@
-﻿using AutoPost.Domain.Models;
-using AutoPost.Presentation.Desktop.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using AutoPost.Presentation.Desktop.ViewModel;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AutoPost.Presentation.Desktop.Controllers
 {
     public class PostController
     {
         private const string FileName = "PostSettings.json";
-        public PostController() {
+        public PostController()
+        {
             if (!File.Exists(FileName))
             {
                 try
@@ -33,7 +28,7 @@ namespace AutoPost.Presentation.Desktop.Controllers
             File.WriteAllText(FileName, jsonString);
         }
 
-        public PostSettings? Load() 
+        public PostSettings? Load()
         {
             try
             {

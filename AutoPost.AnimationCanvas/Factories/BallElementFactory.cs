@@ -59,8 +59,8 @@ public class BallElementFactory : ICanvasElementFactory
     {
         foreach (var other in elements)
         {
-            BallElement otherBall = other as BallElement;
-            if (otherBall != null && CollisionDetector.CheckCollision(element, otherBall))
+            if (other == null) { continue; }
+            if (other is BallElement otherBall && CollisionDetector.CheckCollision(element, otherBall))
             {
                 return true;
             }

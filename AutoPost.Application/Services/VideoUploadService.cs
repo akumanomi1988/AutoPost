@@ -1,10 +1,4 @@
-﻿using AutoPost.Application.Interfaces;
-using AutoPost.Domain.Models;
-using AutoPost.Domain.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using System.Runtime.InteropServices;
-
-namespace AutoPost.Application.Services
+﻿namespace AutoPost.Application.Services
 {
     //public class VideoUploadService : IPublishService
     //{
@@ -15,7 +9,7 @@ namespace AutoPost.Application.Services
     //        _serviceProvider = serviceProvider;
     //    }
 
-       
+
     //    public async Task<PostData> PublishAsync(PostData post)
     //    { 
     //        foreach (var platform in post.PendingNetworks)
@@ -30,10 +24,10 @@ namespace AutoPost.Application.Services
     //        return post;
     //    }
 
-        //public Task PublishAsync(Post post)
-        //{
-        //    throw new NotImplementedException();
-        //}
+    //public Task PublishAsync(Post post)
+    //{
+    //    throw new NotImplementedException();
+    //}
     //}
 
 }
