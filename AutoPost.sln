@@ -15,17 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.Application", "Aut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.Presentation.Desktop", "AutoPost.Presentation.Desktop\AutoPost.Presentation.Desktop.csproj", "{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.Presentation.WPF", "AutoPost.Presentation.WPF\AutoPost.Presentation.WPF.csproj", "{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.PostGenerator", "AutoPost.VideoGenerator\AutoPost.PostGenerator.csproj", "{8FC84D37-59F2-4D9E-9F56-BA856D39A76B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.Presentation.Console", "AutoPost.Presentation.Console\AutoPost.Presentation.Console.csproj", "{6A1F56FB-F041-4D73-9D72-FAE68A0D9282}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.AnimationCanvas", "AutoPost.AnimationCanvas\AutoPost.AnimationCanvas.csproj", "{484B5A53-582E-41CD-9810-2CF10D50939D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.AnimationCanva.Test", "AutoPost.AnimationCanva.Test\AutoPost.AnimationCanva.Test.csproj", "{ECF59C20-3CA4-44BD-A78B-4751BE7ADAD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPost.VideoRecorder", "AutoPost.VideoRecorder\AutoPost.VideoRecorder.csproj", "{53E1EF81-10D3-4457-913F-611098BFC7C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPost.VideoRecorder", "AutoPost.VideoRecorder\AutoPost.VideoRecorder.csproj", "{53E1EF81-10D3-4457-913F-611098BFC7C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,18 +51,6 @@ Global
 		{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D23A9CF2-887A-42A4-8CED-A8DF194D08AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AE81F3D-A6B2-491F-A89A-03DD3BB3DF0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FC84D37-59F2-4D9E-9F56-BA856D39A76B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FC84D37-59F2-4D9E-9F56-BA856D39A76B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FC84D37-59F2-4D9E-9F56-BA856D39A76B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FC84D37-59F2-4D9E-9F56-BA856D39A76B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A1F56FB-F041-4D73-9D72-FAE68A0D9282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A1F56FB-F041-4D73-9D72-FAE68A0D9282}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A1F56FB-F041-4D73-9D72-FAE68A0D9282}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A1F56FB-F041-4D73-9D72-FAE68A0D9282}.Release|Any CPU.Build.0 = Release|Any CPU
 		{484B5A53-582E-41CD-9810-2CF10D50939D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{484B5A53-582E-41CD-9810-2CF10D50939D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{484B5A53-582E-41CD-9810-2CF10D50939D}.Release|Any CPU.ActiveCfg = Release|Any CPU

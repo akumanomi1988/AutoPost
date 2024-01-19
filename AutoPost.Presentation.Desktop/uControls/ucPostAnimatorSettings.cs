@@ -16,18 +16,18 @@ namespace AutoPost.Presentation.Desktop.uControls
     {
         public event EventHandler? BallNumberChangedInUCPost;
         private PostAnimatorSettings _ViewModel { get; set; }
-        private PostGeneratorSettingsController _Controller { get; set; }
+        private PostAnimatorController _Controller { get; set; }
         public ucPostAnimatorSettings()
         {
             InitializeComponent();
             _Controller = new(); 
             _ViewModel = _Controller.Load() ?? new PostAnimatorSettings();
-            numDuracionVideo.DataBindings.Add("Value", _ViewModel, "Duration", false, DataSourceUpdateMode.OnPropertyChanged);
+            numDuracionVideo.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.Duration) , false, DataSourceUpdateMode.OnPropertyChanged);
             txtMusicPath.DataBindings.Add("Text", _ViewModel, "MusicPath");
             txtSoundsPath.DataBindings.Add("Text", _ViewModel, "SoundsPath");
             numBallsNumber.DataBindings.Add("Value", _ViewModel, "BallsNumber", false, DataSourceUpdateMode.OnPropertyChanged);
-            numWindowWidth.DataBindings.Add("Value", _ViewModel, "WindowWidth", false, DataSourceUpdateMode.OnPropertyChanged);
-            numWindowHeight.DataBindings.Add("Value", _ViewModel, "WindowHeight", false, DataSourceUpdateMode.OnPropertyChanged);
+            numWindowWidth.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.WindowWidth ), false, DataSourceUpdateMode.OnPropertyChanged);
+            numWindowHeight.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.WindowHeight), false, DataSourceUpdateMode.OnPropertyChanged);
             _ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 

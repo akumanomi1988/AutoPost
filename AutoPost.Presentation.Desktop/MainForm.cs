@@ -25,44 +25,48 @@ namespace AutoPost.Presentation.Desktop
     public partial class MainForm : Form
     {
         private OBSController _obsController;
-        
         public bool Auto { get; set; } = false;
         private AnimationCanvas.Classes.AnimationCanvas? _AnimationCanvas;
-        private void OnOBSStatusChanged(object? sender, OBSController.OBSState e)
+      
+
+        private readonly IPostPublisherFactory _postPublisherFactory;
+        public MainForm(IPostPublisherFactory postPublisherFactory)
+        {
+            InitializeComponent();
+            _postPublisherFactory = postPublisherFactory;
+            _obsController = new();
+            _obsController.SocketStatusChanged += _obsController_SocketStatusChanged;
+            _obsController.VideoRecorderStatusChanged += _obsController_VideoRecorderStatusChanged;
+            ucPostAnimatorSettings.BallNumberChangedInUCPost += UcPostAnimatorSettings_BallNumberChangedInUCPost;
+        }
+
+        private void _obsController_VideoRecorderStatusChanged(object? sender, VideoRecorder.Interfaces.Models.VideoRecorderStatus.Status e)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(() => OnOBSStatusChanged(sender, e)));
+                this.Invoke(new Action(() => _obsController_VideoRecorderStatusChanged(sender, e)));
                 return;
             }
             switch (e)
             {
-                case OBSController.OBSState.NotRunning:
-                    toolStripStatusLabel1.BackColor = Color.Black;
-                    toolStripStatusLabel1.ForeColor = Color.White;
+                case VideoRecorder.Interfaces.Models.VideoRecorderStatus.Status.NotRunning:
+                    lblRecorderStatus.BackColor = Color.Black;
+                    lblRecorderStatus.ForeColor = Color.White;
                     break;
-                case OBSController.OBSState.Running:
-                    toolStripStatusLabel1.BackColor = Color.DarkBlue;
-                    toolStripStatusLabel1.ForeColor = Color.White;
+                case VideoRecorder.Interfaces.Models.VideoRecorderStatus.Status.Running:
+                    lblRecorderStatus.BackColor = Color.DarkBlue;
+                    lblRecorderStatus.ForeColor = Color.White;
                     break;
-                case OBSController.OBSState.Disconnected:
-                    toolStripStatusLabel1.BackColor = Color.Red;
-                    toolStripStatusLabel1.ForeColor = Color.Black;
-                    break;
-                case OBSController.OBSState.Connected:
-                    toolStripStatusLabel1.BackColor = Color.Green;
-                    toolStripStatusLabel1.ForeColor = Color.Black;
-                    break;
-                case OBSController.OBSState.Recording:
-                    toolStripStatusLabel1.BackColor = Color.Blue;
-                    toolStripStatusLabel1.ForeColor = Color.Black;
+                case VideoRecorder.Interfaces.Models.VideoRecorderStatus.Status.Recording:
+                    lblRecorderStatus.BackColor = Color.Blue;
+                    lblRecorderStatus.ForeColor = Color.Black;
                     break;
                 default:
                     break;
             }
             try
             {
-                toolStripStatusLabel1.Text = e.ToString();
+                lblRecorderStatus.Text = e.ToString();
             }
             catch (Exception)
             {
@@ -72,15 +76,36 @@ namespace AutoPost.Presentation.Desktop
 
         }
 
-        private readonly IPostPublisherFactory _postPublisherFactory;
-        public MainForm(IPostPublisherFactory postPublisherFactory)
+        private void _obsController_SocketStatusChanged(object? sender, VideoRecorder.Interfaces.Models.SocketStatus.Status e)
         {
-            InitializeComponent();
-            _postPublisherFactory = postPublisherFactory;
-            _obsController = new();
-            _obsController.OBSStatusChanged += OnOBSStatusChanged;
-            //_AnimationCanvas = new(720, 720, SFML.Graphics.Color.White, new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
-            ucPostAnimatorSettings.BallNumberChangedInUCPost += UcPostAnimatorSettings_BallNumberChangedInUCPost;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => _obsController_SocketStatusChanged(sender, e)));
+                return;
+            }
+            switch (e)
+            {
+             
+                case VideoRecorder.Interfaces.Models.SocketStatus.Status.Disconnected:
+                    lblSocketStatus.BackColor = Color.Red;
+                    lblSocketStatus.ForeColor = Color.Black;
+                    break;
+                case VideoRecorder.Interfaces.Models.SocketStatus.Status.Connected:
+                    lblSocketStatus.BackColor = Color.Green;
+                    lblSocketStatus.ForeColor = Color.Black;
+                    break;
+                default:
+                    break;
+            }
+            try
+            {
+                lblSocketStatus.Text = e.ToString();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
         }
 
@@ -91,11 +116,9 @@ namespace AutoPost.Presentation.Desktop
 
         private void UcPostAnimatorSettings_BallNumberChangedInUCPost(object? sender, EventArgs e)
         {
+            if (_AnimationCanvas == null) return;
             var settings = ucPostAnimatorSettings.GetSettingsViewModel();
-
-            // Determinar si necesitamos agregar o quitar elementos.
             int step = settings.BallsNumber > _AnimationCanvas.CanvasElementCount() ? 1 : -1;
-
             while (_AnimationCanvas.CanvasElementCount() != settings.BallsNumber)
             {
                 if (step > 0)
@@ -172,9 +195,6 @@ namespace AutoPost.Presentation.Desktop
         }
         private async Task<int> uploadVideoYT(string File)
         {
-
-            //var LastFile = _AnimationCanvas.GetLastFileGenerated();
-            //if (LastFile == "") { return -1; }
             var publisher = _postPublisherFactory.CreatePublisher("Youtube");
             var Post = ucPostData1.GetPost();
             var youtubePostData = new YoutubePostData(
@@ -189,12 +209,13 @@ namespace AutoPost.Presentation.Desktop
             );
             return await publisher.UploadPostAsync(youtubePostData);
         }
-        private int cuentaVideos = 0;
-        private async Task RunRecordingAndUploadingLoop()
+       
+        private async Task RunRecordingAndUploadingLoop(int Times = 1)
         {
-            if (_AnimationCanvas == null) { return; }
-            while (Auto && cuentaVideos < 10)
+            int cuentaVideos = 0;
+            while (Auto && cuentaVideos < Times)
             {
+                pbAuto.Value = cuentaVideos;
                 cuentaVideos += 1;
                 _obsController.StartRecording();
                 var settings = ucPostAnimatorSettings.GetSettingsViewModel();
@@ -210,6 +231,7 @@ namespace AutoPost.Presentation.Desktop
                 _AnimationCanvas.StopAnimation();
                 await uploadLastVideo();
             }
+            pbAuto.Value = Times;
         }
 
         private async Task uploadLastVideo()
@@ -235,13 +257,22 @@ namespace AutoPost.Presentation.Desktop
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            saveStates();
+            CloseAll();
+        }
+        private void CloseAll()
+        {
+
+            if (_obsController.IsConnected && _obsController.IsRecording) _obsController.StopRecording();
+            if (_AnimationCanvas == null) { return; }
+            if (_AnimationCanvas.IsAnimating) _AnimationCanvas.StopAnimation();
+        }
+        private void saveStates()
+        {
             ucPostAnimatorSettings.SaveState();
             ucPostData1.SaveState();
             ucPostUploaderSettings1.SaveState();
             ucVideoRecorderSettings1.SaveState();
-            if (_obsController.IsConnected && _obsController.IsRecording) _obsController.StopRecording();
-            if (_AnimationCanvas == null) { return; }
-            if (_AnimationCanvas.IsAnimating) _AnimationCanvas.StopAnimation();
         }
         private bool IsIncreasingNumber = true;  // Iniciar aumentando
 

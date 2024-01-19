@@ -1,7 +1,8 @@
-﻿using OBSWebsocketDotNet;
+﻿using AutoPost.VideoRecorder.Interfaces.Models;
+using OBSWebsocketDotNet;
 using System.Diagnostics;
 
-public class OBSController
+public class OBSController : ISocketConnector, IVideoRecorder
 {
     private OBSWebsocket _obsWebSocket;
 
@@ -16,28 +17,33 @@ public class OBSController
     }
 
     // Evento para notificar cambios de estado
-    public event EventHandler<OBSState>? OBSStatusChanged;
+    public event EventHandler<SocketStatus.Status>? SocketStatusChanged;
+    public event EventHandler<VideoRecorderStatus.Status>? VideoRecorderStatusChanged;
 
     public OBSController()
     {
         _obsWebSocket = new OBSWebsocket();
-        _obsWebSocket.Connected += (s, e) => NotifyStatusChanged(OBSState.Connected);
-        _obsWebSocket.Disconnected += (s, e) => NotifyStatusChanged(OBSState.Disconnected);
+        _obsWebSocket.Connected += (s, e) => NotifySocketStatusChanged(SocketStatus.Status.Connected);
+        _obsWebSocket.Disconnected += (s, e) => NotifySocketStatusChanged(SocketStatus.Status.Connected);
     }
 
-    private void NotifyStatusChanged(OBSState newState)
+
+    private void NotifySocketStatusChanged(SocketStatus.Status newState)
     {
-        OBSStatusChanged?.Invoke(this, newState);
+        SocketStatusChanged?.Invoke(this, newState);
+    }
+    private void NotifyRecorderStatusChanged(VideoRecorderStatus.Status newState)
+    {
+        VideoRecorderStatusChanged?.Invoke(this, newState);
     }
 
     public void Connect(string address, string password = "")
     {
-        //if (!IsOBSRunning()) { NotifyStatusChanged(OBSState.NotRunning); }
-        NotifyStatusChanged(IsOBSRunning() ? OBSState.Running  :OBSState.NotRunning) ;
+        
+        NotifySocketStatusChanged(IsOBSRunning() ? SocketStatus.Status.Disconnected : SocketStatus.Status.ProcessNotFound);
         try
         {
             _obsWebSocket.ConnectAsync($"ws://{address}", password);
-            // El cambio de estado se maneja en el evento Connected
         }
         catch (Exception ex)
         {
@@ -48,15 +54,14 @@ public class OBSController
     public void Disconnect()
     {
         _obsWebSocket.Disconnect();
-        // Notificar el estado desconectado
-        NotifyStatusChanged(OBSState.Disconnected);
+        //NotifySocketStatusChanged(SocketStatus.Status.Disconnected);
     }
 
     public void StartRecording()
     {
         if (!_obsWebSocket.IsConnected || IsRecording) { return; }
         _obsWebSocket.StartRecord();
-        NotifyStatusChanged(OBSState.Recording);
+        NotifyRecorderStatusChanged(VideoRecorderStatus.Status.Recording);
     }
 
     public void StopRecording()
@@ -64,8 +69,7 @@ public class OBSController
         if (_obsWebSocket.IsConnected && IsRecording)
         {
             _obsWebSocket.StopRecord();
-            // Cambiar a estado Connected o Disconnected según corresponda
-            NotifyStatusChanged(_obsWebSocket.IsConnected ? OBSState.Connected : OBSState.Disconnected);
+            NotifyRecorderStatusChanged(_obsWebSocket.IsConnected ? VideoRecorderStatus.Status.Running: VideoRecorderStatus.Status.NotRunning);
         }
     }
     private bool IsOBSRunning()
@@ -91,6 +95,10 @@ public class OBSController
         return lastModifiedFile != null ? lastModifiedFile.FullName : "";
 
     }
+
+
     public bool IsConnected => _obsWebSocket.IsConnected;
     public bool IsRecording => _obsWebSocket.GetRecordStatus().IsRecording;
+
+    bool ISocketConnector.IsConnected => throw new NotImplementedException();
 }

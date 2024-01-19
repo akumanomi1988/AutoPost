@@ -23,7 +23,7 @@ namespace AutoPost.Presentation.Desktop.ViewModel
             SoundsPath = string.Empty;
             BallsNumber = 10;
             WindowWidth = 720; // Valor predeterminado para el ancho de la ventana
-            WindowHeight = 1080; // Valor predeterminado para la altura de la ventana
+            WindowHeight = 720; // Valor predeterminado para la altura de la ventana
             BackGroundColor = Color.White;
         }
         public PostAnimatorSettings( int duracionVideo, string musicPath, string soundsPath, int ballsNumber, int windowWidth, int windowHeight)

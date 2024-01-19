@@ -14,7 +14,7 @@ namespace AutoPost.Presentation.Desktop.uControls
 {
     public partial class ucPostUploaderSettings : UserControl
     {
-        private PostUploaderSettingsController _Controller;
+        private PostUploaderController _Controller;
         private PostUploaderSettings _ViewModel;
         public ucPostUploaderSettings()
         {

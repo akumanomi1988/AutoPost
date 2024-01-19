@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AutoPost.Presentation.Desktop.Controllers
 {
-    public class PostUploaderSettingsController
+    public class PostUploaderController
     {
         private const string FileName = "PostUploaderSetting.json";
-        public PostUploaderSettingsController()
+        public PostUploaderController()
         {
             if (!File.Exists(FileName))
             {

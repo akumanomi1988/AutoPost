@@ -10,11 +10,11 @@ namespace AutoPost.Presentation.Desktop.Controllers
 {
 
 
-    public  class PostGeneratorSettingsController
+    public  class PostAnimatorController
     {
         private const string FileName = "PostGeneratorSettings.json";
 
-        public PostGeneratorSettingsController()
+        public PostAnimatorController()
         {
             if (!File.Exists(FileName))
             {
