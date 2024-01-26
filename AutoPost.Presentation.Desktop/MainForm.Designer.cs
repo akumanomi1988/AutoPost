@@ -43,6 +43,7 @@ namespace AutoPost.Presentation.Desktop
             ucPostUploaderSettings1 = new ucPostUploaderSettings();
             ucPostAnimatorSettings = new ucPostAnimatorSettings();
             ucVideoRecorderSettings1 = new ucVideoRecorderSettings();
+            tableLayoutPanel2 = new TableLayoutPanel();
             ucPostData1 = new ucPost();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
@@ -53,7 +54,7 @@ namespace AutoPost.Presentation.Desktop
             toolStripButton6 = new ToolStripButton();
             toolStripButton7 = new ToolStripButton();
             toolStripButton8 = new ToolStripButton();
-            tableLayoutPanel2 = new TableLayoutPanel();
+            txtlog = new TextBox();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -64,8 +65,8 @@ namespace AutoPost.Presentation.Desktop
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
-            toolStrip1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
+            toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // toolStripContainer1
@@ -196,6 +197,21 @@ namespace AutoPost.Presentation.Desktop
             ucVideoRecorderSettings1.Size = new Size(449, 113);
             ucVideoRecorderSettings1.TabIndex = 2;
             // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 1;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel2.Controls.Add(ucPostData1, 0, 0);
+            tableLayoutPanel2.Controls.Add(txtlog, 0, 1);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
+            tableLayoutPanel2.Location = new Point(0, 0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 2;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle());
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.Size = new Size(438, 634);
+            tableLayoutPanel2.TabIndex = 1;
+            // 
             // ucPostData1
             // 
             ucPostData1.Dock = DockStyle.Fill;
@@ -290,19 +306,14 @@ namespace AutoPost.Presentation.Desktop
             toolStripButton8.Text = "Auto";
             toolStripButton8.Click += toolStripButton8_Click;
             // 
-            // tableLayoutPanel2
+            // txtlog
             // 
-            tableLayoutPanel2.ColumnCount = 1;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel2.Controls.Add(ucPostData1, 0, 0);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(0, 0);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle());
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new Size(438, 634);
-            tableLayoutPanel2.TabIndex = 1;
+            txtlog.Dock = DockStyle.Fill;
+            txtlog.Location = new Point(3, 272);
+            txtlog.Multiline = true;
+            txtlog.Name = "txtlog";
+            txtlog.Size = new Size(438, 359);
+            txtlog.TabIndex = 1;
             // 
             // MainForm
             // 
@@ -328,9 +339,10 @@ namespace AutoPost.Presentation.Desktop
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel2.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -360,5 +372,6 @@ namespace AutoPost.Presentation.Desktop
         private ToolStripProgressBar pbYTUploading;
         private ToolStripProgressBar pbTikTokUploading;
         private TableLayoutPanel tableLayoutPanel2;
+        private TextBox txtlog;
     }
 }

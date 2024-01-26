@@ -22,10 +22,9 @@ namespace AutoPost.Infrastructure.Factories
             {
                 case "youtube":
                     var authProvider = _serviceProvider.GetRequiredService<IAuthenticationProvider>();
-                    var fileProvider = _serviceProvider.GetRequiredService<IFileProvider>();
-                    return (IPostPublisher)new YouTubePublisher(authProvider, fileProvider);
+                    return (IPostPublisher)new YouTubePublisher(authProvider);
                 case "tiktok":
-                    return (IPostPublisher)new TikTokUploader("fcebce69048eb5d09c592c41f9e8c4a1"); //(authProvider, fileProvider);
+                    return (IPostPublisher)new TikTokPublisher(); //(authProvider, fileProvider);
                 case "instagram":
                     return new InstagramUploader();
                 // otros casos...

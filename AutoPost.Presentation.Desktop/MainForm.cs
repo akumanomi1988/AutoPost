@@ -1,7 +1,10 @@
 ﻿using AutoPost.AnimationCanvas.Factories;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
+using AutoPost.Infraestructure.Youtube;
+using AutoPost.Infrastructure.TikTok;
 using AutoPost.Presentation.Desktop.Controllers;
+using System.Linq.Expressions;
 
 namespace AutoPost.Presentation.Desktop
 {
@@ -162,7 +165,11 @@ namespace AutoPost.Presentation.Desktop
         }
         private async Task<int> uploadVideoTT(string File)
         {
-            var publisher = _postPublisherFactory.CreatePublisher("tiktok");
+            TikTokPublisher? publisher = _postPublisherFactory.CreatePublisher("tiktok") as TikTokPublisher;
+            if (publisher == null) return -1;
+            publisher.SessionID = ucPostUploaderSettings1.GetPostUploaderSettings().SessionID;
+            publisher.OnProcessOutput += Publisher_OnProcessOutput;
+
             var Post = ucPostData1.GetPost();
             var tikTokPostData = new TikTokPostData(
                 title: Post.Title, // "Bolitas Rebotando - Relajación y Satisfacción",
@@ -176,9 +183,27 @@ namespace AutoPost.Presentation.Desktop
 
             return await publisher.UploadPostAsync(tikTokPostData);
         }
+
+        private void Publisher_OnProcessOutput(string output)
+        {
+            try
+            {
+                txtlog.Text += output;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            
+        }
+
         private async Task<int> uploadVideoYT(string File)
         {
-            var publisher = _postPublisherFactory.CreatePublisher("Youtube");
+            YouTubePublisher? publisher = _postPublisherFactory.CreatePublisher("Youtube") as YouTubePublisher;
+            if (publisher == null) return -1;
+            publisher.OnProcessOutput += Publisher_OnProcessOutput;
             var Post = ucPostData1.GetPost();
             var youtubePostData = new YoutubePostData(
                 title: Post.Title, // "Bolitas Rebotando - Relajación y Satisfacción",
@@ -193,7 +218,7 @@ namespace AutoPost.Presentation.Desktop
             return await publisher.UploadPostAsync(youtubePostData);
         }
 
-        private async Task RunRecordingAndUploadingLoop(int Times = 24,int minutesWait = 90)
+        private async Task RunRecordingAndUploadingLoop(int Times = 24, int minutesWait = 90)
         {
             int cuentaVideos = 0;
             while (Auto && cuentaVideos < Times)
@@ -230,7 +255,7 @@ namespace AutoPost.Presentation.Desktop
         private async void toolStripButton8_Click(object sender, EventArgs e)
         {
             Auto = !Auto;
-            if (Auto) await RunRecordingAndUploadingLoop();
+            if (Auto) await RunRecordingAndUploadingLoop(24, 60);
         }
 
         private async void toolStripButton7_Click(object sender, EventArgs e)
@@ -291,6 +316,7 @@ namespace AutoPost.Presentation.Desktop
                 }
             }
         }
+        
 
     }
 }

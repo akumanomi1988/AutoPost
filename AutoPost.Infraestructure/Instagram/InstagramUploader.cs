@@ -5,6 +5,8 @@ namespace AutoPost.Infraestructure.Instagram
 {
     public class InstagramUploader : IPostPublisher
     {
+        public event ProcessOutputHandler? OnProcessOutput;
+
         public async Task<int> UploadPostAsync(PostData post)
         {
             await Task.Delay(100);

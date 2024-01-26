@@ -41,7 +41,7 @@ static class Program
         services.AddTransient<CategoryManager>();
         services.AddTransient<YouTubePublisher>();
         services.AddTransient<InstagramUploader>();
-        services.AddTransient<TikTokUploader>();
+        services.AddTransient<TikTokPublisher>();
         services.AddSingleton<IAuthenticationProvider, GoogleAuthenticationProvider>(provider =>
                     new GoogleAuthenticationProvider(GoogleAuthPath));
         services.AddSingleton<IFileProvider, FileProvider>();

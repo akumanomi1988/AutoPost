@@ -11,48 +11,13 @@ namespace AutoPost.Infraestructure.Youtube
 {
     public class YouTubePublisher : IPostPublisher
     {
+        public event ProcessOutputHandler? OnProcessOutput;
         private readonly IAuthenticationProvider _authProvider;
-        private readonly IFileProvider _fileProvider;
 
-        public YouTubePublisher(IAuthenticationProvider authProvider, IFileProvider fileProvider)
+        public YouTubePublisher(IAuthenticationProvider authProvider)
         {
             _authProvider = authProvider ?? throw new ArgumentNullException(nameof(authProvider));
-            _fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
         }
-
-
-        //public async  Task<int> UploadPostAsync(PostData postData)
-        //{
-        //    var youtubeData = postData as YoutubePostData;
-        //    if (youtubeData is null) { return -1; }
-        //    var credential = (UserCredential)await _authProvider.GetCredentialsAsync();
-        //    var youtubeService = new YouTubeService(new BaseClientService.Initializer()
-        //    {
-        //        HttpClientInitializer = credential,
-        //        ApplicationName = "YTUploader"
-        //    });
-        //    var video = new Video();
-        //    video.Snippet = new VideoSnippet();
-        //    video.Snippet.Title = youtubeData.Title;
-        //    video.Snippet.Description = youtubeData.Description;
-        //    video.Snippet.Tags = youtubeData.Tags.Select(x => x).ToArray();
-        //    video.Snippet.CategoryId = youtubeData.Category; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
-
-        //    video.Status = new VideoStatus();
-        //    //video.Status.PublishAtDateTimeOffset = DateTime.Now.AddMinutes(5);
-        //    video.Status.PrivacyStatus = youtubeData.Privacy.ToString().ToLower(); // or "private" or "public"
-        //    var filePath = youtubeData.ContentPath;
-
-        //    using (var fileStream = new FileStream(filePath, FileMode.Open))
-        //    {
-        //        var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
-        //        videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
-        //        videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
-
-        //        var res = await videosInsertRequest.UploadAsync();
-        //        return (int) res.Status ;
-        //    }
-        //}
 
         public async Task<int> UploadPostAsync(PostData postData)
         {
@@ -95,6 +60,7 @@ namespace AutoPost.Infraestructure.Youtube
                 videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
 
                 var res = await videosInsertRequest.UploadAsync();
+                OnProcessOutput?.Invoke($"YOUTUBE PUBLISH RESULTS:\n{DateTime.Now.ToShortTimeString}\n{res.Status}");
                 return (int)res.Status;
             }
         }
@@ -105,18 +71,20 @@ namespace AutoPost.Infraestructure.Youtube
             switch (progress.Status)
             {
                 case UploadStatus.Uploading:
-                    Console.WriteLine("{0} bytes sent.", progress.BytesSent);
+                    //Console.WriteLine("{0} bytes sent.", progress.BytesSent);
+                    OnProcessOutput?.Invoke($"YOUTUBE PUBLISH PROGRESS:\n{DateTime.Now.ToShortTimeString}\n{progress.BytesSent}");
                     break;
 
                 case UploadStatus.Failed:
-                    Console.WriteLine("An error prevented the upload from completing.\n{0}", progress.Exception);
+                    //Console.WriteLine("An error prevented the upload from completing.\n{0}", progress.Exception);
+                    OnProcessOutput?.Invoke($"YOUTUBE PUBLISH PROGRESS:\n{DateTime.Now.ToShortTimeString}\n{progress.Exception}");
                     break;
             }
         }
 
         void videosInsertRequest_ResponseReceived(Video video)
         {
-            Console.WriteLine("Video id '{0}' was successfully uploaded.", video.Id);
+            OnProcessOutput?.Invoke($"YOUTUBE PUBLISH RESULTS:\n{DateTime.Now.ToShortTimeString}\n{video.Id}\n{video.Kind}");
         }
     }
 }

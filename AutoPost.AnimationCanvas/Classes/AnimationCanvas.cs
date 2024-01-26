@@ -26,6 +26,7 @@ namespace AutoPost.AnimationCanvas.Classes
         public event AnimationEventHandler? AnimationStopped;
         public event MusicStoppedHandler? MusicStopped;
 
+
         public AnimationCanvas(int width, int height, SFML.Graphics.Color backgroundColor, ICanvasElementFactory factory)
         {
             if (width <= 0 || height <= 0) throw new ArgumentException("Las dimensiones del canvas deben ser mayores que cero.");
