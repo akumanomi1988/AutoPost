@@ -1,11 +1,6 @@
 ﻿using AutoPost.Application.DTOs;
 using AutoPost.Application.Interfaces;
 using AutoPost.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoPost.Application.Services
 {
@@ -21,7 +16,7 @@ namespace AutoPost.Application.Services
         async Task<VideoDownloadResultDto> IVideoDownloadService.DownloadVideoAsync(string videoUrl, string downloadPath)
         {
             var videoContent = await _youTubeDownloader.DownloadVideoAsync(videoUrl, downloadPath);
-            return new VideoDownloadResultDto { URL = videoContent};
+            return new VideoDownloadResultDto { URL = videoContent };
         }
     }
 }

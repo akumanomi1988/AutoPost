@@ -1,6 +1,6 @@
 ﻿namespace AutoPost.AnimationCanvas.Classes
 {
-    internal class Canvas
+    public class Canvas
     {
         public int Width { get; }
         public int Height { get; }

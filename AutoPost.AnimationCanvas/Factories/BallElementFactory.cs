@@ -60,7 +60,7 @@ public class BallElementFactory : ICanvasElementFactory
         foreach (var other in elements)
         {
             if (other == null) { continue; }
-            if (other is BallElement otherBall && CollisionDetector.CheckCollision(element, otherBall))
+            if (other is BallElement otherBall && CollisionManager.CheckCollision(element, otherBall))
             {
                 return true;
             }

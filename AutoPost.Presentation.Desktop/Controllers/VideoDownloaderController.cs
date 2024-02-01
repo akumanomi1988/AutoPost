@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoPost.Application.Interfaces;
 
 namespace AutoPost.Presentation.Desktop.Controllers
 {
     // En Presentation/Controllers
-    public class VideoController 
+    public class VideoController
     {
         private readonly IVideoDownloadService _videoDownloadService;
 
@@ -16,12 +12,11 @@ namespace AutoPost.Presentation.Desktop.Controllers
             _videoDownloadService = videoDownloadService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DownloadVideo(string videoUrl)
-        {
-            var result = await _videoDownloadService.DownloadVideoAsync(videoUrl);
-            return Ok(result);
-        }
+        //public async Task<IActionResult> DownloadVideo(string videoUrl)
+        //{
+        //    var result = await _videoDownloadService.DownloadVideoAsync(videoUrl);
+        //    return Ok(result);
+        //}
     }
 
 }

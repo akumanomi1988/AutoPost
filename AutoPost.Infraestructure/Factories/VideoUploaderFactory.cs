@@ -1,6 +1,5 @@
 ﻿using AutoPost.Domain.Interfaces;
 using AutoPost.Infraestructure.Instagram;
-using AutoPost.Infraestructure.Utils;
 using AutoPost.Infraestructure.Youtube;
 using AutoPost.Infrastructure.TikTok;
 using Microsoft.Extensions.DependencyInjection;

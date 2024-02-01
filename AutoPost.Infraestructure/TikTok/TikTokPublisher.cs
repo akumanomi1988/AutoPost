@@ -22,10 +22,10 @@ namespace AutoPost.Infrastructure.TikTok
             return 0;
         }
 
-        private  ProcessStartInfo? CreateProcessStartInfo(TikTokPostData tikTokData)
+        private ProcessStartInfo? CreateProcessStartInfo(TikTokPostData tikTokData)
         {
             // Verificar si la ID de sesión está disponible
-            if (SessionID==string.Empty)
+            if (SessionID == string.Empty)
             {
                 OnProcessOutput?.Invoke($"TIKTOK UPLOAD RESULTS:No SessionId Configured");
                 return null;
@@ -56,7 +56,7 @@ namespace AutoPost.Infrastructure.TikTok
         }
 
 
-        private  async Task ExecuteAndWaitForProcessAsync(ProcessStartInfo startInfo)
+        private async Task ExecuteAndWaitForProcessAsync(ProcessStartInfo startInfo)
         {
             using (Process process = new Process { StartInfo = startInfo })
             {
@@ -72,6 +72,6 @@ namespace AutoPost.Infrastructure.TikTok
                     OnProcessOutput?.Invoke($"TIKTOK UPLOAD RESULTS:{DateTime.Now.ToShortTimeString}\n{output}");
                 }
             }
-        }   
+        }
     }
 }

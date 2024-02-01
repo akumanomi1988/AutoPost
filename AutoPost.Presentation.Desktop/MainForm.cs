@@ -1,10 +1,10 @@
-﻿using AutoPost.AnimationCanvas.Factories;
+﻿using AutoPost.AnimationCanvas.Classes;
+using AutoPost.AnimationCanvas.Factories;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
 using AutoPost.Infraestructure.Youtube;
 using AutoPost.Infrastructure.TikTok;
 using AutoPost.Presentation.Desktop.Controllers;
-using System.Linq.Expressions;
 
 namespace AutoPost.Presentation.Desktop
 {
@@ -109,11 +109,11 @@ namespace AutoPost.Presentation.Desktop
             {
                 if (step > 0)
                 {
-                    _AnimationCanvas.AddBall();
+                    _AnimationCanvas.AddElement();
                 }
                 else
                 {
-                    _AnimationCanvas.RemoveBall();
+                    _AnimationCanvas.RemoveElement();
                 }
             }
 
@@ -132,7 +132,7 @@ namespace AutoPost.Presentation.Desktop
             _AnimationCanvas = new(settings.WindowHeight,
                                     settings.WindowWidth,
                                     new SFML.Graphics.Color(settings.BackGroundColor.R, settings.BackGroundColor.G, settings.BackGroundColor.B),
-                                    new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
+                                    new CanvasElementFactory(DirectoryManager.SoundsPath));
             _AnimationCanvas.AnimationStarted += _AnimationCanvas_AnimationStarted;
             _AnimationCanvas.StartAnimation(settings.BallsNumber, settings.Duration);
 
@@ -196,7 +196,7 @@ namespace AutoPost.Presentation.Desktop
                 throw;
             }
 
-            
+
         }
 
         private async Task<int> uploadVideoYT(string File)
@@ -231,7 +231,7 @@ namespace AutoPost.Presentation.Desktop
                 _AnimationCanvas = new(settings.WindowHeight,
                                         settings.WindowWidth,
                                         new SFML.Graphics.Color(settings.BackGroundColor.R, settings.BackGroundColor.G, settings.BackGroundColor.B),
-                                        new CanvasElementFactory(AnimationCanvas.Classes.AnimationCanvas.SoundsPath));
+                                        new CanvasElementFactory(DirectoryManager.SoundsPath));
                 _AnimationCanvas.AnimationStarted += _AnimationCanvas_AnimationStarted;
                 _AnimationCanvas.StartAnimation(settings.BallsNumber, settings.Duration);
 
@@ -297,12 +297,12 @@ namespace AutoPost.Presentation.Desktop
                 // Si estamos aumentando y aún no hemos alcanzado el máximo
                 if (IsIncreasingNumber && numBall < MaxBalls)
                 {
-                    _AnimationCanvas.AddBall();
+                    _AnimationCanvas.AddElement();
                 }
                 // Si estamos disminuyendo y aún no hemos alcanzado el mínimo
                 else if (!IsIncreasingNumber && numBall > MinBalls)
                 {
-                    _AnimationCanvas.RemoveBall();
+                    _AnimationCanvas.RemoveElement();
                 }
 
                 // Verificar si necesitamos cambiar de aumentar a disminuir o viceversa
@@ -316,7 +316,7 @@ namespace AutoPost.Presentation.Desktop
                 }
             }
         }
-        
+
 
     }
 }

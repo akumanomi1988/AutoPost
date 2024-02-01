@@ -6,7 +6,7 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public List<string> Tags { get; set; }
-        public string TagsText { get { return $"#{string.Join(";#", Tags)}".Replace(" ",""); } set { Tags = value.Replace("#", "").Split(";").ToList(); } }
+        public string TagsText { get { return $"#{string.Join(";#", Tags)}".Replace(" ", ""); } set { Tags = value.Replace("#", "").Split(";").ToList(); } }
         public string ContentPath { get; set; }
         public string Category { get; set; }
         public string Privacy { get; set; } // Ejemplo: public, private, unlisted

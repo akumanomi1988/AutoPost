@@ -9,77 +9,144 @@ namespace AutoPost.AnimationCanvas.Classes
 {
     public class AnimationCanvas
     {
-        private Canvas _Canvas;
-        private List<ICanvasElement> _CanvasElements;
-        private Music _BackgroundMusic;
-        private RenderWindow? _Window;
-        private static bool _isAnimating = false;
-        public bool IsAnimating { get { return _isAnimating; } }
-        private ICanvasElementFactory _Factory;
-        public static string MusicPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.MusicFolderPath}"; } }
-        public static string SoundsPath { get { return $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.SoundsFolderPath}"; } }
+        private readonly Canvas _canvas;
+        private readonly List<ICanvasElement> _canvasElements;
+        private readonly RenderWindow _window;
+        private readonly MusicManager _musicManager;
+        private readonly ICanvasElementFactory _factory;
         private readonly object _lock = new object();
-        //Events
-        public delegate void AnimationEventHandler(object source, EventArgs args);
-        public delegate void MusicStoppedHandler();
-        public event AnimationEventHandler? AnimationStarted;
-        public event AnimationEventHandler? AnimationStopped;
-        public event MusicStoppedHandler? MusicStopped;
+        private bool _isAnimating = false;
+        public bool IsAnimating { get { return _isAnimating; } }
 
+        public AnimationCanvas(int width, int height, Color backgroundColor, ICanvasElementFactory factory)
+        {
+            ValidateCanvasSize(width, height);
+            DirectoryManager.InitializeDirectories();
+            _canvas = new Canvas(width, height, backgroundColor);
+            _canvasElements = new List<ICanvasElement>();
+            _window = WindowFactory.CreateRenderWindow(_canvas);
+            _musicManager = new MusicManager();
+            _factory = factory;
+        }
 
-        public AnimationCanvas(int width, int height, SFML.Graphics.Color backgroundColor, ICanvasElementFactory factory)
+        private void ValidateCanvasSize(int width, int height)
         {
             if (width <= 0 || height <= 0) throw new ArgumentException("Las dimensiones del canvas deben ser mayores que cero.");
+        }
 
-            Initializer.CreateDirectoryIfNotExist(MusicPath);
-            Initializer.CreateDirectoryIfNotExist(SoundsPath);
+        public int CanvasElementCount() => _canvasElements.Count;
 
-            _Canvas = new Canvas(width, height, backgroundColor);
-            _CanvasElements = new List<ICanvasElement>();
-            _BackgroundMusic = new Music(MusicPath);
-            _BackgroundMusic.StateChanged += BackgroundMusic_StateChanged;
-            _Factory = factory;
-
-        }
-        protected virtual void OnAnimationStopped()
-        {
-            if (AnimationStopped != null)
-            {
-                // Invocar el evento, pasando this como fuente y EventArgs vacío
-                AnimationStopped(this, EventArgs.Empty);
-            }
-        }
-        protected virtual void OnAnimationStarted()
-        {
-            // Verificar si hay suscriptores al evento
-            if (AnimationStarted != null)
-            {
-                // Invocar el evento, pasando this como fuente y EventArgs vacío, o tus propios argumentos si necesitas pasar información
-                AnimationStarted(this, EventArgs.Empty);
-            }
-        }
-        public int CanvasElementCount()
-        {
-            return _CanvasElements.Count;
-        }
-        public void AddBall()
+        public void AddElement()
         {
             lock (_lock)
             {
-                var newElement = _Factory.CreateRandomElement();
-                _CanvasElements.Add(newElement);
+                var newElement = _factory.CreateRandomElement();
+                _canvasElements.Add(newElement);
             }
         }
 
-        public void RemoveBall()
+        public void RemoveElement()
         {
             lock (_lock)
             {
-                if (_CanvasElements.Count > 0)
+                if (_canvasElements.Count > 0)
                 {
-                    _CanvasElements.RemoveAt(_CanvasElements.Count - 1);
+                    _canvasElements.RemoveAt(_canvasElements.Count - 1);
                 }
             }
+        }
+
+        public void StartAnimation(int elementsNumber = 5, int secDuration = 60)
+        {
+            if (_isAnimating) return;
+
+            InitializeAnimation(elementsNumber);
+            RunAnimationLoop(secDuration);
+            StopAnimation();
+        }
+
+        private void InitializeAnimation(int elementsNumber)
+        {
+            _musicManager.PlayBackgroundMusic();
+            _window.Display();
+            AddInitialElements(elementsNumber);
+            _isAnimating = true;
+            OnAnimationStarted();
+        }
+
+        private void AddInitialElements(int elementsNumber)
+        {
+            for (int i = 0; i < elementsNumber; i++)
+            {
+                AddElement();
+            }
+        }
+
+        private void RunAnimationLoop(int secDuration)
+        {
+            var timeEndAnimation = DateTime.Now.AddSeconds(secDuration);
+            Clock clock = new Clock();
+
+            while (_window.IsOpen && _isAnimating && timeEndAnimation > DateTime.Now)
+            {
+                _window.DispatchEvents();
+                _window.Clear(_canvas.BackgroundColor);
+                float deltaTime = clock.Restart().AsSeconds();
+                UpdateCanvasElements(deltaTime);
+                _window.Display();
+            }
+        }
+
+        public void StopAnimation()
+        {
+            if (!_isAnimating || _window == null) return;
+
+            _isAnimating = false;
+            _musicManager.StopBackgroundMusic();
+            _canvasElements.Clear();
+            _window.Close();
+            OnAnimationStopped();
+        }
+
+        private void UpdateCanvasElements(float deltaTime)
+        {
+            lock (_lock)
+            {
+                foreach (var element in _canvasElements)
+                {
+                    element.Update(deltaTime);
+                    CollisionManager.HandleCollisions(element, _canvasElements, _canvas);
+                    _window.Draw(element);
+                }
+            }
+        }
+
+        protected virtual void OnAnimationStarted() => AnimationStarted?.Invoke(this, EventArgs.Empty);
+        protected virtual void OnAnimationStopped() => AnimationStopped?.Invoke(this, EventArgs.Empty);
+
+        public event EventHandler? AnimationStarted;
+        public event EventHandler? AnimationStopped;
+    }
+
+    // Separar la gestión de música en una clase dedicada
+    public class MusicManager
+    {
+        private Music _backgroundMusic;
+
+        public MusicManager()
+        {
+            _backgroundMusic = new Music(DirectoryManager.MusicPath);
+            _backgroundMusic.StateChanged += BackgroundMusic_StateChanged;
+        }
+
+        public void PlayBackgroundMusic()
+        {
+            _backgroundMusic.Play();
+        }
+
+        public void StopBackgroundMusic()
+        {
+            _backgroundMusic.Stop();
         }
 
         private void BackgroundMusic_StateChanged(SFML.Audio.SoundStatus newStatus)
@@ -90,151 +157,34 @@ namespace AutoPost.AnimationCanvas.Classes
                 OnMusicStopped();
             }
         }
-        protected virtual void OnMusicStopped()
+
+        protected virtual void OnMusicStopped() => MusicStopped?.Invoke(this, EventArgs.Empty);
+
+        public event EventHandler? MusicStopped;
+    }
+
+    // Utilizar una clase de fábrica para crear el RenderWindow
+    public static class WindowFactory
+    {
+        public static RenderWindow CreateRenderWindow(Canvas canvas)
         {
-            MusicStopped?.Invoke();
+            var window = new RenderWindow(new VideoMode((uint)canvas.Width, (uint)canvas.Height), "AnimationBalls", Styles.None);
+            window.SetFramerateLimit(120);
+            window.Position = new Vector2i(0, 0);
+            return window;
         }
+    }
 
-        #region Animation
+    // Manejar la creación de directorios en una clase separada
+    public static class DirectoryManager
+    {
+        public static string MusicPath => $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.MusicFolderPath}";
+        public static string SoundsPath => $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Properties.Resources.SoundsFolderPath}";
 
-        public void StartAnimation(int BallsNumber = 5, int SecDuration = 60)
+        public static void InitializeDirectories()
         {
-            if (_isAnimating) { return; }
-            _BackgroundMusic = new Music(MusicPath);
-            var timeEndAnimation = DateTime.Now.AddSeconds(SecDuration);
-            _Window = new RenderWindow(new VideoMode((uint)_Canvas.Width, (uint)_Canvas.Height), "AnimationBalls", Styles.None);
-            _Window.SetFramerateLimit(120);
-            _Window.Position = new Vector2i(0, 0);
-            _isAnimating = true;
-
-            for (int i = 0; i < BallsNumber; i++)
-            {
-                _CanvasElements.Add(_Factory.CreateRandomElement());
-            }
-
-            _BackgroundMusic.Play();
-            Clock clock = new Clock();
-
-            _Window.Display();
-            OnAnimationStarted();
-            while (_Window.IsOpen && _isAnimating && timeEndAnimation > DateTime.Now)
-            {
-                _Window.DispatchEvents();
-                _Window.Clear(_Canvas.BackgroundColor);
-
-                float deltaTime = clock.Restart().AsSeconds();
-
-                lock (_lock)
-                {
-                    foreach (var element in _CanvasElements)
-                    {
-                        UpdateElementPosition(element, deltaTime);
-                        _Window.Draw(element);
-                    }
-                }
-                _Window.Display();
-            }
-            StopAnimation();
-        }
-        public void StopAnimation()
-        {
-            if (!_isAnimating) { return; }
-            if (_Window == null) { return; }
-            _isAnimating = false;
-            _BackgroundMusic.Stop();
-            _CanvasElements.Clear();
-            _Window.Close();
-            OnAnimationStopped();
-
-        }
-
-        private void UpdateElementPosition(ICanvasElement element, float deltaTime)
-        {
-            // Primero, actualiza la posición del elemento
-            element.Update(deltaTime);
-
-            BallElement? ball = element as BallElement;
-            if (ball != null)
-            {
-                // Colisión con los bordes horizontales del canvas
-                if (ball.Shape.Position.X < 0)
-                {
-                    ball.Velocity = new Vector2f(-ball.Velocity.X, ball.Velocity.Y);
-                    ball.Shape.Position = new Vector2f(0, ball.Shape.Position.Y);
-                }
-                else if (ball.Shape.Position.X + ball.Shape.Radius * 2 > _Canvas.Width)
-                {
-                    ball.Velocity = new Vector2f(-ball.Velocity.X, ball.Velocity.Y);
-                    ball.Shape.Position = new Vector2f(_Canvas.Width - ball.Shape.Radius * 2, ball.Shape.Position.Y);
-                }
-
-                // Colisión con los bordes verticales del canvas
-                if (ball.Shape.Position.Y < 0)
-                {
-                    ball.Velocity = new Vector2f(ball.Velocity.X, -ball.Velocity.Y);
-                    ball.Shape.Position = new Vector2f(ball.Shape.Position.X, 0);
-                }
-                else if (ball.Shape.Position.Y + ball.Shape.Radius * 2 > _Canvas.Height)
-                {
-                    ball.Velocity = new Vector2f(ball.Velocity.X, -ball.Velocity.Y);
-                    ball.Shape.Position = new Vector2f(ball.Shape.Position.X, _Canvas.Height - ball.Shape.Radius * 2);
-                }
-
-                // Verifica colisiones con otros elementos
-                // Verifica colisiones con otros elementos
-                foreach (var otherElement in _CanvasElements)
-                {
-                    if (otherElement != element && otherElement is BallElement otherBall && CollisionDetector.CheckCollision(ball, otherBall))
-                    {
-                        // Calcula la normal de la colisión
-                        Vector2f delta = ball.Shape.Position - otherBall.Shape.Position;
-                        Vector2f collisionNormal = Normalize(delta);
-
-                        // Manejar la colisión
-                        ball.Sound.Play();
-                        ball.Velocity = Reflect(ball.Velocity, collisionNormal);
-                        otherBall.Velocity = Reflect(otherBall.Velocity, -collisionNormal);
-
-                        // Ajustar la posición para evitar superposición
-                        float overlap = (ball.Shape.Radius + otherBall.Shape.Radius) - Distance(ball.Shape.Position, otherBall.Shape.Position) + 1.0f;
-                        collisionNormal = Normalize(collisionNormal); // Normalizar de nuevo por si acaso
-                        ball.Shape.Position += collisionNormal * overlap / 2f;
-                        otherBall.Shape.Position -= collisionNormal * overlap / 2f;
-                    }
-                }
-
-            }
-        }
-
-        private Vector2f Normalize(Vector2f vector)
-        {
-            float length = (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
-            if (length != 0)
-            {
-                return new Vector2f(vector.X / length, vector.Y / length);
-            }
-            return vector;
-        }
-
-        private Vector2f Reflect(Vector2f velocity, Vector2f normal)
-        {
-            return velocity - 2f * DotProduct(velocity, normal) * normal;
-        }
-
-        private float DotProduct(Vector2f a, Vector2f b)
-        {
-            return a.X * b.X + a.Y * b.Y;
-        }
-
-        private float Distance(Vector2f a, Vector2f b)
-        {
-            return (float)Math.Sqrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y));
-        }
-
-        #endregion
-        public int MusicDuration()
-        {
-            return _BackgroundMusic.MusicDuration();
+            Initializer.CreateDirectoryIfNotExist(MusicPath);
+            Initializer.CreateDirectoryIfNotExist(SoundsPath);
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using AutoPost.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoPost.Infraestructure.Youtube
 {
@@ -12,7 +7,8 @@ namespace AutoPost.Infraestructure.Youtube
     {
         public async Task<string> DownloadVideoAsync(string videoUrl, string downloadPath)
         {
-            
+            await Task.Delay(1);
+            return "";
         }
     }
 }

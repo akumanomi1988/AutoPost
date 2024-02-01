@@ -1,6 +1,5 @@
 ﻿using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
-using AutoPost.Infraestructure.Utils;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Upload;
