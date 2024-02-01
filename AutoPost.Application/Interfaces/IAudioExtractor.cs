@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoPost.PostGenerator.Recorders
+namespace AutoPost.Application.Interfaces
 {
-    internal class AudioRecorder
+    internal interface IAudioExtractor
     {
     }
 }
