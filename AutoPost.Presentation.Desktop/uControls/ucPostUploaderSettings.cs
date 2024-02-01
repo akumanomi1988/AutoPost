@@ -5,15 +5,15 @@ namespace AutoPost.Presentation.Desktop.uControls
 {
     public partial class ucPostUploaderSettings : UserControl
     {
-        private PostUploaderController _Controller;
-        private PostUploaderSettings _ViewModel;
+        private readonly PostUploaderController _Controller;
+        private readonly PostUploaderSettings _ViewModel;
         public ucPostUploaderSettings()
         {
             InitializeComponent();
             _Controller = new();
             _ViewModel = _Controller.Load() ?? new PostUploaderSettings();
-            txtDefaultVideoFolder.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.DefaultVideoFolder), false, DataSourceUpdateMode.OnPropertyChanged);
-            txtSessionID.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.SessionID), false, DataSourceUpdateMode.OnPropertyChanged);
+            _ = txtDefaultVideoFolder.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.DefaultVideoFolder), false, DataSourceUpdateMode.OnPropertyChanged);
+            _ = txtSessionID.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.SessionID), false, DataSourceUpdateMode.OnPropertyChanged);
 
         }
         public PostUploaderSettings GetPostUploaderSettings()

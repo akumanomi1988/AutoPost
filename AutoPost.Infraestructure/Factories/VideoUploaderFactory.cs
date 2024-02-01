@@ -1,10 +1,9 @@
 ﻿using AutoPost.Domain.Interfaces;
 using AutoPost.Infraestructure.Instagram;
 using AutoPost.Infraestructure.Youtube;
-using AutoPost.Infrastructure.TikTok;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AutoPost.Infrastructure.Factories
+namespace AutoPost.Infraestructure.Factories
 {
     public class VideoUploaderFactory : IPostPublisherFactory
     {
@@ -20,10 +19,10 @@ namespace AutoPost.Infrastructure.Factories
             switch (platform.ToLower())
             {
                 case "youtube":
-                    var authProvider = _serviceProvider.GetRequiredService<IAuthenticationProvider>();
-                    return (IPostPublisher)new YouTubePublisher(authProvider);
+                    IAuthenticationProvider authProvider = _serviceProvider.GetRequiredService<IAuthenticationProvider>();
+                    return new YouTubePublisher(authProvider);
                 case "tiktok":
-                    return (IPostPublisher)new TikTokPublisher(); //(authProvider, fileProvider);
+                    return new TikTokPublisher(); //(authProvider, fileProvider);
                 case "instagram":
                     return new InstagramUploader();
                 // otros casos...

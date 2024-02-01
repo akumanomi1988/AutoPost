@@ -2,15 +2,15 @@
 using AutoPost.AnimationCanvas.Factories;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
+using AutoPost.Infraestructure.TikTok;
 using AutoPost.Infraestructure.Youtube;
-using AutoPost.Infrastructure.TikTok;
 using AutoPost.Presentation.Desktop.Controllers;
 
 namespace AutoPost.Presentation.Desktop
 {
     public partial class MainForm : Form
     {
-        private OBSController _obsController;
+        private readonly OBSController _obsController;
         public bool Auto { get; set; } = false;
         private AnimationCanvas.Classes.AnimationCanvas? _AnimationCanvas;
 
@@ -28,9 +28,9 @@ namespace AutoPost.Presentation.Desktop
 
         private void _obsController_VideoRecorderStatusChanged(object? sender, VideoRecorder.Interfaces.Models.VideoRecorderStatus.Status e)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke(new Action(() => _obsController_VideoRecorderStatusChanged(sender, e)));
+                Invoke(new Action(() => _obsController_VideoRecorderStatusChanged(sender, e)));
                 return;
             }
             switch (e)
@@ -64,9 +64,9 @@ namespace AutoPost.Presentation.Desktop
 
         private void _obsController_SocketStatusChanged(object? sender, VideoRecorder.Interfaces.Models.SocketStatus.Status e)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke(new Action(() => _obsController_SocketStatusChanged(sender, e)));
+                Invoke(new Action(() => _obsController_SocketStatusChanged(sender, e)));
                 return;
             }
             switch (e)
@@ -102,8 +102,12 @@ namespace AutoPost.Presentation.Desktop
 
         private void UcPostAnimatorSettings_BallNumberChangedInUCPost(object? sender, EventArgs e)
         {
-            if (_AnimationCanvas == null) return;
-            var settings = ucPostAnimatorSettings.GetSettingsViewModel();
+            if (_AnimationCanvas == null)
+            {
+                return;
+            }
+
+            ViewModel.PostAnimatorSettings settings = ucPostAnimatorSettings.GetSettingsViewModel();
             int step = settings.BallsNumber > _AnimationCanvas.CanvasElementCount() ? 1 : -1;
             while (_AnimationCanvas.CanvasElementCount() != settings.BallsNumber)
             {
@@ -121,13 +125,13 @@ namespace AutoPost.Presentation.Desktop
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            var obs = ucVideoRecorderSettings1.GetVideoRecorderSettings();
+            ViewModel.VideoRecorderSettings obs = ucVideoRecorderSettings1.GetVideoRecorderSettings();
             _obsController.Connect($"{obs.RecorderIP}:{obs.Port}", obs.Password);
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            var settings = ucPostAnimatorSettings.GetSettingsViewModel();
+            ViewModel.PostAnimatorSettings settings = ucPostAnimatorSettings.GetSettingsViewModel();
 
             _AnimationCanvas = new(settings.WindowHeight,
                                     settings.WindowWidth,
@@ -141,7 +145,9 @@ namespace AutoPost.Presentation.Desktop
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
             if (_obsController.IsConnected)
+            {
                 _obsController.StartRecording();
+            }
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e)
@@ -153,25 +159,34 @@ namespace AutoPost.Presentation.Desktop
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             if (_obsController.IsConnected && _obsController.IsRecording)
+            {
                 _obsController.StopRecording();
+            }
         }
 
         private async void toolStripButton6_Click(object sender, EventArgs e)
         {
-            if (!_obsController.IsConnected) return;
-            var LastFile = _obsController.GetLastSavedFile();
+            if (!_obsController.IsConnected)
+            {
+                return;
+            }
+
+            string LastFile = _obsController.GetLastSavedFile();
             if (LastFile == "") { return; }
-            await uploadVideoYT(LastFile);
+            _ = await uploadVideoYT(LastFile);
         }
         private async Task<int> uploadVideoTT(string File)
         {
-            TikTokPublisher? publisher = _postPublisherFactory.CreatePublisher("tiktok") as TikTokPublisher;
-            if (publisher == null) return -1;
+            if (_postPublisherFactory.CreatePublisher("tiktok") is not TikTokPublisher publisher)
+            {
+                return -1;
+            }
+
             publisher.SessionID = ucPostUploaderSettings1.GetPostUploaderSettings().SessionID;
             publisher.OnProcessOutput += Publisher_OnProcessOutput;
 
-            var Post = ucPostData1.GetPost();
-            var tikTokPostData = new TikTokPostData(
+            ViewModel.PostSettings Post = ucPostData1.GetPost();
+            TikTokPostData tikTokPostData = new(
                 title: Post.Title, // "Bolitas Rebotando - Relajación y Satisfacción",
                 description: Post.Description, // "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
                 tags: Post.Tags, //new List<string> { "relajante", "satisfying", "bolitas", "música" },
@@ -201,11 +216,14 @@ namespace AutoPost.Presentation.Desktop
 
         private async Task<int> uploadVideoYT(string File)
         {
-            YouTubePublisher? publisher = _postPublisherFactory.CreatePublisher("Youtube") as YouTubePublisher;
-            if (publisher == null) return -1;
+            if (_postPublisherFactory.CreatePublisher("Youtube") is not YouTubePublisher publisher)
+            {
+                return -1;
+            }
+
             publisher.OnProcessOutput += Publisher_OnProcessOutput;
-            var Post = ucPostData1.GetPost();
-            var youtubePostData = new YoutubePostData(
+            ViewModel.PostSettings Post = ucPostData1.GetPost();
+            YoutubePostData youtubePostData = new(
                 title: Post.Title, // "Bolitas Rebotando - Relajación y Satisfacción",
                 description: Post.Description, // "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
                 tags: Post.Tags, //new List<string> { "relajante", "satisfying", "bolitas", "música" },
@@ -226,7 +244,7 @@ namespace AutoPost.Presentation.Desktop
                 pbAuto.Value = cuentaVideos;
                 cuentaVideos += 1;
                 _obsController.StartRecording();
-                var settings = ucPostAnimatorSettings.GetSettingsViewModel();
+                ViewModel.PostAnimatorSettings settings = ucPostAnimatorSettings.GetSettingsViewModel();
 
                 _AnimationCanvas = new(settings.WindowHeight,
                                         settings.WindowWidth,
@@ -246,23 +264,26 @@ namespace AutoPost.Presentation.Desktop
 
         private async Task uploadLastVideo()
         {
-            var LastFile = _obsController.GetLastSavedFile();
+            string LastFile = _obsController.GetLastSavedFile();
             if (LastFile == "") { return; }
-            await uploadVideoTT(LastFile);
-            await uploadVideoYT(LastFile);
+            _ = await uploadVideoTT(LastFile);
+            _ = await uploadVideoYT(LastFile);
         }
 
         private async void toolStripButton8_Click(object sender, EventArgs e)
         {
             Auto = !Auto;
-            if (Auto) await RunRecordingAndUploadingLoop(24, 60);
+            if (Auto)
+            {
+                await RunRecordingAndUploadingLoop(24, 60);
+            }
         }
 
         private async void toolStripButton7_Click(object sender, EventArgs e)
         {
-            var LastFile = _obsController.GetLastSavedFile();
+            string LastFile = _obsController.GetLastSavedFile();
             if (LastFile == "") { return; }
-            await uploadVideoTT(LastFile);
+            _ = await uploadVideoTT(LastFile);
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -273,9 +294,16 @@ namespace AutoPost.Presentation.Desktop
         private void CloseAll()
         {
 
-            if (_obsController.IsConnected && _obsController.IsRecording) _obsController.StopRecording();
+            if (_obsController.IsConnected && _obsController.IsRecording)
+            {
+                _obsController.StopRecording();
+            }
+
             if (_AnimationCanvas == null) { return; }
-            if (_AnimationCanvas.IsAnimating) _AnimationCanvas.StopAnimation();
+            if (_AnimationCanvas.IsAnimating)
+            {
+                _AnimationCanvas.StopAnimation();
+            }
         }
         private void saveStates()
         {
@@ -293,7 +321,7 @@ namespace AutoPost.Presentation.Desktop
             while (_AnimationCanvas.IsAnimating)
             {
                 await Task.Delay(sec * 1000);
-                var numBall = _AnimationCanvas.CanvasElementCount();
+                int numBall = _AnimationCanvas.CanvasElementCount();
                 // Si estamos aumentando y aún no hemos alcanzado el máximo
                 if (IsIncreasingNumber && numBall < MaxBalls)
                 {

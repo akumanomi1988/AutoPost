@@ -28,7 +28,9 @@ AutoPost uses Python scripts for some operations, so the following is required:
 
 - **Python 3 Installation:** Ensure you have Python 3 installed. You can download it from [here](https://www.python.org/downloads/).
 - **Pip Installation:** Pip is used to manage Python libraries. The installation of Python should include Pip. You can find installation instructions [here](https://pip.pypa.io/en/stable/installation/).
-- **tiktok-uploader Installation:** AutoPost requires the 'tiktok-uploader' package to publish videos on TikTok. Install it using pip:
+- **tiktok-uploader Installation:** AutoPost requires the 'tiktok-uploader' package to publish videos on TikTok. [Link to the project](https://pypi.org/project/tiktok-uploader/)
+
+Install it using pip:
 
 ```bash
 pip install tiktok-uploader

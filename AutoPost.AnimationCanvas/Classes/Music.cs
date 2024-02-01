@@ -4,7 +4,7 @@ namespace AutoPost.AnimationCanvas.Classes
 {
     public class Music
     {
-        private SFML.Audio.Music _music;
+        private readonly SFML.Audio.Music _music;
         private SFML.Audio.SoundStatus _lastStatus;
 
         // Delegado y evento para el cambio de estado
@@ -13,12 +13,12 @@ namespace AutoPost.AnimationCanvas.Classes
 
         public Music(string filePath)
         {
-            var files = Directory.EnumerateFiles(filePath, "*.ogg"); // Asumiendo que son archivos .ogg
+            IEnumerable<string> files = Directory.EnumerateFiles(filePath, "*.ogg"); // Asumiendo que son archivos .ogg
             if (!files.Any())
             {
                 throw new Exception("No hay archivo de música en la carpeta");
             }
-            var rnd = new Random();
+            Random rnd = new();
             _music = new SFML.Audio.Music(files.ElementAt(rnd.Next(files.Count())));
             _lastStatus = SFML.Audio.SoundStatus.Stopped;
         }
@@ -39,7 +39,7 @@ namespace AutoPost.AnimationCanvas.Classes
 
         private void MonitorStatus()
         {
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 while (_music.Status != SFML.Audio.SoundStatus.Stopped)
                 {

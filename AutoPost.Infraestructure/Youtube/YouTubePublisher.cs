@@ -27,15 +27,15 @@ namespace AutoPost.Infraestructure.Youtube
             }
 
             // Obtener credenciales y configurar el servicio de YouTube
-            var credential = (UserCredential)await _authProvider.GetCredentialsAsync();
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            UserCredential credential = (UserCredential)await _authProvider.GetCredentialsAsync();
+            YouTubeService youtubeService = new(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = "YTUploader"
             });
 
             // Configurar los detalles del video
-            var video = new Video
+            Video video = new()
             {
                 Snippet = new VideoSnippet
                 {
@@ -51,21 +51,18 @@ namespace AutoPost.Infraestructure.Youtube
             };
 
             // Subir el video
-            var filePath = youtubeData.ContentPath;
-            using (var fileStream = new FileStream(filePath, FileMode.Open))
-            {
-                var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
-                videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
-                videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
+            string filePath = youtubeData.ContentPath;
+            using FileStream fileStream = new(filePath, FileMode.Open);
+            VideosResource.InsertMediaUpload videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+            videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
+            videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
 
-                var res = await videosInsertRequest.UploadAsync();
-                OnProcessOutput?.Invoke($"YOUTUBE PUBLISH RESULTS:\n{DateTime.Now.ToShortTimeString}\n{res.Status}");
-                return (int)res.Status;
-            }
+            IUploadProgress res = await videosInsertRequest.UploadAsync();
+            OnProcessOutput?.Invoke($"YOUTUBE PUBLISH RESULTS:\n{DateTime.Now.ToShortTimeString}\n{res.Status}");
+            return (int)res.Status;
         }
 
-
-        void videosInsertRequest_ProgressChanged(Google.Apis.Upload.IUploadProgress progress)
+        private void videosInsertRequest_ProgressChanged(Google.Apis.Upload.IUploadProgress progress)
         {
             switch (progress.Status)
             {
@@ -81,7 +78,7 @@ namespace AutoPost.Infraestructure.Youtube
             }
         }
 
-        void videosInsertRequest_ResponseReceived(Video video)
+        private void videosInsertRequest_ResponseReceived(Video video)
         {
             OnProcessOutput?.Invoke($"YOUTUBE PUBLISH RESULTS:\n{DateTime.Now.ToShortTimeString}\n{video.Id}\n{video.Kind}");
         }

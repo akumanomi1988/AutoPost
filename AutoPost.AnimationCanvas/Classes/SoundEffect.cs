@@ -4,8 +4,8 @@ namespace AutoPost.AnimationCanvas.Classes
 {
     public class SoundEffect
     {
-        private SoundBuffer _buffer;
-        private Sound _sound;
+        private readonly SoundBuffer _buffer;
+        private readonly Sound _sound;
 
         public SoundEffect(string filePath)
         {

@@ -15,7 +15,7 @@ namespace AutoPost.Application.Services
         }
         async Task<VideoDownloadResultDto> IVideoDownloadService.DownloadVideoAsync(string videoUrl, string downloadPath)
         {
-            var videoContent = await _youTubeDownloader.DownloadVideoAsync(videoUrl, downloadPath);
+            string videoContent = await _youTubeDownloader.DownloadVideoAsync(videoUrl, downloadPath);
             return new VideoDownloadResultDto { URL = videoContent };
         }
     }

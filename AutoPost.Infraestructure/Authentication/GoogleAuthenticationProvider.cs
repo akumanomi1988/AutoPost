@@ -17,16 +17,14 @@ namespace AutoPost.Infraestructure.Authentication
 
         public async Task<object> GetCredentialsAsync()
         {
-            using (var stream = new FileStream(_credentialsFilePath, FileMode.Open, FileAccess.Read))
-            {
-                var clientSecrets = NewtonsoftJsonSerializer.Instance.Deserialize<GoogleClientSecrets>(stream).Secrets;
+            using FileStream stream = new(_credentialsFilePath, FileMode.Open, FileAccess.Read);
+            ClientSecrets clientSecrets = NewtonsoftJsonSerializer.Instance.Deserialize<GoogleClientSecrets>(stream).Secrets;
 
-                return await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    clientSecrets,
-                    new[] { YouTubeService.Scope.YoutubeUpload },
-                    "user",
-                    CancellationToken.None);
-            }
+            return await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                clientSecrets,
+                new[] { YouTubeService.Scope.YoutubeUpload },
+                "user",
+                CancellationToken.None);
 
         }
     }

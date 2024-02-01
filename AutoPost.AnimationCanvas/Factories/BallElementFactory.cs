@@ -7,10 +7,10 @@ using SFML.System;
 
 public class BallElementFactory : ICanvasElementFactory
 {
-    private Random _random = new Random();
-    private List<Sound> _sounds;
-    private int _canvasWidth;
-    private int _canvasHeight;
+    private readonly Random _random = new();
+    private readonly List<Sound> _sounds;
+    private readonly int _canvasWidth;
+    private readonly int _canvasHeight;
 
     public BallElementFactory(string soundsFolderPath, int canvasWidth, int canvasHeight)
     {
@@ -21,15 +21,15 @@ public class BallElementFactory : ICanvasElementFactory
     }
     private void LoadSounds(string soundsFolderPath)
     {
-        foreach (var filePath in Directory.GetFiles(soundsFolderPath))
+        foreach (string filePath in Directory.GetFiles(soundsFolderPath))
         {
-            SoundBuffer buffer = new SoundBuffer(filePath);
+            SoundBuffer buffer = new(filePath);
             _sounds.Add(new Sound(buffer));
         }
     }
     public IEnumerable<ICanvasElement> CreateRandomElements(int count)
     {
-        List<ICanvasElement> elements = new List<ICanvasElement>();
+        List<ICanvasElement> elements = new();
         for (int i = 0; i < count; i++)
         {
             BallElement element;
@@ -47,8 +47,8 @@ public class BallElementFactory : ICanvasElementFactory
     private BallElement CreateRandomElement()
     {
         float radius = _random.Next(10, 30);
-        Vector2f position = new Vector2f(_random.Next((int)radius, _canvasWidth - (int)radius), _random.Next((int)radius, _canvasHeight - (int)radius));
-        Color color = new Color((byte)_random.Next(256), (byte)_random.Next(256), (byte)_random.Next(256));
+        Vector2f position = new(_random.Next((int)radius, _canvasWidth - (int)radius), _random.Next((int)radius, _canvasHeight - (int)radius));
+        Color color = new((byte)_random.Next(256), (byte)_random.Next(256), (byte)_random.Next(256));
         int velocity = _random.Next(100, 400);
         Sound sound = _sounds[_random.Next(_sounds.Count)];
 
@@ -57,7 +57,7 @@ public class BallElementFactory : ICanvasElementFactory
 
     private bool IsOverlapping(BallElement element, List<ICanvasElement> elements)
     {
-        foreach (var other in elements)
+        foreach (ICanvasElement other in elements)
         {
             if (other == null) { continue; }
             if (other is BallElement otherBall && CollisionManager.CheckCollision(element, otherBall))

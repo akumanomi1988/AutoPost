@@ -1,5 +1,4 @@
-﻿using AutoPost.AnimationCanvas.Elements;
-using AutoPost.AnimationCanvas.Interfaces;
+﻿using AutoPost.AnimationCanvas.Interfaces;
 using AutoPost.AnimationCanvas.Utils;
 using SFML.Graphics;
 using SFML.System;
@@ -14,9 +13,9 @@ namespace AutoPost.AnimationCanvas.Classes
         private readonly RenderWindow _window;
         private readonly MusicManager _musicManager;
         private readonly ICanvasElementFactory _factory;
-        private readonly object _lock = new object();
-        private bool _isAnimating = false;
-        public bool IsAnimating { get { return _isAnimating; } }
+        private readonly object _lock = new();
+
+        public bool IsAnimating { get; private set; } = false;
 
         public AnimationCanvas(int width, int height, Color backgroundColor, ICanvasElementFactory factory)
         {
@@ -31,16 +30,22 @@ namespace AutoPost.AnimationCanvas.Classes
 
         private void ValidateCanvasSize(int width, int height)
         {
-            if (width <= 0 || height <= 0) throw new ArgumentException("Las dimensiones del canvas deben ser mayores que cero.");
+            if (width <= 0 || height <= 0)
+            {
+                throw new ArgumentException("Las dimensiones del canvas deben ser mayores que cero.");
+            }
         }
 
-        public int CanvasElementCount() => _canvasElements.Count;
+        public int CanvasElementCount()
+        {
+            return _canvasElements.Count;
+        }
 
         public void AddElement()
         {
             lock (_lock)
             {
-                var newElement = _factory.CreateRandomElement();
+                ICanvasElement newElement = _factory.CreateRandomElement();
                 _canvasElements.Add(newElement);
             }
         }
@@ -58,7 +63,10 @@ namespace AutoPost.AnimationCanvas.Classes
 
         public void StartAnimation(int elementsNumber = 5, int secDuration = 60)
         {
-            if (_isAnimating) return;
+            if (IsAnimating)
+            {
+                return;
+            }
 
             InitializeAnimation(elementsNumber);
             RunAnimationLoop(secDuration);
@@ -70,7 +78,7 @@ namespace AutoPost.AnimationCanvas.Classes
             _musicManager.PlayBackgroundMusic();
             _window.Display();
             AddInitialElements(elementsNumber);
-            _isAnimating = true;
+            IsAnimating = true;
             OnAnimationStarted();
         }
 
@@ -84,10 +92,10 @@ namespace AutoPost.AnimationCanvas.Classes
 
         private void RunAnimationLoop(int secDuration)
         {
-            var timeEndAnimation = DateTime.Now.AddSeconds(secDuration);
-            Clock clock = new Clock();
+            DateTime timeEndAnimation = DateTime.Now.AddSeconds(secDuration);
+            Clock clock = new();
 
-            while (_window.IsOpen && _isAnimating && timeEndAnimation > DateTime.Now)
+            while (_window.IsOpen && IsAnimating && timeEndAnimation > DateTime.Now)
             {
                 _window.DispatchEvents();
                 _window.Clear(_canvas.BackgroundColor);
@@ -99,9 +107,12 @@ namespace AutoPost.AnimationCanvas.Classes
 
         public void StopAnimation()
         {
-            if (!_isAnimating || _window == null) return;
+            if (!IsAnimating || _window == null)
+            {
+                return;
+            }
 
-            _isAnimating = false;
+            IsAnimating = false;
             _musicManager.StopBackgroundMusic();
             _canvasElements.Clear();
             _window.Close();
@@ -112,7 +123,7 @@ namespace AutoPost.AnimationCanvas.Classes
         {
             lock (_lock)
             {
-                foreach (var element in _canvasElements)
+                foreach (ICanvasElement element in _canvasElements)
                 {
                     element.Update(deltaTime);
                     CollisionManager.HandleCollisions(element, _canvasElements, _canvas);
@@ -121,8 +132,15 @@ namespace AutoPost.AnimationCanvas.Classes
             }
         }
 
-        protected virtual void OnAnimationStarted() => AnimationStarted?.Invoke(this, EventArgs.Empty);
-        protected virtual void OnAnimationStopped() => AnimationStopped?.Invoke(this, EventArgs.Empty);
+        protected virtual void OnAnimationStarted()
+        {
+            AnimationStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnAnimationStopped()
+        {
+            AnimationStopped?.Invoke(this, EventArgs.Empty);
+        }
 
         public event EventHandler? AnimationStarted;
         public event EventHandler? AnimationStopped;
@@ -131,7 +149,7 @@ namespace AutoPost.AnimationCanvas.Classes
     // Separar la gestión de música en una clase dedicada
     public class MusicManager
     {
-        private Music _backgroundMusic;
+        private readonly Music _backgroundMusic;
 
         public MusicManager()
         {
@@ -158,7 +176,10 @@ namespace AutoPost.AnimationCanvas.Classes
             }
         }
 
-        protected virtual void OnMusicStopped() => MusicStopped?.Invoke(this, EventArgs.Empty);
+        protected virtual void OnMusicStopped()
+        {
+            MusicStopped?.Invoke(this, EventArgs.Empty);
+        }
 
         public event EventHandler? MusicStopped;
     }
@@ -168,7 +189,7 @@ namespace AutoPost.AnimationCanvas.Classes
     {
         public static RenderWindow CreateRenderWindow(Canvas canvas)
         {
-            var window = new RenderWindow(new VideoMode((uint)canvas.Width, (uint)canvas.Height), "AnimationBalls", Styles.None);
+            RenderWindow window = new(new VideoMode((uint)canvas.Width, (uint)canvas.Height), "AnimationBalls", Styles.None);
             window.SetFramerateLimit(120);
             window.Position = new Vector2i(0, 0);
             return window;
