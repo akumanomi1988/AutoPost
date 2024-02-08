@@ -2,6 +2,6 @@
 {
     public class VideoDownloadResultDto
     {
-        public string URL { get; set; } = "";
+        public string Path { get; set; } = "";
     }
 }

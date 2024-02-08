@@ -45,6 +45,7 @@ namespace AutoPost.Presentation.Desktop
             ucVideoRecorderSettings1 = new ucVideoRecorderSettings();
             tableLayoutPanel2 = new TableLayoutPanel();
             ucPostData1 = new ucPost();
+            txtlog = new TextBox();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
             toolStripButton2 = new ToolStripButton();
@@ -54,7 +55,8 @@ namespace AutoPost.Presentation.Desktop
             toolStripButton6 = new ToolStripButton();
             toolStripButton7 = new ToolStripButton();
             toolStripButton8 = new ToolStripButton();
-            txtlog = new TextBox();
+            toolStripButton9 = new ToolStripButton();
+            toolStripButton10 = new ToolStripButton();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -220,13 +222,22 @@ namespace AutoPost.Presentation.Desktop
             ucPostData1.Size = new Size(438, 263);
             ucPostData1.TabIndex = 0;
             // 
+            // txtlog
+            // 
+            txtlog.Dock = DockStyle.Fill;
+            txtlog.Location = new Point(3, 272);
+            txtlog.Multiline = true;
+            txtlog.Name = "txtlog";
+            txtlog.Size = new Size(438, 359);
+            txtlog.TabIndex = 1;
+            // 
             // toolStrip1
             // 
             toolStrip1.Dock = DockStyle.None;
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5, toolStripButton6, toolStripButton7, toolStripButton8 });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5, toolStripButton6, toolStripButton7, toolStripButton8, toolStripButton9, toolStripButton10 });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(647, 25);
+            toolStrip1.Size = new Size(868, 25);
             toolStrip1.TabIndex = 0;
             // 
             // toolStripButton1
@@ -306,14 +317,25 @@ namespace AutoPost.Presentation.Desktop
             toolStripButton8.Text = "Auto";
             toolStripButton8.Click += toolStripButton8_Click;
             // 
-            // txtlog
+            // toolStripButton9
             // 
-            txtlog.Dock = DockStyle.Fill;
-            txtlog.Location = new Point(3, 272);
-            txtlog.Multiline = true;
-            txtlog.Name = "txtlog";
-            txtlog.Size = new Size(438, 359);
-            txtlog.TabIndex = 1;
+            toolStripButton9.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton9.Image = (Image)resources.GetObject("toolStripButton9.Image");
+            toolStripButton9.ImageTransparentColor = Color.Magenta;
+            toolStripButton9.Name = "toolStripButton9";
+            toolStripButton9.Size = new Size(95, 22);
+            toolStripButton9.Text = "DownloadVideo";
+            toolStripButton9.Click += toolStripButton9_Click;
+            // 
+            // toolStripButton10
+            // 
+            toolStripButton10.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton10.Image = (Image)resources.GetObject("toolStripButton10.Image");
+            toolStripButton10.ImageTransparentColor = Color.Magenta;
+            toolStripButton10.Name = "toolStripButton10";
+            toolStripButton10.Size = new Size(95, 22);
+            toolStripButton10.Text = "DownloadVideo";
+            toolStripButton10.Click += toolStripButton10_Click;
             // 
             // MainForm
             // 
@@ -373,5 +395,7 @@ namespace AutoPost.Presentation.Desktop
         private ToolStripProgressBar pbTikTokUploading;
         private TableLayoutPanel tableLayoutPanel2;
         private TextBox txtlog;
+        private ToolStripButton toolStripButton9;
+        private ToolStripButton toolStripButton10;
     }
 }

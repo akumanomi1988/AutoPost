@@ -1,14 +1,19 @@
 
+using AutoMapper;
+using AutoPost.Application.Interfaces;
 using AutoPost.Application.Services;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Infraestructure.Authentication;
+using AutoPost.Infraestructure.Downloader;
 using AutoPost.Infraestructure.Factories;
 using AutoPost.Infraestructure.Instagram;
 using AutoPost.Infraestructure.TikTok;
-using AutoPost.Infraestructure.Utils;
+using AutoPost.Infraestructure.VideoManagement;
 using AutoPost.Infraestructure.Youtube;
+using AutoPost.Infrastructure.VideoManagement;
 using AutoPost.Presentation.Desktop;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Policy;
 
 internal static class Program
 {
@@ -29,21 +34,18 @@ internal static class Program
 
         string liteDbPath = $@"{Application.StartupPath}\Database.db";
         string GoogleAuthPath = $@"{Application.StartupPath}\GoogleAuth.json";
-
-
-        //services.AddSingleton<IMetadataStorageService>(provider => new MetadataStorageService(liteDbPath));
         _ = services.AddSingleton<ICategoryService, YouTubeCategoryService>();
         _ = services.AddSingleton<ICategoryService, InstagramCategoryService>();
-        //services.AddTransient<IMetadataService,MetadataService>();
-        _ = services.AddTransient<IPostPublisherFactory, VideoUploaderFactory>();
-        _ = services.AddTransient<CategoryManager>();
-        _ = services.AddTransient<YouTubePublisher>();
-        _ = services.AddTransient<InstagramUploader>();
-        _ = services.AddTransient<TikTokPublisher>();
         _ = services.AddSingleton<IAuthenticationProvider, GoogleAuthenticationProvider>(provider =>
                     new GoogleAuthenticationProvider(GoogleAuthPath));
-        _ = services.AddSingleton<IFileProvider, FileProvider>();
-        //services.AddTransient<IPublishService, VideoUploadService>();
+        _ = services.AddTransient<IPostPublisherFactory, PublisherFactory>();
+        _ = services.AddTransient<CategoryManager>();
+        _ = services.AddTransient<IVideoDownloader, YouTubeDownloader>();
+        _ = services.AddTransient<IVideoDownloadService, VideoDownloadService>();
+        _ = services.AddTransient<IVideoSplitter, VideoSplitter>();
+        _ = services.AddTransient<IVideoCropper, VideoCropper>();
+        _ = services.AddTransient<IVideoManagementService, VideoManagementService>();
+        _ = services.AddAutoMapper(typeof(MapConfig));
         _ = services.AddTransient<MainForm>();
     }
 }

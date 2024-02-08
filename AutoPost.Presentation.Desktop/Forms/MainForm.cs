@@ -1,10 +1,14 @@
-﻿using AutoPost.AnimationCanvas.Classes;
+﻿using AutoMapper;
+using AutoPost.AnimationCanvas.Classes;
 using AutoPost.AnimationCanvas.Factories;
+using AutoPost.Application.Interfaces;
+using AutoPost.Application.Services;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Domain.Models;
 using AutoPost.Infraestructure.TikTok;
 using AutoPost.Infraestructure.Youtube;
 using AutoPost.Presentation.Desktop.Controllers;
+using System.Runtime.CompilerServices;
 
 namespace AutoPost.Presentation.Desktop
 {
@@ -13,17 +17,22 @@ namespace AutoPost.Presentation.Desktop
         private readonly OBSController _obsController;
         public bool Auto { get; set; } = false;
         private AnimationCanvas.Classes.AnimationCanvas? _AnimationCanvas;
-
-
+        private readonly IVideoDownloadService _VideoDownloadService;
+        private readonly IVideoManagementService _VideoSplitterServide;
         private readonly IPostPublisherFactory _postPublisherFactory;
-        public MainForm(IPostPublisherFactory postPublisherFactory)
+        private readonly IMapper _Mapper;
+        public MainForm(IPostPublisherFactory postPublisherFactory, IVideoDownloadService videoDownloadService, IVideoManagementService videoSplitter,IMapper mapper)
         {
             InitializeComponent();
+            _VideoDownloadService = videoDownloadService;
+            _VideoSplitterServide = videoSplitter;
             _postPublisherFactory = postPublisherFactory;
             _obsController = new();
             _obsController.SocketStatusChanged += _obsController_SocketStatusChanged;
             _obsController.VideoRecorderStatusChanged += _obsController_VideoRecorderStatusChanged;
             ucPostAnimatorSettings.BallNumberChangedInUCPost += UcPostAnimatorSettings_BallNumberChangedInUCPost;
+            _Mapper = mapper;
+            
         }
 
         private void _obsController_VideoRecorderStatusChanged(object? sender, VideoRecorder.Interfaces.Models.VideoRecorderStatus.Status e)
@@ -95,7 +104,7 @@ namespace AutoPost.Presentation.Desktop
 
         }
 
-        private async void _AnimationCanvas_AnimationStarted(object source, EventArgs args)
+        private async void AnimationCanvas_AnimationStarted(object? source, EventArgs args)
         {
             await AddBallsEvery(3, 20, 10);
         }
@@ -137,7 +146,7 @@ namespace AutoPost.Presentation.Desktop
                                     settings.WindowWidth,
                                     new SFML.Graphics.Color(settings.BackGroundColor.R, settings.BackGroundColor.G, settings.BackGroundColor.B),
                                     new CanvasElementFactory(DirectoryManager.SoundsPath));
-            _AnimationCanvas.AnimationStarted += _AnimationCanvas_AnimationStarted;
+            _AnimationCanvas.AnimationStarted += AnimationCanvas_AnimationStarted;
             _AnimationCanvas.StartAnimation(settings.BallsNumber, settings.Duration);
 
         }
@@ -250,7 +259,7 @@ namespace AutoPost.Presentation.Desktop
                                         settings.WindowWidth,
                                         new SFML.Graphics.Color(settings.BackGroundColor.R, settings.BackGroundColor.G, settings.BackGroundColor.B),
                                         new CanvasElementFactory(DirectoryManager.SoundsPath));
-                _AnimationCanvas.AnimationStarted += _AnimationCanvas_AnimationStarted;
+                _AnimationCanvas.AnimationStarted += AnimationCanvas_AnimationStarted;
                 _AnimationCanvas.StartAnimation(settings.BallsNumber, settings.Duration);
 
                 _obsController.StopRecording();
@@ -345,6 +354,54 @@ namespace AutoPost.Presentation.Desktop
             }
         }
 
+        private async void toolStripButton9_Click(object sender, EventArgs e)
+        {
+            var url = "https://www.youtube.com/watch?v=FNFz178Iaqk";
+            var downloadPath = "C:\\Users\\dmozota\\Downloads";
+            await _VideoDownloadService.DownloadVideoAsync(url, downloadPath);
+        }
 
+        private async void toolStripButton10_Click(object sender, EventArgs e)
+        {
+            var videoManager = new VideoManager(_VideoDownloadService, _VideoSplitterServide);
+            var url = "https://www.youtube.com/watch?v=FNFz178Iaqk";
+            //descarga el video en la carpeta que hemos seleccionado en el form
+            var downloadedVideoPath = await videoManager.DownloadVideoFromURL(url, ucPostUploaderSettings1.GetPostUploaderSettings().DefaultVideoFolder);
+            var splittedVideoPath = Path.Combine(ucPostUploaderSettings1.GetPostUploaderSettings().DefaultVideoFolder, videoManager.GetFileName(downloadedVideoPath));
+            //$"{Path.Combine(outputPath, Path.GetFileNameWithoutExtension(inputFile.Filename))}_{contadorVideos:D3}.mp4";
+            Directory.CreateDirectory(splittedVideoPath);
+            await videoManager.SplitVideo(downloadedVideoPath, splittedVideoPath, 2);
+
+            var croppedFolder = await videoManager.CropVideosFromFolder(splittedVideoPath);
+
+
+            if (_postPublisherFactory.CreatePublisher("tiktok") is not TikTokPublisher publisher)
+            {
+                return ;
+            }
+            //var postSettings = ucPostData1.GetPost();
+            //var postData = _Mapper.Map<PostData>(postSettings);
+            ViewModel.PostSettings Post = ucPostData1.GetPost();
+            Post.ContentPath = croppedFolder;
+            TikTokPostData tikTokPostData = new(
+                title: Post.Title, // "Bolitas Rebotando - Relajación y Satisfacción",
+                description: Post.Description, // "Disfruta de este video relajante y satisfactorio con bolitas rebotando al ritmo de una melodía tranquila.",
+                tags: Post.Tags, //new List<string> { "relajante", "satisfying", "bolitas", "música" },
+                contentPath: $@"{Post.ContentPath}", // Asegúrate de que 'LastFile' sea la ruta correcta al archivo
+                category: Post.Category,// "Entretenimiento", // Categoría específica de TikTok (si es aplicable)
+                privacy: Post.Privacy,//"public", // Ajustar según sea necesario
+                allowDuet: true // Permitir duetos, ajustar según la necesidad
+            );
+
+            publisher.SessionID = ucPostUploaderSettings1.GetPostUploaderSettings().SessionID;
+           
+            videoManager.Publish(tikTokPostData, publisher);
+
+            //var VideoPath = "C:\\Users\\dmozota\\Downloads\\Así DEBERÍAS empezar BIEN EN CUALQUIER PROYECTO.mp4";
+            //var OutputFolder = "C:\\Users\\dmozota\\Downloads\\Output";
+            //Directory.CreateDirectory(OutputFolder);
+            ////await _VideoSplitterServide.SplitVideo(VideoPath, OutputFolder, 3 * 60);
+            //await _VideoSplitterServide.SplitVideoByNumberSplits(VideoPath, OutputFolder,3);
+        }
     }
 }

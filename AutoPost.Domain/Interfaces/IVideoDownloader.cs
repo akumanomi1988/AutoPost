@@ -1,6 +1,6 @@
 ﻿namespace AutoPost.Domain.Interfaces
 {
-    public interface IYouTubeDownloader
+    public interface IVideoDownloader
     {
         Task<string> DownloadVideoAsync(string videoUrl, string downloadPath);
     }

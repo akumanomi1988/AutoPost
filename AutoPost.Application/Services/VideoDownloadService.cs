@@ -7,16 +7,16 @@ namespace AutoPost.Application.Services
 
     public class VideoDownloadService : IVideoDownloadService
     {
-        private readonly IYouTubeDownloader _youTubeDownloader;
+        private readonly IVideoDownloader _VideoDownloader;
 
-        public VideoDownloadService(IYouTubeDownloader youTubeDownloader)
+        public VideoDownloadService(IVideoDownloader youTubeDownloader)
         {
-            _youTubeDownloader = youTubeDownloader;
+            _VideoDownloader = youTubeDownloader;
         }
         async Task<VideoDownloadResultDto> IVideoDownloadService.DownloadVideoAsync(string videoUrl, string downloadPath)
         {
-            string videoContent = await _youTubeDownloader.DownloadVideoAsync(videoUrl, downloadPath);
-            return new VideoDownloadResultDto { URL = videoContent };
+            string videoContent = await _VideoDownloader.DownloadVideoAsync(videoUrl, downloadPath);
+            return new VideoDownloadResultDto { Path = videoContent };
         }
     }
 }

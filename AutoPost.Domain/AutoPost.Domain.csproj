@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\IPostStorageService.cs" />
     <Compile Remove="Models\ContentType.cs" />
     <Compile Remove="Models\Post.cs" />
     <Compile Remove="Models\SocialNetwork.cs" />

@@ -3,7 +3,7 @@ using AutoPost.Domain.Models;
 
 namespace AutoPost.Infraestructure.Instagram
 {
-    public class InstagramUploader : IPostPublisher
+    public class InstagramPublisher : IPostPublisher
     {
         public event ProcessOutputHandler? OnProcessOutput;
 
