@@ -1,5 +1,6 @@
 # AutoPost
 [Leer en Español](README.es.md)
+
 AutoPost is a .NET 7 application designed to automate the creation, recording, and publishing of animated videos on various social platforms such as YouTube, Instagram, and TikTok. It uses OBS to record animations and provides functionality to split and publish videos.
 
 ## Features
