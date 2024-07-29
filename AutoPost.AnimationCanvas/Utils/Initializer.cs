@@ -8,7 +8,7 @@
 
             if (!Directory.Exists(folderPath))
             {
-                Directory.CreateDirectory(folderPath);
+                _ = Directory.CreateDirectory(folderPath);
             }
         }
     }

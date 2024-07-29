@@ -2,7 +2,7 @@
 using AutoPost.Domain.Models;
 using System.Diagnostics;
 
-namespace AutoPost.Infrastructure.TikTok
+namespace AutoPost.Infraestructure.TikTok
 {
     public class TikTokPublisher : IPostPublisher
     {
@@ -12,20 +12,22 @@ namespace AutoPost.Infrastructure.TikTok
 
         public async Task<int> UploadPostAsync(PostData postData)
         {
-            var tikTokData = postData as TikTokPostData;
-            if (tikTokData == null) return -1;
+            if (postData is not TikTokPostData tikTokData)
+            {
+                return -1;
+            }
 
-            var startInfo = CreateProcessStartInfo(tikTokData);
+            ProcessStartInfo? startInfo = CreateProcessStartInfo(tikTokData);
             if (startInfo == null) { return -1; }
 
             await ExecuteAndWaitForProcessAsync(startInfo);
             return 0;
         }
 
-        private  ProcessStartInfo? CreateProcessStartInfo(TikTokPostData tikTokData)
+        private ProcessStartInfo? CreateProcessStartInfo(TikTokPostData tikTokData)
         {
             // Verificar si la ID de sesión está disponible
-            if (SessionID==string.Empty)
+            if (SessionID == string.Empty)
             {
                 OnProcessOutput?.Invoke($"TIKTOK UPLOAD RESULTS:No SessionId Configured");
                 return null;
@@ -56,22 +58,20 @@ namespace AutoPost.Infrastructure.TikTok
         }
 
 
-        private  async Task ExecuteAndWaitForProcessAsync(ProcessStartInfo startInfo)
+        private async Task ExecuteAndWaitForProcessAsync(ProcessStartInfo startInfo)
         {
-            using (Process process = new Process { StartInfo = startInfo })
+            using Process process = new() { StartInfo = startInfo };
+            _ = process.Start();
+            await process.WaitForExitAsync();
+
+            string output = await process.StandardOutput.ReadToEndAsync();
+
+            output += await process.StandardError.ReadToEndAsync();
+
+            if (!string.IsNullOrEmpty(output))
             {
-                process.Start();
-                await process.WaitForExitAsync();
-
-                string output = await process.StandardOutput.ReadToEndAsync();
-
-                output += await process.StandardError.ReadToEndAsync();
-
-                if (!string.IsNullOrEmpty(output))
-                {
-                    OnProcessOutput?.Invoke($"TIKTOK UPLOAD RESULTS:{DateTime.Now.ToShortTimeString}\n{output}");
-                }
+                OnProcessOutput?.Invoke($"TIKTOK UPLOAD RESULTS:{DateTime.Now.ToShortTimeString}\n{output}");
             }
-        }   
+        }
     }
 }

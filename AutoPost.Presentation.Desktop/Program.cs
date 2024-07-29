@@ -1,51 +1,51 @@
 
+using AutoMapper;
+using AutoPost.Application.Interfaces;
 using AutoPost.Application.Services;
 using AutoPost.Domain.Interfaces;
 using AutoPost.Infraestructure.Authentication;
+using AutoPost.Infraestructure.Downloader;
+using AutoPost.Infraestructure.Factories;
 using AutoPost.Infraestructure.Instagram;
-using AutoPost.Infraestructure.Utils;
+using AutoPost.Infraestructure.TikTok;
+using AutoPost.Infraestructure.VideoManagement;
 using AutoPost.Infraestructure.Youtube;
-using AutoPost.Infrastructure.Factories;
-using AutoPost.Infrastructure.TikTok;
+using AutoPost.Infrastructure.VideoManagement;
 using AutoPost.Presentation.Desktop;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Policy;
 
-static class Program
+internal static class Program
 {
     //Estos parametros de momento los dejo aquí, pero habrá que meterlos en configuración de la aplicación
     [STAThread]
-    static void Main()
+    private static void Main()
     {
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-        var services = new ServiceCollection();
+        ServiceCollection services = new();
         ConfigureServices(services);
-        using (var serviceProvider = services.BuildServiceProvider())
-        {
-            var mainForm = serviceProvider.GetRequiredService<MainForm>();
-            Application.Run(mainForm);
-        }
+        using ServiceProvider serviceProvider = services.BuildServiceProvider();
+        MainForm mainForm = serviceProvider.GetRequiredService<MainForm>();
+        Application.Run(mainForm);
     }
     private static void ConfigureServices(IServiceCollection services)
     {
 
         string liteDbPath = $@"{Application.StartupPath}\Database.db";
         string GoogleAuthPath = $@"{Application.StartupPath}\GoogleAuth.json";
-
-
-        //services.AddSingleton<IMetadataStorageService>(provider => new MetadataStorageService(liteDbPath));
-        services.AddSingleton<ICategoryService, YouTubeCategoryService>();
-        services.AddSingleton<ICategoryService, InstagramCategoryService>();
-        //services.AddTransient<IMetadataService,MetadataService>();
-        services.AddTransient<IPostPublisherFactory, VideoUploaderFactory>();
-        services.AddTransient<CategoryManager>();
-        services.AddTransient<YouTubePublisher>();
-        services.AddTransient<InstagramUploader>();
-        services.AddTransient<TikTokPublisher>();
-        services.AddSingleton<IAuthenticationProvider, GoogleAuthenticationProvider>(provider =>
+        _ = services.AddSingleton<ICategoryService, YouTubeCategoryService>();
+        _ = services.AddSingleton<ICategoryService, InstagramCategoryService>();
+        _ = services.AddSingleton<IAuthenticationProvider, GoogleAuthenticationProvider>(provider =>
                     new GoogleAuthenticationProvider(GoogleAuthPath));
-        services.AddSingleton<IFileProvider, FileProvider>();
-        //services.AddTransient<IPublishService, VideoUploadService>();
-        services.AddTransient<MainForm>();
+        _ = services.AddTransient<IPostPublisherFactory, PublisherFactory>();
+        _ = services.AddTransient<CategoryManager>();
+        _ = services.AddTransient<IVideoDownloader, YouTubeDownloader>();
+        _ = services.AddTransient<IVideoDownloadService, VideoDownloadService>();
+        _ = services.AddTransient<IVideoSplitter, VideoSplitter>();
+        _ = services.AddTransient<IVideoCropper, VideoCropper>();
+        _ = services.AddTransient<IVideoManagementService, VideoManagementService>();
+        _ = services.AddAutoMapper(typeof(MapConfig));
+        _ = services.AddTransient<MainForm>();
     }
 }

@@ -22,12 +22,9 @@ namespace AutoPost.Application.Services
 
         public async Task<IEnumerable<string>> GetCategoriesAsync(string platform)
         {
-            if (_categoryServices.TryGetValue(platform, out var service))
-            {
-                return await service.GetCategoriesAsync();
-            }
-
-            throw new NotSupportedException($"Platform {platform} is not supported.");
+            return _categoryServices.TryGetValue(platform, out ICategoryService? service)
+                ? await service.GetCategoriesAsync()
+                : throw new NotSupportedException($"Platform {platform} is not supported.");
         }
     }
 

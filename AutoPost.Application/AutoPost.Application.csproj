@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\IAudioExtractor.cs" />
+    <Compile Remove="Interfaces\IPostService.cs" />
     <Compile Remove="Interfaces\IYouTubeCategoryService.cs" />
     <Compile Remove="Services\CategoryService.cs" />
+    <Compile Remove="Services\PostService.cs" />
   </ItemGroup>
 
   <ItemGroup>

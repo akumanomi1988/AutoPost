@@ -40,6 +40,8 @@
             contentPathTextBox = new TextBox();
             categoryComboBox = new ComboBox();
             privacyComboBox = new ComboBox();
+            folderBrowserDialog1 = new FolderBrowserDialog();
+            button1 = new Button();
             SuspendLayout();
             // 
             // titleLabel
@@ -122,7 +124,7 @@
             // 
             contentPathTextBox.Location = new Point(120, 142);
             contentPathTextBox.Name = "contentPathTextBox";
-            contentPathTextBox.Size = new Size(150, 23);
+            contentPathTextBox.Size = new Size(115, 23);
             contentPathTextBox.TabIndex = 9;
             // 
             // categoryComboBox
@@ -141,10 +143,21 @@
             privacyComboBox.Size = new Size(150, 23);
             privacyComboBox.TabIndex = 11;
             // 
+            // button1
+            // 
+            button1.Location = new Point(237, 142);
+            button1.Name = "button1";
+            button1.Size = new Size(33, 24);
+            button1.TabIndex = 12;
+            button1.Text = "...";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // ucPost
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(button1);
             Controls.Add(privacyComboBox);
             Controls.Add(categoryComboBox);
             Controls.Add(contentPathTextBox);
@@ -178,5 +191,7 @@
         private TextBox contentPathTextBox;
         private ComboBox categoryComboBox;
         private ComboBox privacyComboBox;
+        private FolderBrowserDialog folderBrowserDialog1;
+        private Button button1;
     }
 }

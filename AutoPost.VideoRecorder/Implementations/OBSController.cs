@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 public class OBSController : ISocketConnector, IVideoRecorder
 {
-    private OBSWebsocket _obsWebSocket;
+    private readonly OBSWebsocket _obsWebSocket;
 
     // Enumeración para los estados de OBS
     public enum OBSState
@@ -68,13 +68,13 @@ public class OBSController : ISocketConnector, IVideoRecorder
     {
         if (_obsWebSocket.IsConnected && IsRecording)
         {
-            _obsWebSocket.StopRecord();
+            _ = _obsWebSocket.StopRecord();
             NotifyRecorderStatusChanged(_obsWebSocket.IsConnected ? VideoRecorderStatus.Status.Running : VideoRecorderStatus.Status.NotRunning);
         }
     }
     private bool IsOBSRunning()
     {
-        foreach (var process in Process.GetProcesses())
+        foreach (Process process in Process.GetProcesses())
         {
             if (process.ProcessName.ToLower().Contains("obs64") || process.ProcessName.ToLower().Contains("obs32"))
             {
@@ -85,10 +85,10 @@ public class OBSController : ISocketConnector, IVideoRecorder
     }
     public string GetLastSavedFile()
     {
-        var dir = _obsWebSocket.GetRecordDirectory();
+        string dir = _obsWebSocket.GetRecordDirectory();
 
-        var directory = new DirectoryInfo(dir);
-        var lastModifiedFile = directory.GetFiles()
+        DirectoryInfo directory = new(dir);
+        FileInfo? lastModifiedFile = directory.GetFiles()
                                         .OrderByDescending(f => f.LastWriteTime)
                                         .FirstOrDefault();
 

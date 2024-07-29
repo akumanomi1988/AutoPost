@@ -1,14 +1,9 @@
 ﻿using AutoPost.Presentation.Desktop.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AutoPost.Presentation.Desktop.Controllers
 {
-    internal class AutomationController 
+    internal class AutomationController
     {
         private const string FileName = "AutomationSettings.json";
 
@@ -41,7 +36,7 @@ namespace AutoPost.Presentation.Desktop.Controllers
                 string jsonString = File.ReadAllText(FileName);
                 return JsonSerializer.Deserialize<AutomationSettings>(jsonString);
             }
-           catch (Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return null;

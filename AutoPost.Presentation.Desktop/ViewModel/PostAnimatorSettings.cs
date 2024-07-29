@@ -36,7 +36,7 @@ namespace AutoPost.Presentation.Desktop.ViewModel
         public string SoundsPath { get; set; }
         [Range(1, 100, ErrorMessage = "El valor para BallsNumber debe estar entre 1 y 100.")]
         private int ballsNumber;
-        public int BallsNumber { get { return ballsNumber; } set { if (ballsNumber != value) { ballsNumber = value; OnPropertyChanged(nameof(BallsNumber)); } } }
+        public int BallsNumber { get => ballsNumber; set { if (ballsNumber != value) { ballsNumber = value; OnPropertyChanged(nameof(BallsNumber)); } } }
         public int WindowWidth { get; set; }
         public int WindowHeight { get; set; }
 

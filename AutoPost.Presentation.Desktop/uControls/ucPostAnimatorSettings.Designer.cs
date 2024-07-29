@@ -42,7 +42,6 @@ namespace AutoPost.Presentation.Desktop.uControls
             lblBallsNumber = new Label();
             lblWindowWidth = new Label();
             lblWindowHeight = new Label();
-            openFileDialog = new OpenFileDialog();
             numWindowHeight = new NumericUpDown();
             numWindowWidth = new NumericUpDown();
             folderBrowserDialog1 = new FolderBrowserDialog();
@@ -153,10 +152,6 @@ namespace AutoPost.Presentation.Desktop.uControls
             lblWindowHeight.TabIndex = 35;
             lblWindowHeight.Text = "Window height:";
             // 
-            // openFileDialog
-            // 
-            openFileDialog.Filter = "Archivos de música|*.ogg";
-            // 
             // numWindowHeight
             // 
             numWindowHeight.Location = new Point(132, 161);
@@ -214,7 +209,6 @@ namespace AutoPost.Presentation.Desktop.uControls
         private Label lblBallsNumber;
         private Label lblWindowWidth;
         private Label lblWindowHeight;
-        private OpenFileDialog openFileDialog;
         private NumericUpDown numWindowHeight;
         private NumericUpDown numWindowWidth;
         private FolderBrowserDialog folderBrowserDialog1;

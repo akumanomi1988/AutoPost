@@ -5,8 +5,8 @@ namespace AutoPost.Presentation.Desktop.uControls
 {
     public partial class ucVideoRecorderSettings : UserControl
     {
-        private VideoRecorderSettings _ViewModel;
-        private VideoRecorderController _Controller;
+        private readonly VideoRecorderSettings _ViewModel;
+        private readonly VideoRecorderController _Controller;
 
         public ucVideoRecorderSettings()
         {
@@ -14,10 +14,10 @@ namespace AutoPost.Presentation.Desktop.uControls
             _Controller = new();
             _ViewModel = _Controller.Load() ?? new VideoRecorderSettings();
 
-            txtIP.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.RecorderIP), false, DataSourceUpdateMode.OnPropertyChanged);
-            txtPort.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.Port), false, DataSourceUpdateMode.OnPropertyChanged);
-            txtPassword.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.Password), false, DataSourceUpdateMode.OnPropertyChanged);
-            numDuration.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.DurationRecorderSec), false, DataSourceUpdateMode.OnPropertyChanged);
+            _ = txtIP.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.RecorderIP), false, DataSourceUpdateMode.OnPropertyChanged);
+            _ = txtPort.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.Port), false, DataSourceUpdateMode.OnPropertyChanged);
+            _ = txtPassword.DataBindings.Add("Text", _ViewModel, nameof(_ViewModel.Password), false, DataSourceUpdateMode.OnPropertyChanged);
+            _ = numDuration.DataBindings.Add("Value", _ViewModel, nameof(_ViewModel.DurationRecorderSec), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         public VideoRecorderSettings GetVideoRecorderSettings()

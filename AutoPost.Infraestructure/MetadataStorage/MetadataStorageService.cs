@@ -1,11 +1,8 @@
-﻿using LiteDB;
+﻿using AutoPost.Domain.Models;
+using LiteDB;
 
 namespace AutoPost.Infraestructure.MetadataStorage
 {
-
-    using AutoPost.Domain.Models;
-    using LiteDB;
-
     public class MetadataStorageService
     {
         private readonly string _databasePath;
@@ -17,52 +14,42 @@ namespace AutoPost.Infraestructure.MetadataStorage
 
         public Guid SaveMetadata(PostData metadata)
         {
-            using (var db = new LiteDatabase(_databasePath))
-            {
-                var collection = db.GetCollection<PostData>("videos");
-                collection.Upsert(metadata);
-                return metadata.Id;
-            }
+            using LiteDatabase db = new(_databasePath);
+            ILiteCollection<PostData> collection = db.GetCollection<PostData>("videos");
+            _ = collection.Upsert(metadata);
+            return metadata.Id;
         }
 
         public PostData GetMetadata(Guid videoId)
         {
-            using (var db = new LiteDatabase(_databasePath))
-            {
-                var collection = db.GetCollection<PostData>("videos");
-                return collection.FindOne(m => m.Id == videoId);
-            }
+            using LiteDatabase db = new(_databasePath);
+            ILiteCollection<PostData> collection = db.GetCollection<PostData>("videos");
+            return collection.FindOne(m => m.Id == videoId);
         }
         public IEnumerable<PostData> GetMetadata()
         {
-            using (var db = new LiteDatabase(_databasePath))
-            {
-                var collection = db.GetCollection<PostData>("videos");
-                return collection.FindAll().ToList();
-            }
+            using LiteDatabase db = new(_databasePath);
+            ILiteCollection<PostData> collection = db.GetCollection<PostData>("videos");
+            return collection.FindAll().ToList();
         }
         public bool UpdateMetadata(Guid videoId, PostData updatedMetadata)
         {
-            using (var db = new LiteDatabase(_databasePath))
+            using LiteDatabase db = new(_databasePath);
+            ILiteCollection<PostData> collection = db.GetCollection<PostData>("videos");
+            PostData existingMetadata = collection.FindOne(m => m.Id == videoId);
+            if (existingMetadata != null)
             {
-                var collection = db.GetCollection<PostData>("videos");
-                var existingMetadata = collection.FindOne(m => m.Id == videoId);
-                if (existingMetadata != null)
-                {
-                    updatedMetadata.Id = existingMetadata.Id; // Asegurarse de mantener el mismo Id
-                    return collection.Update(updatedMetadata);
-                }
-                return false;
+                updatedMetadata.Id = existingMetadata.Id; // Asegurarse de mantener el mismo Id
+                return collection.Update(updatedMetadata);
             }
+            return false;
         }
 
         public bool DeleteMetadata(Guid videoId)
         {
-            using (var db = new LiteDatabase(_databasePath))
-            {
-                var collection = db.GetCollection<PostData>("videos");
-                return collection.Delete(videoId);
-            }
+            using LiteDatabase db = new(_databasePath);
+            ILiteCollection<PostData> collection = db.GetCollection<PostData>("videos");
+            return collection.Delete(videoId);
         }
     }
 
