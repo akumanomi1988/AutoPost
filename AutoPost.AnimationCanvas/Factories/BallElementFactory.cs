@@ -36,6 +36,7 @@ public class BallElementFactory : ICanvasElementFactory
             do
             {
                 element = CreateRandomElement();
+                
             }
             while (IsOverlapping(element, elements));
 

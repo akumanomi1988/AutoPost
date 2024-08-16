@@ -106,7 +106,7 @@ namespace AutoPost.Presentation.Desktop
 
         private async void AnimationCanvas_AnimationStarted(object? source, EventArgs args)
         {
-            await AddBallsEvery(3, 20, 10);
+            await AddBallsEvery(300, 0, 0);
         }
 
         private void UcPostAnimatorSettings_BallNumberChangedInUCPost(object? sender, EventArgs e)

@@ -2,6 +2,7 @@
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
+using System.Runtime.InteropServices;
 
 namespace AutoPost.AnimationCanvas.Elements
 {
@@ -11,9 +12,11 @@ namespace AutoPost.AnimationCanvas.Elements
         public CircleShape Shape { get; private set; }
         public Vector2f Velocity { get; set; }
         public Sound Sound { get; set; }
+        public Guid Guid { get; set; }
 
-        public BallElement(float radius, Vector2f position, Color color, int velocity, Sound sound)
+        public BallElement(float radius, Vector2f position, Color color, int velocity, Sound sound,Guid guid = new())
         {
+            Guid = guid;
             Shape = new CircleShape(radius)
             {
                 Position = position,

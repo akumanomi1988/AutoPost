@@ -49,6 +49,7 @@
             txtSessionID.Name = "txtSessionID";
             txtSessionID.Size = new Size(214, 23);
             txtSessionID.TabIndex = 1;
+            txtSessionID.UseSystemPasswordChar = true;
             // 
             // label1
             // 

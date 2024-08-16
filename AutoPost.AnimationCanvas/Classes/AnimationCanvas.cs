@@ -3,6 +3,7 @@ using AutoPost.AnimationCanvas.Utils;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using System.Runtime.InteropServices;
 
 namespace AutoPost.AnimationCanvas.Classes
 {
@@ -49,7 +50,29 @@ namespace AutoPost.AnimationCanvas.Classes
                 _canvasElements.Add(newElement);
             }
         }
-
+        public void AddElement(ICanvasElement Element)
+        {
+            lock (_lock)
+            {
+                //ICanvasElement newElement = _factory.CreateRandomElement();
+                _canvasElements.Add(Element);
+            }
+        }
+        public void RemoveElement(ICanvasElement Element)
+        {
+            lock (_lock)
+            {
+                if (_canvasElements.Count > 0)
+                {
+                    int index = _canvasElements.FindIndex(x =>  x.Guid == Element.Guid);
+                    if (index < 0)
+                    {
+                        _canvasElements.RemoveAt(index);
+                    }
+                   
+                }
+            }
+        }
         public void RemoveElement()
         {
             lock (_lock)
@@ -95,7 +118,7 @@ namespace AutoPost.AnimationCanvas.Classes
             DateTime timeEndAnimation = DateTime.Now.AddSeconds(secDuration);
             Clock clock = new();
 
-            while (_window.IsOpen && IsAnimating && timeEndAnimation > DateTime.Now)
+            while (_window.IsOpen && IsAnimating && (secDuration == 0 || timeEndAnimation > DateTime.Now))
             {
                 _window.DispatchEvents();
                 _window.Clear(_canvas.BackgroundColor);
@@ -104,6 +127,7 @@ namespace AutoPost.AnimationCanvas.Classes
                 _window.Display();
             }
         }
+
 
         public void StopAnimation()
         {

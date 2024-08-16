@@ -45,6 +45,9 @@ namespace AutoPost.Presentation.Desktop.uControls
             numWindowHeight = new NumericUpDown();
             numWindowWidth = new NumericUpDown();
             folderBrowserDialog1 = new FolderBrowserDialog();
+            lblHostId = new Label();
+            txtHostId = new TextBox();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)numDuracionVideo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numBallsNumber).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numWindowHeight).BeginInit();
@@ -121,6 +124,7 @@ namespace AutoPost.Presentation.Desktop.uControls
             // numBallsNumber
             // 
             numBallsNumber.Location = new Point(132, 101);
+            numBallsNumber.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numBallsNumber.Name = "numBallsNumber";
             numBallsNumber.Size = new Size(120, 23);
             numBallsNumber.TabIndex = 30;
@@ -139,18 +143,18 @@ namespace AutoPost.Presentation.Desktop.uControls
             lblWindowWidth.AutoSize = true;
             lblWindowWidth.Location = new Point(3, 131);
             lblWindowWidth.Name = "lblWindowWidth";
-            lblWindowWidth.Size = new Size(87, 15);
+            lblWindowWidth.Size = new Size(89, 15);
             lblWindowWidth.TabIndex = 33;
-            lblWindowWidth.Text = "Window width:";
+            lblWindowWidth.Text = "Window Heigh:";
             // 
             // lblWindowHeight
             // 
             lblWindowHeight.AutoSize = true;
             lblWindowHeight.Location = new Point(3, 161);
             lblWindowHeight.Name = "lblWindowHeight";
-            lblWindowHeight.Size = new Size(91, 15);
+            lblWindowHeight.Size = new Size(89, 15);
             lblWindowHeight.TabIndex = 35;
-            lblWindowHeight.Text = "Window height:";
+            lblWindowHeight.Text = "Window Width:";
             // 
             // numWindowHeight
             // 
@@ -168,10 +172,39 @@ namespace AutoPost.Presentation.Desktop.uControls
             numWindowWidth.Size = new Size(120, 23);
             numWindowWidth.TabIndex = 32;
             // 
+            // lblHostId
+            // 
+            lblHostId.AutoSize = true;
+            lblHostId.Location = new Point(3, 195);
+            lblHostId.Name = "lblHostId";
+            lblHostId.Size = new Size(48, 15);
+            lblHostId.TabIndex = 36;
+            lblHostId.Text = "Host Id:";
+            // 
+            // txtHostId
+            // 
+            txtHostId.Location = new Point(132, 190);
+            txtHostId.Name = "txtHostId";
+            txtHostId.Size = new Size(160, 23);
+            txtHostId.TabIndex = 37;
+            txtHostId.Text = "valorantesports";
+            // 
+            // button1
+            // 
+            button1.Location = new Point(309, 190);
+            button1.Name = "button1";
+            button1.Size = new Size(26, 24);
+            button1.TabIndex = 38;
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // ucPostAnimatorSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(button1);
+            Controls.Add(txtHostId);
+            Controls.Add(lblHostId);
             Controls.Add(numDuracionVideo);
             Controls.Add(lblDuracionVideo);
             Controls.Add(txtMusicPath);
@@ -187,7 +220,7 @@ namespace AutoPost.Presentation.Desktop.uControls
             Controls.Add(numWindowHeight);
             Controls.Add(lblWindowHeight);
             Name = "ucPostAnimatorSettings";
-            Size = new Size(339, 197);
+            Size = new Size(345, 220);
             ((System.ComponentModel.ISupportInitialize)numDuracionVideo).EndInit();
             ((System.ComponentModel.ISupportInitialize)numBallsNumber).EndInit();
             ((System.ComponentModel.ISupportInitialize)numWindowHeight).EndInit();
@@ -212,5 +245,8 @@ namespace AutoPost.Presentation.Desktop.uControls
         private NumericUpDown numWindowHeight;
         private NumericUpDown numWindowWidth;
         private FolderBrowserDialog folderBrowserDialog1;
+        private Label lblHostId;
+        private TextBox txtHostId;
+        private Button button1;
     }
 }

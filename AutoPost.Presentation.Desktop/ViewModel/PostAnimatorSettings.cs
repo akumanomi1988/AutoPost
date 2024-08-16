@@ -17,8 +17,9 @@ namespace AutoPost.Presentation.Desktop.ViewModel
             WindowWidth = 720; // Valor predeterminado para el ancho de la ventana
             WindowHeight = 720; // Valor predeterminado para la altura de la ventana
             BackGroundColor = Color.White;
+            HostId = string.Empty;
         }
-        public PostAnimatorSettings(int duracionVideo, string musicPath, string soundsPath, int ballsNumber, int windowWidth, int windowHeight)
+        public PostAnimatorSettings(int duracionVideo, string musicPath, string soundsPath, int ballsNumber, int windowWidth, int windowHeight, string hostId)
         {
 
             Duration = duracionVideo;
@@ -27,7 +28,7 @@ namespace AutoPost.Presentation.Desktop.ViewModel
             BallsNumber = ballsNumber;
             WindowWidth = windowWidth;
             WindowHeight = windowHeight;
-
+            HostId = hostId;    
         }
 
         public int Duration { get; set; }
@@ -39,6 +40,7 @@ namespace AutoPost.Presentation.Desktop.ViewModel
         public int BallsNumber { get => ballsNumber; set { if (ballsNumber != value) { ballsNumber = value; OnPropertyChanged(nameof(BallsNumber)); } } }
         public int WindowWidth { get; set; }
         public int WindowHeight { get; set; }
+        public string HostId { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
