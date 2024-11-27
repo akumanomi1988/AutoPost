@@ -22,6 +22,8 @@ namespace AutoPost.Infraestructure.Factories
         {
             return platform.ToLower() switch
             {
+
+            //inyectar los servicios como KeyedService con un identificador, y luego recuperarlos como GetKeyedService de los servicios
                 "youtube" => CreateYouTubePublisher(),
                 "tiktok" => CreateTikTokPublisher(),
                 "instagram" => CreateInstagramPublisher(),
